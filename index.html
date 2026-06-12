@@ -168,26 +168,26 @@
 </head>
 <body>
 <div id="app"><div id="screen"><div class="top"><div class="logo">flex</div><div class="chips">
- <span class="chip fl">🔥 1</span><span class="chip co">⚡ 792</span>
+ <span class="chip fl">🔥 0</span><span class="chip co">⚡ 0</span>
  <button class="iconbtn" onclick="S.sound=!S.sound;save();sTap();home()">🔊</button></div></div><div class="screen">
-  <div class="hero"><div class="masc">😏</div><div class="hi" style="flex:1">
-    <div class="lvlrow">flex lvl 6 <span class="tag">⚡ 92/140</span></div>
-    <div class="say">streak's going. don't fumble it today.</div><div class="xpbar"><i id="xpb" style="width: 65.7143%;"></i></div></div></div>
+  <div class="hero"><div class="masc">👀</div><div class="hi" style="flex:1">
+    <div class="lvlrow">flex lvl 1 <span class="tag">⚡ 0/140</span></div>
+    <div class="say">lock in. let's start that streak.</div><div class="xpbar"><i id="xpb" style="width: 0%;"></i></div></div></div>
 
   <div class="quest"><div class="qp"><div class="ttl">today's lock-in 🔒</div><div class="sub">15 questions a day finishes the bank by exam day</div>
     <div class="qbar"><i style="width:0%"></i></div></div><div class="qn">0/15</div></div>
 
   <div class="pus">
-   <div class="pu"><div class="e">✂️</div><b>4</b>50:50</div>
-   <div class="pu"><div class="e">⚡</div><b>3</b>2× XP</div>
-   <div class="pu"><div class="e">🥶</div><b>3</b>freeze</div></div>
+   <div class="pu"><div class="e">✂️</div><b>2</b>50:50</div>
+   <div class="pu"><div class="e">⚡</div><b>2</b>2× XP</div>
+   <div class="pu"><div class="e">🥶</div><b>1</b>freeze</div></div>
 
   <button class="cta" onclick="startBurst()">start the daily lock-in <span class="pill">15</span></button>
 
   <div class="sect"><div class="ey">pick your chaos</div><div class="grid2">
     <button class="tile" style="background:linear-gradient(135deg,rgba(255,61,139,.18),var(--surf));border-color:rgba(255,61,139,.3)" onclick="startHoax()"><div class="ic">📰</div><div class="t">headline or cap</div><div class="d">real or made-up?</div></button>
     <button class="tile" style="background:linear-gradient(135deg,rgba(39,224,224,.18),var(--surf));border-color:rgba(39,224,224,.3)" onclick="startMatch()"><div class="ic">🔗</div><div class="t">match-up</div><div class="d">pair 'em fast</div></button>
-    <button class="tile " style="background:linear-gradient(135deg,rgba(255,178,58,.16),var(--surf));border-color:rgba(255,178,58,.3)" onclick="startRedeem()"><div class="ic">🩹</div><div class="t">redemption</div><div class="d">1 to clear</div></button>
+    <button class="tile locked" style="background:linear-gradient(135deg,rgba(255,178,58,.16),var(--surf));border-color:rgba(255,178,58,.3)" onclick="startRedeem()"><div class="ic">🩹</div><div class="t">redemption</div><div class="d">0 to clear</div></button>
     <button class="tile" style="background:linear-gradient(135deg,rgba(155,91,255,.2),var(--surf));border-color:rgba(155,91,255,.35)" onclick="startBoss()"><div class="ic">⚔️</div><div class="t">boss battle</div><div class="d">beat the clock</div></button>
     <button class="tile" style="background:linear-gradient(135deg,rgba(47,209,138,.18),var(--surf));border-color:rgba(47,209,138,.3)" onclick="startSurvival()"><div class="ic">💀</div><div class="t">survival</div><div class="d">one wrong = over</div></button>
   </div></div>
@@ -205,13 +205,13 @@
      <span class="e">🌱</span><span class="pc" style="">0%</span></div></div></div>
 
   <div class="sect"><div class="ey">lifetime counter 📊</div>
-   <div class="statrow"><div class="scard"><div class="v">41</div><div class="l">asked</div></div>
-    <div class="scard"><div class="v">32</div><div class="l">correct</div></div>
-    <div class="scard"><div class="v">78%</div><div class="l">accuracy</div></div></div></div>
+   <div class="statrow"><div class="scard"><div class="v">0</div><div class="l">asked</div></div>
+    <div class="scard"><div class="v">0</div><div class="l">correct</div></div>
+    <div class="scard"><div class="v">0%</div><div class="l">accuracy</div></div></div></div>
 
   <div class="sect"><button class="cta ghost" onclick="stats()">progress &amp; flex card 💅</button>
    <button class="cta" style="margin-top:10px" onclick="saveApp()">⬇ save / install this app</button></div>
-  <div class="footnote">starter bank · 144 facts (verified 2026 + evergreen). fresh current-affairs drop every week.</div>
+  <div class="footnote">starter bank · 178 facts (verified 2026 + evergreen). fresh current-affairs drop every week.</div>
  </div></div></div>
 <canvas id="cf"></canvas>
 <script>
@@ -390,7 +390,41 @@ const BANK=[
 {id:"b53",g:"HIS",r:"IN",k:"S",pic:"✊",q:"'Do or Die' is the famous slogan of which movement?",o:["Non-Cooperation","Quit India","Civil Disobedience","Swadeshi","Khilafat"],a:1,why:"The Quit India Movement (1942).",ctx:"Given by Mahatma Gandhi.",hook:"'Do or Die' = Quit India, 1942."},
 {id:"b54",g:"GEO",r:"INT",k:"S",pic:"📐",q:"Which imaginary line divides Earth into the Northern and Southern Hemispheres?",o:["Prime Meridian","Tropic of Cancer","Equator","Arctic Circle","Tropic of Capricorn"],a:2,why:"The Equator (0° latitude).",ctx:"The Prime Meridian divides East and West.",hook:"Equator = N/S divide."},
 {id:"b55",g:"SCI",r:"INT",k:"S",pic:"⚡",q:"The speed of light in a vacuum is approximately…",o:["3,000 km/s","30,000 km/s","3,00,000 km/s","30,00,000 km/s","300 km/s"],a:2,why:"About 3,00,000 km/s (3×10⁸ m/s).",ctx:"The cosmic speed limit.",hook:"Light ≈ 3 lakh km per second."},
-{id:"b56",g:"ART",r:"IN",k:"S",pic:"🎭",q:"Kathakali is a classical dance-drama form of which state?",o:["Kerala","Tamil Nadu","Karnataka","Odisha","Assam"],a:0,why:"Kerala.",ctx:"Known for elaborate costumes and face make-up.",hook:"Kathakali = Kerala."}
+{id:"b56",g:"ART",r:"IN",k:"S",pic:"🎭",q:"Kathakali is a classical dance-drama form of which state?",o:["Kerala","Tamil Nadu","Karnataka","Odisha","Assam"],a:0,why:"Kerala.",ctx:"Known for elaborate costumes and face make-up.",hook:"Kathakali = Kerala."},
+{id:"n1",g:"SPO",r:"INT",k:"C",pic:"🎾",q:"Who won the men's singles title at the 2026 Australian Open?",o:["Jannik Sinner","Carlos Alcaraz","Novak Djokovic","Daniil Medvedev","Alexander Zverev"],a:1,why:"Carlos Alcaraz beat Novak Djokovic in the final.",ctx:"It was his first Australian Open and completed his Career Grand Slam, aged 22.",hook:"Alcaraz completed the career Slam Down Under."},
+{id:"n2",g:"SPO",r:"INT",k:"C",pic:"🎾",q:"Who won the women's singles title at the 2026 Australian Open?",o:["Aryna Sabalenka","Iga Swiatek","Elena Rybakina","Coco Gauff","Madison Keys"],a:2,why:"Elena Rybakina beat Aryna Sabalenka in the final.",ctx:"Her second Grand Slam singles title.",hook:"Rybakina downed world No.1 Sabalenka."},
+{id:"n3",g:"SPO",r:"INT",k:"C",pic:"🏆",q:"Carlos Alcaraz completed his Career Grand Slam by winning which 2026 major?",o:["Wimbledon","US Open","Australian Open","French Open","ATP Finals"],a:2,why:"The 2026 Australian Open completed his set of all four majors.",ctx:"He was just 22 — one of the youngest to do it.",hook:"AO 2026 sealed Alcaraz's full set."},
+{id:"n4",g:"SPO",r:"INT",k:"C",pic:"🎾",q:"Who won the men's singles title at the 2026 French Open — his first Grand Slam?",o:["Carlos Alcaraz","Jannik Sinner","Alexander Zverev","Flavio Cobolli","Novak Djokovic"],a:2,why:"Alexander Zverev beat Flavio Cobolli for his first major.",ctx:"At Roland Garros, on clay.",hook:"Zverev finally got his Slam in Paris."},
+{id:"n5",g:"SPO",r:"INT",k:"C",pic:"🎾",q:"Who won the women's singles title at the 2026 French Open?",o:["Coco Gauff","Mirra Andreeva","Aryna Sabalenka","Iga Swiatek","Elena Rybakina"],a:1,why:"Mirra Andreeva won her maiden Grand Slam.",ctx:"On the Paris clay at Roland Garros.",hook:"Teen star Andreeva conquered Paris."},
+{id:"n6",g:"AWD",r:"INT",k:"C",pic:"🎵",q:"Which artist won Album of the Year at the 2026 Grammys?",o:["Taylor Swift","Bad Bunny","Billie Eilish","Kendrick Lamar","Sabrina Carpenter"],a:1,why:"Bad Bunny won for 'Debí Tirar Más Fotos'.",ctx:"At the 68th Grammy Awards in Los Angeles.",hook:"Bad Bunny took Album of the Year."},
+{id:"n7",g:"AWD",r:"INT",k:"C",pic:"🎤",q:"Who won Record of the Year ('Luther') at the 2026 Grammys?",o:["Lady Gaga","Doechii","Kendrick Lamar & SZA","Bruno Mars","Chappell Roan"],a:2,why:"Kendrick Lamar with SZA won for 'Luther'.",ctx:"Record of the Year honours a single recording.",hook:"'Luther' — Kendrick & SZA."},
+{id:"n8",g:"AWD",r:"INT",k:"C",pic:"🎶",q:"Who won Song of the Year ('Wildflower') at the 2026 Grammys?",o:["Lady Gaga","Billie Eilish & Finneas","Sabrina Carpenter","Rosé & Bruno Mars","Tyler, the Creator"],a:1,why:"Billie Eilish and Finneas won for 'Wildflower'.",ctx:"Song of the Year is a songwriters' award.",hook:"'Wildflower' — the Eilish siblings."},
+{id:"n9",g:"AWD",r:"IN",k:"C",pic:"📚",q:"The 2025 Jnanpith Award, India's highest literary honour, was conferred on which Tamil poet?",o:["Vairamuthu","Perumal Murugan","Imayam","Sirpi Balasubramaniam","Salma"],a:0,why:"Vairamuthu, the celebrated Tamil poet-lyricist.",ctx:"The Jnanpith is given for outstanding contribution to literature.",hook:"Tamil verse legend Vairamuthu — Jnanpith."},
+{id:"n10",g:"ECO",r:"IN",k:"C",pic:"🏦",q:"At what level did the RBI hold its repo rate through 2026?",o:["4.00%","5.25%","6.50%","5.50%","6.00%"],a:1,why:"The RBI kept the repo rate at 5.25%.",ctx:"Held steady for several meetings under Governor Sanjay Malhotra.",hook:"Repo rate parked at 5.25%."},
+{id:"n11",g:"ECO",r:"IN",k:"C",pic:"⚖️",q:"What monetary-policy stance did the RBI maintain in 2026?",o:["Accommodative","Neutral","Hawkish","Calibrated tightening","Withdrawal of accommodation"],a:1,why:"A neutral stance, giving flexibility on future moves.",ctx:"It signals readiness to move either way as data evolves.",hook:"RBI played it neutral in 2026."},
+{id:"n12",g:"ECO",r:"IN",k:"C",pic:"📉",q:"In June 2026, the RBI revised its FY2026-27 GDP growth forecast down to about?",o:["8.0%","7.5%","6.6%","5.0%","6.9%"],a:2,why:"Cut to 6.6%, from an earlier 6.9% estimate.",ctx:"Reflecting global headwinds and capital outflows.",hook:"FY27 growth nudged to 6.6%."},
+{id:"n13",g:"POL",r:"IN",k:"C",pic:"🧾",q:"Who is the Comptroller and Auditor General (CAG) of India in 2026?",o:["G.C. Murmu","K. Sanjay Murthy","Rajiv Mehrishi","Shashi Kant Sharma","Vinod Rai"],a:1,why:"K. Sanjay Murthy is the CAG.",ctx:"The CAG audits government accounts.",hook:"Sanjay Murthy audits the government's books."},
+{id:"n14",g:"POL",r:"IN",k:"C",pic:"📈",q:"Who is India's Chief Economic Adviser (CEA) in 2026?",o:["Krishnamurthy Subramanian","V. Anantha Nageswaran","Arvind Subramanian","Raghuram Rajan","Kaushik Basu"],a:1,why:"V. Anantha Nageswaran is the CEA.",ctx:"He authors the annual Economic Survey.",hook:"Nageswaran pens the Economic Survey."},
+{id:"n15",g:"POL",r:"IN",k:"C",pic:"🗂️",q:"Who is the Cabinet Secretary of India in 2026?",o:["Rajiv Gauba","T.V. Somanathan","P.K. Sinha","Pradeep Kumar Sinha","Ajay Bhushan Pandey"],a:1,why:"Dr T.V. Somanathan is the Cabinet Secretary.",ctx:"The senior-most civil servant in India.",hook:"Somanathan tops the bureaucracy."},
+{id:"n16",g:"POL",r:"IN",k:"C",pic:"⚖️",q:"Who is the Attorney General of India in 2026?",o:["K.K. Venugopal","R. Venkataramani","Mukul Rohatgi","Tushar Mehta","Goolam Vahanvati"],a:1,why:"R. Venkataramani is the Attorney General.",ctx:"The government's chief legal adviser.",hook:"Venkataramani = India's top law officer."},
+{id:"n17",g:"IRL",r:"INT",k:"C",pic:"🗳️",q:"Whose TISZA party defeated Viktor Orbán's Fidesz in Hungary's 2026 election?",o:["Péter Magyar","Klára Dobrev","Gergely Karácsony","Ferenc Gyurcsány","András Fekete-Győr"],a:0,why:"Péter Magyar, a former Fidesz insider, led TISZA to victory.",ctx:"It ended Orbán's long grip on power.",hook:"Magyar's TISZA toppled Orbán."},
+{id:"n18",g:"IRL",r:"INT",k:"C",pic:"🏔️",q:"In which town was the 2026 World Economic Forum (WEF) annual meeting held?",o:["Geneva","Davos","Zurich","Bern","Lucerne"],a:1,why:"Davos, Switzerland — as every January.",ctx:"It sets the tone for the year's global economic agenda.",hook:"Davos = the WEF's home."},
+{id:"n19",g:"IRL",r:"INT",k:"C",pic:"🎆",q:"Under what banner did the USA mark 250 years of independence in 2026?",o:["USA250","Liberty250","America250","Freedom250","Spirit of 76"],a:2,why:"America250 — the semiquincentennial.",ctx:"Year-long festivals and events across the US.",hook:"250 years → America250."},
+{id:"n20",g:"AWD",r:"IN",k:"C",pic:"🎻",q:"Which legendary classical violinist received the Padma Vibhushan in 2026?",o:["L. Subramaniam","N. Rajam","T.N. Krishnan","Kala Ramnath","Sangeeta Shankar"],a:1,why:"N. Rajam, the Hindustani violin maestro.",ctx:"One of the 2026 Padma Vibhushan awardees.",hook:"Violin doyenne N. Rajam — top honour."},
+{id:"n21",g:"AWD",r:"IN",k:"C",pic:"🎾",q:"Which tennis legend was awarded the Padma Bhushan in 2026?",o:["Leander Paes","Vijay Amritraj","Mahesh Bhupathi","Ramanathan Krishnan","Ramesh Krishnan"],a:1,why:"Vijay Amritraj.",ctx:"A pioneer of Indian tennis on the global stage.",hook:"Vijay Amritraj — Padma Bhushan."},
+{id:"n22",g:"SPO",r:"IN",k:"C",pic:"🏟️",q:"Which stadium hosted both the 2026 T20 World Cup final and the IPL 2026 final?",o:["Wankhede, Mumbai","Eden Gardens, Kolkata","M.A. Chidambaram, Chennai","Narendra Modi Stadium, Ahmedabad","Arun Jaitley, Delhi"],a:3,why:"The Narendra Modi Stadium in Ahmedabad — the world's largest cricket stadium.",ctx:"India won the T20 WC there; RCB won the IPL there.",hook:"Ahmedabad's Modi Stadium hosted both finals."},
+{id:"n23",g:"POL",r:"IN",k:"C",pic:"📜",q:"Who is the Solicitor General of India in 2026?",o:["Harish Salve","Tushar Mehta","Gopal Subramanium","Ranjit Kumar","Mohan Parasaran"],a:1,why:"Tushar Mehta is the Solicitor General.",ctx:"The second-highest law officer after the Attorney General.",hook:"Tushar Mehta = India's SG."},
+{id:"n24",g:"AWD",r:"INT",k:"C",pic:"🎙️",q:"Who hosted the 2026 Grammy Awards?",o:["Jimmy Fallon","Trevor Noah","James Corden","John Mulaney","Stephen Colbert"],a:1,why:"Trevor Noah hosted, for the sixth (and final) time.",ctx:"The 68th Grammys were held in Los Angeles.",hook:"Trevor Noah's farewell Grammy hosting."},
+{id:"n25",g:"AWD",r:"INT",k:"C",pic:"🌟",q:"Who won Best New Artist at the 2026 Grammys?",o:["Chappell Roan","Doechii","Olivia Dean","Gracie Abrams","Benson Boone"],a:2,why:"Olivia Dean won Best New Artist.",ctx:"One of the night's four major (general field) awards.",hook:"Olivia Dean — Best New Artist 2026."},
+{id:"n26",g:"SPO",r:"INT",k:"C",pic:"🏆",q:"Whom did Carlos Alcaraz beat in the 2026 Australian Open final?",o:["Jannik Sinner","Novak Djokovic","Daniil Medvedev","Alexander Zverev","Taylor Fritz"],a:1,why:"He defeated Novak Djokovic.",ctx:"Djokovic has the most AO men's titles (10) in the Open era.",hook:"Alcaraz beat the GOAT Djokovic."},
+{id:"n27",g:"IRL",r:"INT",k:"C",pic:"🤝",q:"The 2026 NATO leaders' summit is hosted by which country?",o:["United States","Germany","Turkey","Netherlands","Spain"],a:2,why:"Turkey (in Ankara) hosts the 2026 NATO summit.",ctx:"Turkey also hosts COP31 in 2026.",hook:"NATO heads to Ankara, Turkey."},
+{id:"n28",g:"ECO",r:"IN",k:"C",pic:"🎯",q:"What is the RBI's flexible inflation-targeting band?",o:["2%–4%","2%–6%","3%–5%","4%–8%","1%–5%"],a:1,why:"4% target, within a 2%–6% band.",ctx:"Late-2025 inflation briefly dipped below the lower bound.",hook:"4% target, 2–6% band."},
+{id:"n29",g:"ECO",r:"IN",k:"C",pic:"💹",q:"India's GDP grew at roughly what rate in the July–September 2025 quarter?",o:["4.1%","6.0%","8.2%","9.5%","5.4%"],a:2,why:"About 8.2% — a strong print.",ctx:"It underscored India as the fastest-growing major economy.",hook:"Q2 FY26 GDP ≈ 8.2%."},
+{id:"n30",g:"IRL",r:"INT",k:"C",pic:"🇺🇸",q:"Which US President was a headline attendee at the Davos 2026 WEF meeting?",o:["Joe Biden","Donald Trump","Barack Obama","Kamala Harris","Bill Clinton"],a:1,why:"Donald Trump, in his second term.",ctx:"He helped set the tone of the global economic agenda.",hook:"Trump headlined Davos 2026."},
+{id:"n31",g:"AWD",r:"IN",k:"C",pic:"🏅",q:"How many awardees featured on the 2026 Padma awards list?",o:["106","119","131","142","154"],a:2,why:"131 awardees: 5 Padma Vibhushan, 13 Padma Bhushan, 113 Padma Shri.",ctx:"Announced on the eve of Republic Day.",hook:"131 Padmas in 2026."},
+{id:"n32",g:"IRL",r:"INT",k:"C",pic:"🇫🇷",q:"Which country hosts the 2026 G7 leaders' summit?",o:["Italy","Canada","France","Japan","Germany"],a:2,why:"France (Évian-les-Bains) hosts the 52nd G7 summit.",ctx:"The G7 groups major advanced economies.",hook:"G7 2026 → France."},
+{id:"n33",g:"SPO",r:"IN",k:"C",pic:"🏏",q:"Who was named Player of the Match in the IPL 2026 final won by RCB?",o:["Rajat Patidar","Virat Kohli","Faf du Plessis","Josh Hazlewood","Glenn Maxwell"],a:1,why:"Virat Kohli, with a match-winning 75.",ctx:"RCB beat Gujarat Titans to defend their title.",hook:"Kohli's final-night masterclass."},
+{id:"n34",g:"SPO",r:"INT",k:"C",pic:"🥇",q:"Which German player won his first Grand Slam title at the 2026 French Open?",o:["Alexander Zverev","Jan-Lennard Struff","Dominik Koepfer","Daniel Altmaier","Yannick Hanfmann"],a:0,why:"Alexander Zverev, finally a Slam champion.",ctx:"He beat Flavio Cobolli in the final.",hook:"Zverev's long wait ended in Paris."}
 ];
 
 const MATCH=[

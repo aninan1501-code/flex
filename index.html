@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0B0A16">
@@ -178,53 +179,7 @@
 </style>
 </head>
 <body>
-<div id="app"><div id="screen"><div class="top"><div class="logo">flex</div><div class="chips">
- <span class="chip fl">🔥 0</span><span class="chip co">⚡ 0</span>
- <button class="iconbtn" onclick="checkUpdate()" title="check for updates">🔄</button>
- <button class="iconbtn" onclick="S.sound=!S.sound;save();sTap();home()">🔊</button></div></div><div class="screen">
-  <div class="scoreboard">
-    <div class="sb"><div class="n">178</div><div class="t">🧠 in the bank</div></div>
-    <div class="sb"><div class="n">0</div><div class="t">🎮 played</div></div>
-    <div class="sb"><div class="n">0</div><div class="t">🎯 nailed · 0%</div></div>
-  </div>
-  <div class="hero"><div class="masc">👀</div><div class="hi" style="flex:1">
-    <div class="lvlrow">flex lvl 1 <span class="tag">⚡ 0/140</span></div>
-    <div class="say">lock in. let's start that streak.</div><div class="xpbar"><i id="xpb" style="width: 0%;"></i></div></div></div>
-
-  <div class="quest"><div class="qp"><div class="ttl">today's lock-in 🔒</div><div class="sub">15 questions a day finishes the bank by exam day</div>
-    <div class="qbar"><i style="width:0%"></i></div></div><div class="qn">0/15</div></div>
-
-  <div class="pus">
-   <div class="pu"><div class="e">✂️</div><b>2</b>50:50</div>
-   <div class="pu"><div class="e">⚡</div><b>2</b>2× XP</div>
-   <div class="pu"><div class="e">🥶</div><b>1</b>freeze</div></div>
-
-  <button class="cta" onclick="startBurst()">start the daily lock-in <span class="pill">15</span></button>
-
-  <div class="sect"><div class="ey">pick your chaos</div><div class="grid2">
-    <button class="tile" style="background:linear-gradient(135deg,rgba(255,61,139,.18),var(--surf));border-color:rgba(255,61,139,.3)" onclick="startHoax()"><div class="ic">📰</div><div class="t">headline or cap</div><div class="d">real or made-up?</div></button>
-    <button class="tile" style="background:linear-gradient(135deg,rgba(39,224,224,.18),var(--surf));border-color:rgba(39,224,224,.3)" onclick="startMatch()"><div class="ic">🔗</div><div class="t">match-up</div><div class="d">pair 'em fast</div></button>
-    <button class="tile locked" style="background:linear-gradient(135deg,rgba(255,178,58,.16),var(--surf));border-color:rgba(255,178,58,.3)" onclick="startRedeem()"><div class="ic">🩹</div><div class="t">redemption</div><div class="d">0 to clear</div></button>
-    <button class="tile" style="background:linear-gradient(135deg,rgba(155,91,255,.2),var(--surf));border-color:rgba(155,91,255,.35)" onclick="startBoss()"><div class="ic">⚔️</div><div class="t">boss battle</div><div class="d">beat the clock</div></button>
-    <button class="tile" style="background:linear-gradient(135deg,rgba(47,209,138,.18),var(--surf));border-color:rgba(47,209,138,.3)" onclick="startSurvival()"><div class="ic">💀</div><div class="t">survival</div><div class="d">one wrong = over</div></button>
-  </div></div>
-
-  <div class="sect"><div class="ey">your knowledge galaxy</div><div class="galaxy"><div class="orb " style="" onclick="startGenre('GEO')" title="geography">
-     <span class="e">🌍</span><span class="pc" style="">0%</span></div><div class="orb " style="" onclick="startGenre('ECO')" title="biz &amp; econ">
-     <span class="e">💸</span><span class="pc" style="">0%</span></div><div class="orb " style="" onclick="startGenre('POL')" title="polity">
-     <span class="e">🏛️</span><span class="pc" style="">0%</span></div><div class="orb " style="" onclick="startGenre('HIS')" title="history">
-     <span class="e">📜</span><span class="pc" style="">0%</span></div><div class="orb " style="" onclick="startGenre('ART')" title="culture">
-     <span class="e">🎬</span><span class="pc" style="">0%</span></div><div class="orb " style="" onclick="startGenre('SCI')" title="sci &amp; tech">
-     <span class="e">🚀</span><span class="pc" style="">0%</span></div><div class="orb " style="" onclick="startGenre('AWD')" title="awards">
-     <span class="e">🏆</span><span class="pc" style="">0%</span></div><div class="orb " style="" onclick="startGenre('SPO')" title="sports">
-     <span class="e">🏅</span><span class="pc" style="">0%</span></div><div class="orb " style="" onclick="startGenre('IRL')" title="world">
-     <span class="e">🌐</span><span class="pc" style="">0%</span></div><div class="orb " style="" onclick="startGenre('ENV')" title="environment">
-     <span class="e">🌱</span><span class="pc" style="">0%</span></div></div></div>
-
-  <div class="sect"><button class="cta ghost" onclick="stats()">progress &amp; flex card 💅</button>
-   <button class="cta" style="margin-top:10px" onclick="saveApp()">⬇ save / install this app</button></div>
-  <div class="footnote">starter bank · 178 facts (verified 2026 + evergreen). fresh current-affairs drop every week.</div>
- </div></div></div>
+<div id="app"><div id="screen"></div></div>
 <canvas id="cf"></canvas>
 <script>
 /* ===== GENRE META (colour + icon) ===== */
@@ -436,7 +391,61 @@ const BANK=[
 {id:"n31",g:"AWD",r:"IN",k:"C",pic:"🏅",q:"How many awardees featured on the 2026 Padma awards list?",o:["106","119","131","142","154"],a:2,why:"131 awardees: 5 Padma Vibhushan, 13 Padma Bhushan, 113 Padma Shri.",ctx:"Announced on the eve of Republic Day.",hook:"131 Padmas in 2026."},
 {id:"n32",g:"IRL",r:"INT",k:"C",pic:"🇫🇷",q:"Which country hosts the 2026 G7 leaders' summit?",o:["Italy","Canada","France","Japan","Germany"],a:2,why:"France (Évian-les-Bains) hosts the 52nd G7 summit.",ctx:"The G7 groups major advanced economies.",hook:"G7 2026 → France."},
 {id:"n33",g:"SPO",r:"IN",k:"C",pic:"🏏",q:"Who was named Player of the Match in the IPL 2026 final won by RCB?",o:["Rajat Patidar","Virat Kohli","Faf du Plessis","Josh Hazlewood","Glenn Maxwell"],a:1,why:"Virat Kohli, with a match-winning 75.",ctx:"RCB beat Gujarat Titans to defend their title.",hook:"Kohli's final-night masterclass."},
-{id:"n34",g:"SPO",r:"INT",k:"C",pic:"🥇",q:"Which German player won his first Grand Slam title at the 2026 French Open?",o:["Alexander Zverev","Jan-Lennard Struff","Dominik Koepfer","Daniel Altmaier","Yannick Hanfmann"],a:0,why:"Alexander Zverev, finally a Slam champion.",ctx:"He beat Flavio Cobolli in the final.",hook:"Zverev's long wait ended in Paris."}
+{id:"n34",g:"SPO",r:"INT",k:"C",pic:"🥇",q:"Which German player won his first Grand Slam title at the 2026 French Open?",o:["Alexander Zverev","Jan-Lennard Struff","Dominik Koepfer","Daniel Altmaier","Yannick Hanfmann"],a:0,why:"Alexander Zverev, finally a Slam champion.",ctx:"He beat Flavio Cobolli in the final.",hook:"Zverev's long wait ended in Paris."},
+{id:"t1",g:"GEO",r:"IN",k:"S",pic:"🌊",q:"Which is the longest river flowing within India?",o:["Brahmaputra","Godavari","Ganga","Yamuna","Narmada"],a:2,why:"The Ganga, ~2,525 km within India.",ctx:"It rises at Gangotri and drains into the Bay of Bengal.",hook:"Ganga = India's longest river."},
+{id:"t2",g:"GEO",r:"IN",k:"S",pic:"🏖️",q:"Which Indian state has the longest coastline?",o:["Tamil Nadu","Gujarat","Andhra Pradesh","Maharashtra","Kerala"],a:1,why:"Gujarat has the longest coastline.",ctx:"Andhra Pradesh is second.",hook:"Gujarat = longest coast."},
+{id:"t3",g:"GEO",r:"IN",k:"S",pic:"🌏",q:"The Brahmaputra river is known as the 'Tsangpo' in which region?",o:["Nepal","Bhutan","Tibet","Bangladesh","Myanmar"],a:2,why:"It is called the Yarlung Tsangpo in Tibet.",ctx:"It becomes the Jamuna in Bangladesh.",hook:"In Tibet, Brahmaputra = Tsangpo."},
+{id:"t4",g:"GEO",r:"IN",k:"S",pic:"⛰️",q:"The Nathu La pass connects India with which country?",o:["Nepal","China","Bhutan","Myanmar","Pakistan"],a:1,why:"Nathu La links Sikkim (India) and Tibet (China).",ctx:"A historic Silk Route trading pass.",hook:"Nathu La = India ↔ China (Sikkim)."},
+{id:"t5",g:"GEO",r:"INT",k:"S",pic:"🏞️",q:"Which is the longest river in the world?",o:["Amazon","Nile","Yangtze","Mississippi","Congo"],a:1,why:"The Nile (traditionally regarded as longest).",ctx:"The Amazon carries the most water by volume.",hook:"Nile = world's longest river."},
+{id:"t6",g:"GEO",r:"INT",k:"S",pic:"🌋",q:"Mount Fuji is located in which country?",o:["China","South Korea","Japan","Indonesia","Philippines"],a:2,why:"Japan's highest peak and an active volcano.",ctx:"A sacred symbol of Japan.",hook:"Fuji = Japan."},
+{id:"t7",g:"GEO",r:"INT",k:"S",pic:"🪸",q:"The Great Barrier Reef lies off the coast of which country?",o:["Indonesia","Australia","Philippines","Mexico","Brazil"],a:1,why:"Off the coast of Queensland, Australia.",ctx:"The world's largest coral reef system.",hook:"Great Barrier Reef = Australia."},
+{id:"t8",g:"POL",r:"IN",k:"S",pic:"📕",q:"How many Schedules does the Indian Constitution currently have?",o:["8","10","12","14","9"],a:2,why:"Twelve Schedules.",ctx:"The latest, the Twelfth, was added by the 74th Amendment.",hook:"12 Schedules now."},
+{id:"t9",g:"POL",r:"IN",k:"S",pic:"⚖️",q:"Who administers the oath of office to the President of India?",o:["The Prime Minister","The Vice-President","The Chief Justice of India","The Speaker","The Cabinet Secretary"],a:2,why:"The Chief Justice of India.",ctx:"In the CJI's absence, the senior-most SC judge.",hook:"CJI swears in the President."},
+{id:"t10",g:"POL",r:"IN",k:"S",pic:"🏛️",q:"Which house of Parliament is called the 'Upper House'?",o:["Lok Sabha","Rajya Sabha","Vidhan Sabha","Vidhan Parishad","Gram Sabha"],a:1,why:"The Rajya Sabha (Council of States).",ctx:"The Lok Sabha is the 'Lower House'.",hook:"Rajya Sabha = Upper House."},
+{id:"t11",g:"POL",r:"IN",k:"S",pic:"🇺🇸",q:"India's Fundamental Rights are inspired by the constitution of which country?",o:["United Kingdom","United States","Ireland","France","Canada"],a:1,why:"Borrowed from the US Bill of Rights.",ctx:"Directive Principles came from Ireland.",hook:"Rights ← USA, Directives ← Ireland."},
+{id:"t12",g:"POL",r:"IN",k:"S",pic:"💰",q:"A Money Bill can be introduced only in which house?",o:["Rajya Sabha","Lok Sabha","Either house","State Assembly","A joint session"],a:1,why:"Only in the Lok Sabha.",ctx:"The Rajya Sabha can only recommend changes.",hook:"Money Bills start in the Lok Sabha."},
+{id:"t13",g:"HIS",r:"IN",k:"S",pic:"🦾",q:"Who is known as the 'Iron Man of India'?",o:["Bhagat Singh","Subhas Chandra Bose","Sardar Vallabhbhai Patel","Lal Bahadur Shastri","B.R. Ambedkar"],a:2,why:"Sardar Patel, who unified the princely states.",ctx:"The Statue of Unity honours him.",hook:"Iron Man = Sardar Patel."},
+{id:"t14",g:"HIS",r:"IN",k:"S",pic:"⚔️",q:"The Battle of Plassey (1757) was won by which side?",o:["Marathas","The British (Robert Clive)","The Mughals","The French","Tipu Sultan"],a:1,why:"The British East India Company under Robert Clive.",ctx:"It laid the foundation of British rule in India.",hook:"Plassey 1757 = Clive's British win."},
+{id:"t15",g:"HIS",r:"IN",k:"S",pic:"🏛️",q:"Who founded the Indian National Congress in 1885?",o:["Dadabhai Naoroji","A.O. Hume","W.C. Bonnerjee","Bal Gangadhar Tilak","Gopal Krishna Gokhale"],a:1,why:"Allan Octavian Hume, a retired British civil servant.",ctx:"W.C. Bonnerjee was its first president.",hook:"A.O. Hume founded the INC."},
+{id:"t16",g:"HIS",r:"IN",k:"S",pic:"✊",q:"'Swaraj is my birthright and I shall have it' was the slogan of?",o:["Mahatma Gandhi","Bal Gangadhar Tilak","Lala Lajpat Rai","Bhagat Singh","Subhas Chandra Bose"],a:1,why:"Bal Gangadhar Tilak.",ctx:"He was called 'Lokmanya'.",hook:"Tilak: Swaraj is my birthright."},
+{id:"t17",g:"HIS",r:"IN",k:"S",pic:"👑",q:"Who was the last Mughal Emperor of India?",o:["Aurangzeb","Shah Alam II","Bahadur Shah Zafar","Akbar II","Muhammad Shah"],a:2,why:"Bahadur Shah Zafar, exiled after the 1857 revolt.",ctx:"He was sent to Rangoon by the British.",hook:"Last Mughal = Bahadur Shah Zafar."},
+{id:"t18",g:"HIS",r:"INT",k:"S",pic:"🎖️",q:"In which year did the First World War begin?",o:["1905","1914","1918","1939","1920"],a:1,why:"1914 (ended 1918).",ctx:"Triggered by the assassination of Archduke Franz Ferdinand.",hook:"WWI began in 1914."},
+{id:"t19",g:"SCI",r:"INT",k:"S",pic:"🧂",q:"What is the chemical formula of common salt?",o:["KCl","NaCl","CaCO₃","NaHCO₃","H₂O"],a:1,why:"Sodium chloride, NaCl.",ctx:"NaHCO₃ is baking soda.",hook:"Table salt = NaCl."},
+{id:"t20",g:"SCI",r:"INT",k:"S",pic:"🪐",q:"Which is the largest planet in the solar system?",o:["Saturn","Jupiter","Neptune","Earth","Uranus"],a:1,why:"Jupiter, a gas giant.",ctx:"Saturn is the second largest.",hook:"Jupiter = biggest planet."},
+{id:"t21",g:"SCI",r:"INT",k:"S",pic:"🔌",q:"What is the SI unit of electric current?",o:["Volt","Watt","Ampere","Ohm","Coulomb"],a:2,why:"The ampere (A).",ctx:"Named after André-Marie Ampère.",hook:"Current → ampere."},
+{id:"t22",g:"SCI",r:"INT",k:"S",pic:"🩸",q:"Which blood group is known as the 'universal donor'?",o:["AB positive","A positive","O negative","B negative","AB negative"],a:2,why:"O negative.",ctx:"AB positive is the universal recipient.",hook:"O- gives to all."},
+{id:"t23",g:"SCI",r:"INT",k:"S",pic:"🍊",q:"Deficiency of which vitamin causes scurvy?",o:["Vitamin A","Vitamin B12","Vitamin C","Vitamin D","Vitamin K"],a:2,why:"Vitamin C deficiency.",ctx:"Found in citrus fruits.",hook:"No Vitamin C → scurvy."},
+{id:"t24",g:"SCI",r:"INT",k:"S",pic:"🔇",q:"Sound cannot travel through which of the following?",o:["Water","Air","Steel","Vacuum","Wood"],a:3,why:"A vacuum has no medium to carry sound.",ctx:"Sound needs a material medium.",hook:"No medium, no sound — vacuum."},
+{id:"t25",g:"SCI",r:"INT",k:"S",pic:"☀️",q:"Which is the nearest planet to the Sun?",o:["Venus","Mercury","Earth","Mars","Jupiter"],a:1,why:"Mercury.",ctx:"Venus is the hottest, though.",hook:"Closest to the Sun = Mercury."},
+{id:"t26",g:"ECO",r:"IN",k:"S",pic:"📱",q:"What does 'UPI' stand for?",o:["Universal Payment Index","Unified Payments Interface","United Payment India","Universal Personal ID","Unique Payment Identifier"],a:1,why:"Unified Payments Interface.",ctx:"Run by NPCI; revolutionised digital payments in India.",hook:"UPI = Unified Payments Interface."},
+{id:"t27",g:"ECO",r:"INT",k:"S",pic:"📊",q:"The Human Development Index (HDI) is published by?",o:["World Bank","IMF","UNDP","WEF","WTO"],a:2,why:"The UN Development Programme.",ctx:"It combines income, education and life expectancy.",hook:"HDI = UNDP."},
+{id:"t28",g:"ECO",r:"INT",k:"S",pic:"🐂",q:"In stock markets, a 'bull market' is one that is?",o:["Falling","Rising","Flat","Closing","Frozen"],a:1,why:"A rising market.",ctx:"A 'bear market' is a falling one.",hook:"Bull charges up; bear swipes down."},
+{id:"t29",g:"ECO",r:"INT",k:"S",pic:"💵",q:"What does 'FDI' stand for?",o:["Foreign Domestic Income","Foreign Direct Investment","Federal Debt Instrument","Fixed Deposit Interest","Fund Distribution Index"],a:1,why:"Foreign Direct Investment.",ctx:"Investment by a foreign entity into a country's business.",hook:"FDI = Foreign Direct Investment."},
+{id:"t30",g:"AWD",r:"INT",k:"S",pic:"📖",q:"The (main) Booker Prize is awarded for fiction written in which language?",o:["Any language","French","English","Spanish","German"],a:2,why:"English-language fiction.",ctx:"The International Booker covers translated fiction.",hook:"Booker = English fiction."},
+{id:"t31",g:"ART",r:"IN",k:"S",pic:"💃",q:"Mohiniyattam is a classical dance form of which state?",o:["Tamil Nadu","Kerala","Karnataka","Odisha","Manipur"],a:1,why:"Kerala.",ctx:"A graceful solo dance, the 'dance of the enchantress'.",hook:"Mohiniyattam = Kerala."},
+{id:"t32",g:"ART",r:"IN",k:"S",pic:"🎵",q:"Who composed the national song 'Vande Mataram'?",o:["Rabindranath Tagore","Bankim Chandra Chattopadhyay","Subramania Bharati","Sarojini Naidu","Muhammad Iqbal"],a:1,why:"Bankim Chandra Chattopadhyay, in his novel 'Anandamath'.",ctx:"Tagore wrote 'Jana Gana Mana'.",hook:"Bankim Chandra = Vande Mataram."},
+{id:"t33",g:"ART",r:"IN",k:"S",pic:"🛕",q:"The Ajanta and Ellora caves are located in which state?",o:["Madhya Pradesh","Maharashtra","Karnataka","Odisha","Gujarat"],a:1,why:"Maharashtra (near Aurangabad).",ctx:"UNESCO World Heritage Sites of rock-cut art.",hook:"Ajanta-Ellora = Maharashtra."},
+{id:"t34",g:"ART",r:"IN",k:"S",pic:"🪘",q:"Kathak is a classical dance form mainly associated with which region?",o:["South India","North India","North-East India","Western India","Central India"],a:1,why:"North India.",ctx:"Known for fast spins (chakkars) and storytelling.",hook:"Kathak = North India."},
+{id:"t35",g:"SPO",r:"IN",k:"S",pic:"🤼",q:"How many players are there on court in a kabaddi team?",o:["5","6","7","9","11"],a:2,why:"Seven players per side.",ctx:"A contact team sport native to South Asia.",hook:"Kabaddi = 7 a side."},
+{id:"t36",g:"SPO",r:"INT",k:"S",pic:"🏸",q:"The Thomas Cup is associated with which sport?",o:["Table Tennis","Badminton","Tennis","Squash","Hockey"],a:1,why:"Men's international badminton.",ctx:"The women's equivalent is the Uber Cup.",hook:"Thomas Cup = men's badminton."},
+{id:"t37",g:"SPO",r:"IN",k:"S",pic:"⚽",q:"The Santosh Trophy is contested in which sport?",o:["Hockey","Football","Cricket","Kabaddi","Volleyball"],a:1,why:"Indian domestic football (between states).",ctx:"One of India's oldest football tournaments.",hook:"Santosh Trophy = football."},
+{id:"t38",g:"SPO",r:"INT",k:"S",pic:"🎾",q:"The Davis Cup is associated with which sport?",o:["Golf","Tennis","Cricket","Polo","Rowing"],a:1,why:"International men's team tennis.",ctx:"The women's equivalent is the Billie Jean King Cup.",hook:"Davis Cup = team tennis."},
+{id:"t39",g:"IRL",r:"INT",k:"S",pic:"👥",q:"Which country has the world's largest population?",o:["China","India","United States","Indonesia","Pakistan"],a:1,why:"India, having overtaken China in 2023.",ctx:"The two together hold over a third of humanity.",hook:"India = most populous now."},
+{id:"t40",g:"IRL",r:"INT",k:"S",pic:"🗼",q:"Where is the headquarters of UNESCO?",o:["Geneva","New York","Paris","Vienna","Rome"],a:2,why:"Paris, France.",ctx:"UNESCO promotes education, science and culture.",hook:"UNESCO = Paris."},
+{id:"t41",g:"IRL",r:"INT",k:"S",pic:"🗽",q:"The Statue of Liberty was gifted to the USA by which country?",o:["United Kingdom","France","Italy","Spain","Germany"],a:1,why:"France, in 1886.",ctx:"A symbol of friendship and freedom.",hook:"France gifted Lady Liberty."},
+{id:"t42",g:"ENV",r:"IN",k:"S",pic:"🌳",q:"The Chipko Movement was associated with the protection of?",o:["Rivers","Trees and forests","Tigers","Wetlands","Mountains"],a:1,why:"Hugging trees to prevent felling.",ctx:"Began in Uttarakhand in the 1970s.",hook:"Chipko = hug the trees."},
+{id:"t43",g:"ENV",r:"INT",k:"S",pic:"🛡️",q:"Which protocol aimed to phase out ozone-depleting substances?",o:["Kyoto Protocol","Montreal Protocol","Paris Agreement","Basel Convention","Ramsar Convention"],a:1,why:"The Montreal Protocol (1987).",ctx:"Widely seen as the most successful environmental treaty.",hook:"Montreal saved the ozone layer."},
+{id:"t44",g:"GEO",r:"INT",k:"S",pic:"🧭",q:"Which imaginary line is at 0° longitude?",o:["The Equator","The Prime Meridian","The Tropic of Cancer","The International Date Line","The Arctic Circle"],a:1,why:"The Prime Meridian, through Greenwich.",ctx:"It defines Greenwich Mean Time.",hook:"0° longitude = Prime Meridian."},
+{id:"t45",g:"GEO",r:"IN",k:"S",pic:"🏜️",q:"The Thar Desert lies mainly in which Indian state?",o:["Gujarat","Rajasthan","Haryana","Punjab","Madhya Pradesh"],a:1,why:"Rajasthan (the Great Indian Desert).",ctx:"It extends into Pakistan too.",hook:"Thar = Rajasthan."},
+{id:"t46",g:"POL",r:"IN",k:"S",pic:"📜",q:"India's Directive Principles of State Policy are borrowed from which country?",o:["USA","Ireland","UK","Canada","Australia"],a:1,why:"Ireland.",ctx:"They guide the state in policy-making (non-justiciable).",hook:"DPSP ← Ireland."},
+{id:"t47",g:"HIS",r:"IN",k:"S",pic:"🛣️",q:"Who is credited with building the Grand Trunk Road in its early form?",o:["Akbar","Sher Shah Suri","Ashoka","Shah Jahan","Chandragupta Maurya"],a:1,why:"Sher Shah Suri revived and extended it.",ctx:"One of Asia's oldest and longest roads.",hook:"Sher Shah built the GT Road."},
+{id:"t48",g:"SCI",r:"INT",k:"S",pic:"😮‍💨",q:"Which gas do humans mainly exhale?",o:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen","Helium"],a:2,why:"Carbon dioxide.",ctx:"We breathe in oxygen and breathe out CO₂.",hook:"We exhale CO₂."},
+{id:"t49",g:"ECO",r:"IN",k:"S",pic:"🏛️",q:"What does 'GST' stand for?",o:["General Sales Tax","Goods and Services Tax","Gross State Tax","Government Service Tax","Global Standard Tax"],a:1,why:"Goods and Services Tax.",ctx:"A unified indirect tax launched in 2017.",hook:"GST = Goods & Services Tax."},
+{id:"t50",g:"GEO",r:"IN",k:"S",pic:"👥",q:"Which is the most populous state in India?",o:["Maharashtra","Bihar","Uttar Pradesh","West Bengal","Madhya Pradesh"],a:2,why:"Uttar Pradesh.",ctx:"Rajasthan is the largest by area.",hook:"UP = most people."},
+{id:"t51",g:"IRL",r:"INT",k:"S",pic:"💶",q:"The single currency 'Euro' is used by countries in the?",o:["Commonwealth","Eurozone","ASEAN","BRICS","G7"],a:1,why:"The Eurozone, a group of EU countries.",ctx:"Not every EU country uses the euro.",hook:"Euro = Eurozone."},
+{id:"t52",g:"HIS",r:"IN",k:"S",pic:"🏺",q:"The Indus Valley Civilization belongs to which 'age'?",o:["Stone Age","Bronze Age","Iron Age","Copper-Stone (start)","Steel Age"],a:1,why:"The Bronze Age.",ctx:"Known for planned cities and drainage.",hook:"Harappans = Bronze Age."},
+{id:"t53",g:"SCI",r:"INT",k:"S",pic:"🔬",q:"The study of living organisms is called?",o:["Geology","Biology","Chemistry","Ecology","Zoology"],a:1,why:"Biology.",ctx:"Zoology (animals) and Botany (plants) are branches.",hook:"Life study = Biology."},
+{id:"t54",g:"GEO",r:"INT",k:"S",pic:"🧂",q:"Which is the lowest point on Earth's land surface?",o:["Death Valley","Dead Sea shore","Mariana Trench","Lake Assal","Caspian Sea"],a:1,why:"The shore of the Dead Sea (lowest land elevation).",ctx:"The Mariana Trench is the lowest point overall, but underwater.",hook:"Dead Sea = lowest dry land."}
 ];
 
 const MATCH=[
@@ -812,5 +821,4 @@ function checkUpdate(){toast('🔄 fetching the latest…');
 /* boot */
 home();loadDrops();
 </script>
-
 </body></html>

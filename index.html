@@ -122,7 +122,7 @@
   .puqb{flex:1;background:var(--surf);border:1px solid var(--line);border-radius:11px;padding:9px;font-family:inherit;color:var(--tx);font-weight:800;font-size:12px;cursor:pointer}
   .puqb:disabled{opacity:.35;cursor:default}
 
-  .reveal{margin-top:16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.04);padding:15px;animation:rise .3s}
+  .reveal{margin-top:16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.04);padding:15px;animation:flip .35s}
   .reveal .vtag{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:900}
   .reveal.good .vtag{color:var(--grn)} .reveal.bad .vtag{color:var(--mag)}
   .hook{margin-top:11px;background:linear-gradient(120deg,rgba(255,178,58,.18),rgba(255,61,139,.10));
@@ -176,6 +176,59 @@
   .sb:nth-child(1) .n{color:var(--cyan)}
   .sb:nth-child(2) .n{color:var(--lime)}
   .sb:nth-child(3) .n{color:var(--mag)}
+  .sb:nth-child(4) .n{color:var(--amb)}
+
+  /* ===== polish: screen flash / shake / flip ===== */
+  #app.flash{animation:flash .42s} @keyframes flash{0%,100%{filter:none}45%{filter:brightness(1.18) saturate(1.1)}}
+  #app.shake{animation:appshake .42s} @keyframes appshake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  @keyframes flip{0%{transform:rotateY(80deg);opacity:0}100%{transform:rotateY(0);opacity:1}}
+
+  /* ===== learned bar (home + genres) ===== */
+  .learnbar{margin:0 0 13px;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:11px 13px}
+  .lbtop{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;margin-bottom:7px} .lbtop b{color:var(--lime)}
+  .lbbar{height:8px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden} .lbbar>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--vio),var(--cyan))}
+
+  /* ===== genres tab (rows) ===== */
+  .grow{display:flex;align-items:center;gap:11px;margin:9px 0;cursor:pointer;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:11px 12px;transition:transform .12s}
+  .grow:active{transform:scale(.98)}
+  .grow .ge{font-size:24px;width:34px;text-align:center}
+  .grow .gn{flex:1;min-width:0} .grow .gnm{font-weight:800;font-size:14.5px} 
+  .grow .gd{font-size:11px;color:var(--mut);margin-top:1px;display:flex;gap:8px;flex-wrap:wrap}
+  .kpill{display:inline-flex;align-items:center;gap:3px;font-weight:800;font-size:10.5px;padding:1px 7px;border-radius:999px;border:1px solid var(--line)}
+  .kpill.cur{color:var(--amb);border-color:rgba(255,178,58,.35);background:rgba(255,178,58,.1)}
+  .kpill.sta{color:var(--cyan);border-color:rgba(39,224,224,.32);background:rgba(39,224,224,.09)}
+  .gbar{height:7px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:6px} .gbar>i{display:block;height:100%;border-radius:999px}
+  .grow .gp{font-size:12px;color:var(--mut);width:42px;text-align:right;font-variant-numeric:tabular-nums;flex:none}
+
+  /* ===== modal / bottom sheet ===== */
+  .modal{position:fixed;inset:0;background:rgba(5,4,12,.66);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:90;display:grid;place-items:center;padding:18px;animation:rise .2s}
+  .sheet{background:#16122c;border:1px solid var(--line);border-radius:22px;padding:20px 18px;max-width:420px;width:100%;max-height:86vh;overflow:auto;box-shadow:0 24px 70px -16px #000;animation:milepop .42s cubic-bezier(.2,1.4,.4,1)}
+  .sheet h3{font-size:19px;margin-bottom:4px} .sheet .sub{font-size:12px;color:var(--mut);margin-bottom:10px}
+
+  /* ===== milestone celebration card ===== */
+  .mile{position:fixed;inset:0;z-index:97;display:grid;place-items:center;pointer-events:none}
+  .milecard{background:#1a1438;border:2px solid var(--lime);border-radius:24px;padding:24px 30px;text-align:center;box-shadow:0 24px 70px -16px #000;animation:milepop .5s cubic-bezier(.2,1.5,.4,1)}
+  @keyframes milepop{0%{transform:scale(0) rotate(-8deg)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+  .milecard .me{font-size:52px} .milecard .mt{font-size:20px;font-weight:900;margin-top:6px}
+
+  /* ===== bottom tab-bar ===== */
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:4px;max-width:480px;margin:0 auto;
+    padding:6px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(11,10,22,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+  .tabbtn{flex:1;background:none;border:0;color:var(--mut2);font-family:inherit;font-weight:800;font-size:10px;letter-spacing:.02em;
+    display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0;cursor:pointer;border-radius:13px;transition:.15s}
+  .tabbtn .ti{font-size:20px;opacity:.55;transition:.15s}
+  .tabbtn.on{color:var(--tx);background:rgba(255,255,255,.07)} .tabbtn.on .ti{opacity:1}
+
+  /* ===== activity calendar (You tab) ===== */
+  .calhead{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+  .calhead button{background:var(--surf);border:1px solid var(--line);color:var(--tx);width:32px;height:32px;border-radius:9px;font-size:17px;cursor:pointer}
+  .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px}
+  .calhd{font-size:9px;color:var(--mut2);text-align:center;font-weight:800;padding-bottom:2px}
+  .cal-d{aspect-ratio:1;border:0;border-radius:9px;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--tx);background:rgba(255,255,255,.05);padding:0}
+  .cal-d .dn{font-size:11px;font-weight:800;line-height:1} .cal-d .dc{font-size:9px;opacity:.85;line-height:1;margin-top:1px}
+  .cal-d.red{background:rgba(255,61,139,.36)} .cal-d.yellow{background:rgba(255,178,58,.5);color:#2a1f06} .cal-d.green{background:rgba(198,255,61,.5);color:#16240a}
+  .cal-d.none{background:rgba(255,255,255,.04);color:var(--mut2);cursor:default}
+  .callegend{font-size:11px;color:var(--mut);text-align:center;margin-top:10px;line-height:1.5}
 </style>
 </head>
 <body>
@@ -369,7 +422,7 @@ const BANK=[
 {id:"n9",g:"AWD",r:"IN",k:"C",pic:"📚",q:"The 2025 Jnanpith Award, India's highest literary honour, was conferred on which Tamil poet?",o:["Vairamuthu","Perumal Murugan","Imayam","Sirpi Balasubramaniam","Salma"],a:0,why:"Vairamuthu, the celebrated Tamil poet-lyricist.",ctx:"The Jnanpith is given for outstanding contribution to literature.",hook:"Tamil verse legend Vairamuthu — Jnanpith."},
 {id:"n10",g:"ECO",r:"IN",k:"C",pic:"🏦",q:"At what level did the RBI hold its repo rate through 2026?",o:["4.00%","5.25%","6.50%","5.50%","6.00%"],a:1,why:"The RBI kept the repo rate at 5.25%.",ctx:"Held steady for several meetings under Governor Sanjay Malhotra.",hook:"Repo rate parked at 5.25%."},
 {id:"n11",g:"ECO",r:"IN",k:"C",pic:"⚖️",q:"What monetary-policy stance did the RBI maintain in 2026?",o:["Accommodative","Neutral","Hawkish","Calibrated tightening","Withdrawal of accommodation"],a:1,why:"A neutral stance, giving flexibility on future moves.",ctx:"It signals readiness to move either way as data evolves.",hook:"RBI played it neutral in 2026."},
-{id:"n12",g:"ECO",r:"IN",k:"C",pic:"📉",q:"In June 2026, the RBI revised its FY2026-27 GDP growth forecast down to about?",o:["8.0%","7.5%","6.6%","5.0%","6.9%"],a:2,why:"Cut to 6.6%, from an earlier 6.9% estimate.",ctx:"Reflecting global headwinds and capital outflows.",hook:"FY27 growth nudged to 6.6%."},
+{id:"n12",g:"ECO",r:"IN",k:"C",pic:"📉",q:"In December 2025 the RBI cut the repo rate to 5.25% — its lowest level since which year?",o:["2019","2020","2022","2023","2024"],a:2,why:"The cut to 5.25% was the lowest repo rate since July 2022.",ctx:"It capped 125 bps of cuts during 2025; the RBI then held at 5.25% through mid-2026 with a neutral stance.",hook:"Dec 2025 → 5.25%, lowest since 2022."},
 {id:"n13",g:"POL",r:"IN",k:"C",pic:"🧾",q:"Who is the Comptroller and Auditor General (CAG) of India in 2026?",o:["G.C. Murmu","K. Sanjay Murthy","Rajiv Mehrishi","Shashi Kant Sharma","Vinod Rai"],a:1,why:"K. Sanjay Murthy is the CAG.",ctx:"The CAG audits government accounts.",hook:"Sanjay Murthy audits the government's books."},
 {id:"n14",g:"POL",r:"IN",k:"C",pic:"📈",q:"Who is India's Chief Economic Adviser (CEA) in 2026?",o:["Krishnamurthy Subramanian","V. Anantha Nageswaran","Arvind Subramanian","Raghuram Rajan","Kaushik Basu"],a:1,why:"V. Anantha Nageswaran is the CEA.",ctx:"He authors the annual Economic Survey.",hook:"Nageswaran pens the Economic Survey."},
 {id:"n15",g:"POL",r:"IN",k:"C",pic:"🗂️",q:"Who is the Cabinet Secretary of India in 2026?",o:["Rajiv Gauba","T.V. Somanathan","P.K. Sinha","Pradeep Kumar Sinha","Ajay Bhushan Pandey"],a:1,why:"Dr T.V. Somanathan is the Cabinet Secretary.",ctx:"The senior-most civil servant in India.",hook:"Somanathan tops the bureaucracy."},
@@ -514,8 +567,8 @@ function levelOf(xp){return 1+Math.floor(xp/140)}
 function rollGoal(){const t=today();if(S.goalDate!==t){S.goalDate=t;S.goalCount=0}}
 function addXP(n){const before=levelOf(S.xp);S.xp+=n;const after=levelOf(S.xp);
   if(after>before){const keys=['fifty','dbl','freeze'];const k=keys[after%keys.length];S.pu[k]=(S.pu[k]||0)+1;
-    setTimeout(()=>{toast("⬆️ level "+after+"! +1 "+(k==='fifty'?'50:50':k==='dbl'?'2× XP':'streak freeze'));burst()},400)}}
-function award(b){if(!S.badges.includes(b)){S.badges.push(b);toast(BADGES[b].e+"  "+BADGES[b].t+" unlocked");burst()}}
+    setTimeout(()=>milestone("⬆️","LEVEL "+after+"!","+1 "+(k==='fifty'?'50:50':k==='dbl'?'2× XP':'streak freeze')),300)}}
+function award(b){if(!S.badges.includes(b)){S.badges.push(b);milestone(BADGES[b].e,BADGES[b].t+"!",BADGES[b].d)}}
 function checkBadges(){if(S.totAns>=1)award('liftoff');if(S.maxRun>=7)award('sharp');if(S.streak>=7)award('fire7');
   if(S.genres.length>=Object.keys(GM).length)award('globe');if(S.totAns>=100)award('cent');
   if(Object.values(S.cards).filter(c=>c.box>=5).length>=20)award('curator')}
@@ -545,6 +598,19 @@ function anim(){cx.clearRect(0,0,cf.width,cf.height);parts=parts.filter(p=>p.y<c
  if(parts.length)requestAnimationFrame(anim);else cx.clearRect(0,0,cf.width,cf.height)}
 function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
 
+/* ===== polish: flash / shake / combo chime / milestone ===== */
+const APP=document.getElementById('app');
+function flashScreen(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;APP.classList.add('flash');setTimeout(()=>APP.classList.remove('flash'),440)}
+function shakeScreen(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;APP.classList.add('shake');setTimeout(()=>APP.classList.remove('shake'),440)}
+function comboChime(run){const base=560+Math.min(run,8)*70;beep(base,.1);setTimeout(()=>beep(base*1.5,.13),70)}
+function milestone(e,t,sub){const m=document.createElement('div');m.className='mile';
+ m.innerHTML=`<div class="milecard"><div class="me">${e}</div><div class="mt">${t}</div>${sub?`<div class="muted" style="font-size:13px;margin-top:4px">${sub}</div>`:''}</div>`;
+ document.body.appendChild(m);burst();flashScreen();setTimeout(()=>m.remove(),1700)}
+/* a fact is "learned" once it's been answered correctly at least once, in ANY mode */
+function learnedCount(){return Object.values(S.cards).filter(c=>c.ok>0).length}
+function genreCounts(g){const ids=BANK.filter(c=>c.g===g);const stat=ids.filter(c=>c.k!=='C').length,cur=ids.filter(c=>c.k==='C').length;
+ const learned=ids.filter(c=>S.cards[c.id]&&S.cards[c.id].ok>0).length;return{ids,stat,cur,total:ids.length,learned}}
+
 /* ===================== HOME ===================== */
 function mascot(){const s=S.streak;
  if(s>=7)return{e:"😎",l:"certified clued-in. they can't keep up."};
@@ -555,28 +621,34 @@ function topbar(){return `<div class="top"><div class="logo">flex</div><div clas
  <span class="chip fl">🔥 ${S.streak}</span><span class="chip co">⚡ ${S.xp}</span>
  <button class="iconbtn" onclick="checkUpdate()" title="check for updates">🔄</button>
  <button class="iconbtn" onclick="S.sound=!S.sound;save();sTap();home()">${S.sound?'🔊':'🔇'}</button></div></div>`}
-function home(){
- checkStreakLoad();rollGoal();save();
+let TAB='home';
+function draw(){checkStreakLoad();rollGoal();save();
+ if(TAB==='play')tabPlay();else if(TAB==='genres')tabGenres();else if(TAB==='you')tabYou();else tabHome()}
+function go(t){TAB=t;sTap();draw();window.scrollTo(0,0)}
+function home(){TAB='home';draw()}
+function tabbar(a){const T=[['home','🏠','Home'],['play','🎮','Play'],['genres','🧭','Genres'],['you','👤','You']];
+ return `<div class="tabbar">`+T.map(([k,e,l])=>`<button class="tabbtn ${a===k?'on':''}" onclick="go('${k}')"><span class="ti">${e}</span>${l}</button>`).join('')+`</div>`}
+
+function tabHome(){
  const m=mascot(),lvl=levelOf(S.xp),into=S.xp%140,due=dueIds().length+newIds().length;
- const acc=S.totAns?Math.round(100*S.totOk/S.totAns):0;
- const frac=Math.min(1,S.goalCount/GOAL);
- const orbs=Object.keys(GM).map(g=>{const ids=BANK.filter(c=>c.g===g);
-   const mast=ids.filter(c=>S.cards[c.id]&&S.cards[c.id].box>=4).length;
-   const pct=ids.length?Math.round(100*mast/ids.length):0;const lit=pct>0;
-   return `<div class="orb ${lit?'lit':''}" style="${lit?`box-shadow:0 0 16px -4px ${GM[g].c};border-color:${GM[g].c}55`:''}" onclick="startGenre('${g}')" title="${GM[g].n}">
-     <span class="e">${GM[g].e}</span><span class="pc" style="${lit?`color:${GM[g].c}`:''}">${pct}%</span></div>`}).join('');
+ const acc=S.totAns?Math.round(100*S.totOk/S.totAns):0,frac=Math.min(1,S.goalCount/GOAL);
+ const learned=learnedCount();
  $.innerHTML=topbar()+`<div class="screen">
   <div class="scoreboard">
-    <div class="sb"><div class="n">${BANK.length}</div><div class="t">🧠 in the bank</div></div>
-    <div class="sb"><div class="n">${S.totAns}</div><div class="t">🎮 played</div></div>
-    <div class="sb"><div class="n">${S.totOk}</div><div class="t">🎯 nailed · ${acc}%</div></div>
-  </div>
+    <div class="sb"><div class="n">${S.totAns}</div><div class="t">🎮 answered</div></div>
+    <div class="sb"><div class="n">${S.totOk}</div><div class="t">🎯 right</div></div>
+    <div class="sb"><div class="n">${S.totAns-S.totOk}</div><div class="t">💥 wrong</div></div>
+    <div class="sb"><div class="n">${acc}%</div><div class="t">🏅 accuracy</div></div></div>
+
+  <div class="learnbar"><div class="lbtop"><span>🧠 facts learned</span><span><b>${learned}</b> / ${BANK.length}</span></div>
+    <div class="lbbar"><i style="width:${BANK.length?100*learned/BANK.length:0}%"></i></div></div>
+
   <div class="hero"><div class="masc">${m.e}</div><div class="hi" style="flex:1">
     <div class="lvlrow">flex lvl ${lvl} <span class="tag">⚡ ${into}/140</span></div>
     <div class="say">${m.l}</div><div class="xpbar"><i id="xpb"></i></div></div></div>
 
-  <div class="quest"><div class="qp"><div class="ttl">today's lock-in 🔒</div><div class="sub">15 questions a day finishes the bank by exam day</div>
-    <div class="qbar"><i style="width:${frac*100}%"></i></div></div><div class="qn">${S.goalCount}/${GOAL}</div></div>
+  <div class="quest"><div class="qp"><div class="ttl">today's lock-in 🔒</div><div class="sub">${S.goalCount>=GOAL?'🎉 goal of '+GOAL+' smashed — keep going!':'15 a day finishes the bank by exam day'}</div>
+    <div class="qbar"><i style="width:${frac*100}%"></i></div></div><div class="qn">${S.goalCount>=GOAL?S.goalCount+' ✓':S.goalCount+'/'+GOAL}</div></div>
 
   <div class="pus">
    <div class="pu"><div class="e">✂️</div><b>${S.pu.fifty||0}</b>50:50</div>
@@ -584,23 +656,57 @@ function home(){
    <div class="pu"><div class="e">🥶</div><b>${S.pu.freeze||0}</b>freeze</div></div>
 
   <button class="cta" onclick="startBurst()">start the daily lock-in ${due?`<span class="pill">${Math.min(GOAL,Math.max(due,1))}</span>`:''}</button>
+  <div class="footnote">${BANK.length} facts (verified 2026 + evergreen) · tap the tabs below to explore 👇</div>
+  <div style="height:92px"></div></div>`+tabbar('home');
+ requestAnimationFrame(()=>{const b=document.getElementById('xpb');if(b)b.style.width=(into/140*100)+'%'})}
 
-  <div class="sect"><div class="ey">pick your chaos</div><div class="grid2">
+function tabPlay(){
+ $.innerHTML=topbar()+`<div class="screen"><div class="ey" style="margin-top:2px">pick your chaos 🎮</div>
+  <div class="grid2" style="margin-top:10px">
     <button class="tile" style="background:linear-gradient(135deg,rgba(255,61,139,.18),var(--surf));border-color:rgba(255,61,139,.3)" onclick="startHoax()"><div class="ic">📰</div><div class="t">headline or cap</div><div class="d">real or made-up?</div></button>
     <button class="tile" style="background:linear-gradient(135deg,rgba(39,224,224,.18),var(--surf));border-color:rgba(39,224,224,.3)" onclick="startMatch()"><div class="ic">🔗</div><div class="t">match-up</div><div class="d">pair 'em fast</div></button>
     <button class="tile ${wrongIds().length?'':'locked'}" style="background:linear-gradient(135deg,rgba(255,178,58,.16),var(--surf));border-color:rgba(255,178,58,.3)" onclick="startRedeem()"><div class="ic">🩹</div><div class="t">redemption</div><div class="d">${wrongIds().length} to clear</div></button>
     <button class="tile" style="background:linear-gradient(135deg,rgba(155,91,255,.2),var(--surf));border-color:rgba(155,91,255,.35)" onclick="startBoss()"><div class="ic">⚔️</div><div class="t">boss battle</div><div class="d">beat the clock</div></button>
     <button class="tile" style="background:linear-gradient(135deg,rgba(47,209,138,.18),var(--surf));border-color:rgba(47,209,138,.3)" onclick="startSurvival()"><div class="ic">💀</div><div class="t">survival</div><div class="d">one wrong = over</div></button>
-  </div></div>
+  </div>
+  <div class="footnote">every right answer here — any mode — counts toward your facts learned 🧠</div>
+  <div style="height:92px"></div></div>`+tabbar('play')}
 
-  <div class="sect"><div class="ey">your knowledge galaxy</div><div class="galaxy">${orbs}</div></div>
+function tabGenres(){
+ const learned=learnedCount();
+ const rows=Object.keys(GM).map(g=>{const gc=genreCounts(g);const pct=gc.total?Math.round(100*gc.learned/gc.total):0;const col=GM[g].c;
+   return `<div class="grow" onclick="startGenre('${g}')">
+     <div class="ge">${GM[g].e}</div>
+     <div class="gn"><div class="gnm" style="color:${col}">${GM[g].n}</div>
+       <div class="gd"><span class="kpill cur">🗞️ ${gc.cur} current</span><span class="kpill sta">📚 ${gc.stat} static</span></div>
+       <div class="gbar"><i style="width:${pct}%;background:${col}"></i></div></div>
+     <div class="gp">${gc.learned}/${gc.total}</div></div>`}).join('');
+ $.innerHTML=topbar()+`<div class="screen"><div class="ey" style="margin-top:2px">your genres 🧭 · tap one to drill it</div>
+  <div style="margin-top:10px">${rows}</div>
+  <div class="learnbar" style="margin-top:16px"><div class="lbtop"><span>🧠 facts learned</span><span><b>${learned}</b> / ${BANK.length}</span></div>
+    <div class="lbbar"><i style="width:${BANK.length?100*learned/BANK.length:0}%"></i></div></div>
+  <div class="callegend" style="margin-top:8px">🗞️ current = 2026 affairs · 📚 static = evergreen · shown on every question</div>
+  <div style="height:92px"></div></div>`+tabbar('genres')}
 
-  <div class="sect"><button class="cta ghost" onclick="stats()">progress & flex card 💅</button>
-   <button class="cta" style="margin-top:10px" onclick="saveApp()">⬇ save / install this app</button></div>
-  <div class="footnote">starter bank · ${BANK.length} facts (verified 2026 + evergreen). fresh current-affairs drop every week.</div>
- </div>`;
- requestAnimationFrame(()=>{const b=document.getElementById('xpb');if(b)b.style.width=(into/140*100)+'%'});
-}
+function tabYou(){
+ calMonth=new Date();calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth(),1);
+ const acc=S.totAns?Math.round(100*S.totOk/S.totAns):0;
+ const learned=learnedCount(),mastered=Object.values(S.cards).filter(c=>c.box>=5).length;
+ const badges=Object.keys(BADGES).map(b=>{const g=S.badges.includes(b);
+   return `<div class="tile ${g?'':'locked'}" style="cursor:default"><div class="ic">${BADGES[b].e}</div><div class="t">${BADGES[b].t}</div><div class="d">${BADGES[b].d}</div></div>`}).join('');
+ $.innerHTML=topbar()+`<div class="screen"><div class="ey" style="margin-top:2px">your progress 👤</div>
+  ${flexCardHTML(acc)}
+  <div class="statrow"><div class="scard"><div class="v">${learned}</div><div class="l">learned</div></div>
+    <div class="scard"><div class="v">${mastered}</div><div class="l">mastered</div></div>
+    <div class="scard"><div class="v">${S.best}</div><div class="l">best streak</div></div></div>
+  <div class="statrow"><div class="scard"><div class="v">${S.totOk}</div><div class="l">right</div></div>
+    <div class="scard"><div class="v">${S.totAns-S.totOk}</div><div class="l">wrong</div></div>
+    <div class="scard"><div class="v">${acc}%</div><div class="l">accuracy</div></div></div>
+  <div class="sect"><div class="ey">activity calendar 📅</div><div id="cal">${calHTML()}</div></div>
+  <div class="sect"><div class="ey">badges</div><div class="grid2" style="margin-top:10px">${badges}</div></div>
+  <div class="sect"><button class="cta" onclick="saveApp()">⬇ save / install this app</button>
+   <button class="cta ghost" style="margin-top:10px" onclick="if(confirm('reset everything on this device?')){S=freshState();save();home()}">reset progress</button></div>
+  <div style="height:92px"></div></div>`+tabbar('you')}
 function startGenre(g){const ids=BANK.filter(c=>c.g===g).map(c=>c.id);Q={queue:shuffle(ids),i:0,ok:0,run:0,mode:'genre',dbl:false};quiz()}
 /* ===================== QUIZ FLOW ===================== */
 let Q=null;
@@ -619,7 +725,7 @@ function quiz(){
    <div class="hero-strip" style="background:linear-gradient(120deg,${col}33,${col}11);border:1px solid ${col}44">
      <div class="big">${c.pic||GM[c.g].e}</div>
      <div><div class="gt" style="color:${col}">${GM[c.g].n}</div>
-       <div class="kk">${c.k==='C'?'📡 current · 2026':'📚 static'} · ${c.r==='IN'?'india':c.r==='INT'?'world':'india + world'}</div></div></div>
+       <div class="kk">${c.k==='C'?'🗞️ current · 2026':'📚 static'} · ${c.r==='IN'?'india':c.r==='INT'?'world':'india + world'}</div></div></div>
    <div class="q">${c.q}</div><div class="opts" id="opts">${opts}</div>
    <div class="puq">
      <button class="puqb" id="puFifty" onclick="useFifty()" ${(S.pu.fifty||0)>0?'':'disabled'}>✂️ 50:50 (${S.pu.fifty||0})</button>
@@ -640,8 +746,8 @@ function pick(i){
  st.seen=true;noteGenre(c.g);S.totAns++;let gained;
  if(correct){st.ok++;st.box=Math.min(5,st.box+1);st.due=todayN()+INTERVAL[st.box];S.totOk++;Q.ok++;Q.run++;
    if(Q.run>S.maxRun)S.maxRun=Q.run;
-   const mult=1+Math.min(Math.floor(Q.run/3),2);gained=(10+(Math.random()*6|0))*mult*(Q.dbl?2:1);sGood()}
- else{st.no++;st.box=1;st.due=todayN();Q.run=0;gained=2;sBad()}
+   const mult=1+Math.min(Math.floor(Q.run/3),2);gained=(10+(Math.random()*6|0))*mult*(Q.dbl?2:1);sGood();flashScreen();if(Q.run>=3)comboChime(Q.run)}
+ else{st.no++;st.box=1;st.due=todayN();Q.run=0;gained=2;sBad();shakeScreen()}
  Q.dbl=false;addXP(gained);rollGoal();S.goalCount++;
  const h=S.hist[today()]||(S.hist[today()]={a:0,o:0});h.a++;if(correct)h.o++;
  save();checkBadges();
@@ -753,22 +859,44 @@ function endMini(name,ok,tot,extra){const acc=tot?Math.round(100*ok/tot):0;if(ac
    <div class="scard"><div class="v">${S.xp}</div><div class="l">xp</div></div></div>
   <button class="cta ghost" onclick="home()">home</button></div>`}
 
-/* ===================== STATS ===================== */
-function stats(){const acc=S.totAns?Math.round(100*S.totOk/S.totAns):0,
- mastered=Object.values(S.cards).filter(c=>c.box>=5).length,learned=Object.values(S.cards).filter(c=>c.seen).length;
- const badges=Object.keys(BADGES).map(b=>{const g=S.badges.includes(b);
-   return `<div class="tile ${g?'':'locked'}" style="cursor:default"><div class="ic">${BADGES[b].e}</div><div class="t">${BADGES[b].t}</div><div class="d">${BADGES[b].d}</div></div>`}).join('');
- let heat='';for(let d=13;d>=0;d--){const dt=new Date(Date.now()-d*DAYMS).toISOString().slice(0,10),h=S.hist[dt];
-   let bg='rgba(255,255,255,.07)';if(h){const r=h.o/Math.max(1,h.a);bg=r>=.8?'#C6FF3D':r>=.5?'#9B5BFF':'#FF3D8B'}heat+=`<i title="${dt}" style="background:${bg}"></i>`}
- $.innerHTML=topbar()+`<div class="screen">
-  <div class="qtop"><button class="x" onclick="home()">←</button><h3>your stats</h3></div>
-  ${flexCardHTML(acc)}
-  <div class="statrow"><div class="scard"><div class="v">${learned}</div><div class="l">learned</div></div>
-   <div class="scard"><div class="v">${mastered}</div><div class="l">mastered</div></div>
-   <div class="scard"><div class="v">${S.best}</div><div class="l">best streak</div></div></div>
-  <div class="sect"><div class="ey">last 14 days</div><div class="heat">${heat}</div></div>
-  <div class="sect"><div class="ey">badges</div><div class="grid2" style="margin-top:10px">${badges}</div></div>
-  <div class="sect"><button class="cta ghost" onclick="if(confirm('reset everything on this device?')){S=freshState();save();home()}">reset progress</button></div></div>`}
+/* ===================== STATS → You tab ===================== */
+function stats(){go('you')}
+
+/* ===================== ACTIVITY CALENDAR (You tab) ===================== */
+let calMonth=new Date();
+function calHTML(){const y=calMonth.getFullYear(),mo=calMonth.getMonth();
+ const start=new Date(y,mo,1).getDay(),days=new Date(y,mo+1,0).getDate();
+ const MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+ const todayStr=today();const keys=Object.keys(S.hist).sort();const firstActive=keys.length?keys[0]:todayStr;
+ let cells='';["S","M","T","W","T","F","S"].forEach(d=>cells+=`<div class="calhd">${d}</div>`);
+ for(let i=0;i<start;i++)cells+=`<div></div>`;
+ for(let d=1;d<=days;d++){const ds=`${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  const h=S.hist[ds];const cnt=h?h.a:0;let cls='none',label='';
+  if(ds>todayStr||ds<firstActive){cls='none'}
+  else{cls=cnt===0?'red':(cnt<GOAL?'yellow':'green');label=cnt||''}
+  const click=cls==='none'?'':`onclick="dayDetail('${ds}')"`;
+  cells+=`<button class="cal-d ${cls}" ${click}><span class="dn">${d}</span><span class="dc">${label}</span></button>`}
+ const n=new Date();const canNext=(y<n.getFullYear())||(y===n.getFullYear()&&mo<n.getMonth());
+ return `<div class="calhead"><button onclick="calPrev()">‹</button><div style="font-weight:800;font-size:14px">${MON[mo]} ${y}</div><button onclick="calNext()" ${canNext?'':'disabled style="opacity:.3"'}>›</button></div><div class="calgrid">${cells}</div><div class="callegend">🔴 none · 🟡 under ${GOAL} · 🟢 ${GOAL}+ · tap a day for details</div>`}
+function calPrev(){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()-1,1);const c=document.getElementById('cal');if(c)c.innerHTML=calHTML()}
+function calNext(){const n=new Date();if(calMonth.getFullYear()===n.getFullYear()&&calMonth.getMonth()===n.getMonth())return;calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+1,1);const c=document.getElementById('cal');if(c)c.innerHTML=calHTML()}
+function dayDetail(ds){const h=S.hist[ds]||{a:0,o:0};const acc=h.a?Math.round(100*h.o/h.a):0;const nice=new Date(ds+'T00:00:00').toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
+ const m=document.createElement('div');m.className='modal';m.onclick=e=>{if(e.target===m)m.remove()};
+ m.innerHTML=`<div class="sheet" style="max-width:330px;text-align:center"><h3>${nice}</h3><div class="statrow" style="margin-top:14px"><div class="scard"><div class="v">${h.a}</div><div class="l">answered</div></div><div class="scard"><div class="v">${h.o}</div><div class="l">right</div></div><div class="scard"><div class="v">${h.a-h.o}</div><div class="l">wrong</div></div></div><div class="muted" style="margin-top:10px">${h.a?acc+'% accuracy that day':'no practice this day'}</div><button class="cta" style="margin-top:14px" onclick="this.closest('.modal').remove()">close</button></div>`;
+ document.body.appendChild(m)}
+
+/* ===================== WELCOME POP-UP ===================== */
+function welcome(){const learned=learnedCount();const pct=BANK.length?Math.round(100*learned/BANK.length):0;
+ const m=document.createElement('div');m.className='modal';m.onclick=e=>{if(e.target===m)m.remove()};
+ m.innerHTML=`<div class="sheet" style="text-align:center;max-width:340px"><div style="font-size:60px;line-height:1">${mascot().e}</div>
+  <h3 style="margin-top:6px">welcome back! 👋</h3><div class="muted" style="margin:6px 0 14px">here's how far you've come</div>
+  <div style="font-size:38px;font-weight:900;color:var(--lime);line-height:1">${learned} <span style="font-size:18px;color:var(--mut);font-weight:800">/ ${BANK.length}</span></div>
+  <div class="muted" style="font-size:13px;margin-top:3px">facts learned · ${pct}%</div>
+  <div class="lbbar" style="margin-top:14px;height:9px"><i style="width:${pct}%"></i></div>
+  <div class="muted" style="font-size:12px;margin-top:12px">🔥 ${S.streak}-day streak · ⚡ lvl ${levelOf(S.xp)}</div>
+  <button class="cta" style="margin-top:16px" onclick="this.closest('.modal').remove()">let's flex some GK ✨</button></div>`;
+ document.body.appendChild(m)}
+
 
 /* ===================== SURVIVAL ===================== */
 let SV=null;
@@ -819,6 +947,6 @@ function checkUpdate(){toast('🔄 fetching the latest…');
  setTimeout(()=>{try{location.replace(location.pathname+'?v='+Date.now())}catch(e){location.reload(true)}},400)}
 
 /* boot */
-home();loadDrops();
+home();welcome();loadDrops();
 </script>
 </body></html>

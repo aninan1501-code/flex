@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B0A16">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>flex · gk you can flex</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='116' fill='%230B0A16'/%3E%3Ctext x='256' y='360' font-size='300' text-anchor='middle' fill='%23C6FF3D' font-family='Arial' font-weight='900'%3EF%3C/text%3E%3Ccircle cx='372' cy='150' r='60' fill='%23FF3D8B'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#0B0A16; --bg2:#13102A; --surf:rgba(255,255,255,.05); --surf2:rgba(255,255,255,.09);
+    --line:rgba(255,255,255,.11);
+    --lime:#C6FF3D; --mag:#FF3D8B; --cyan:#27E0E0; --vio:#9B5BFF; --amb:#FFB23A; --grn:#2FD18A;
+    --tx:#F3F1FF; --mut:#A39CCB; --mut2:#736C9E;
+    --f:"Segoe UI",-apple-system,system-ui,Roboto,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{font-family:var(--f);color:var(--tx);background:var(--bg);min-height:100vh;line-height:1.45;
+    background-image:radial-gradient(100% 60% at 80% -5%,#241050 0,transparent 55%),radial-gradient(90% 50% at 0% 0%,#0c2a3a 0,transparent 50%);
+    background-attachment:fixed;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  #app{max-width:480px;margin:0 auto;min-height:100vh;position:relative;
+    padding:max(14px,env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom))}
+  .screen{animation:rise .3s cubic-bezier(.2,.7,.2,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  @keyframes pop{0%{transform:scale(0)}80%{transform:scale(1.12)}100%{transform:scale(1)}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .logo{font-weight:900;font-size:26px;letter-spacing:-.04em;
+    background:linear-gradient(95deg,var(--lime),var(--cyan) 55%,var(--mag));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .chips{display:flex;gap:7px;align-items:center}
+  .chip{display:flex;align-items:center;gap:4px;background:var(--surf);border:1px solid var(--line);
+    padding:6px 10px;border-radius:999px;font-weight:800;font-size:13px}
+  .chip.fl{color:#FFCE7A;border-color:rgba(255,180,80,.3)} .chip.co{color:var(--lime);border-color:rgba(198,255,61,.3)}
+  .iconbtn{background:var(--surf);border:1px solid var(--line);color:var(--tx);width:34px;height:34px;border-radius:10px;font-size:15px;cursor:pointer}
+
+  .ey{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut2);font-weight:800}
+  .muted{color:var(--mut)} h1,h2,h3{margin:0;letter-spacing:-.02em}
+
+  /* hero / mascot */
+  .hero{display:flex;align-items:center;gap:14px;background:linear-gradient(120deg,rgba(155,91,255,.18),rgba(39,224,224,.10));
+    border:1px solid var(--line);border-radius:22px;padding:16px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(120px 80px at 85% 0%,rgba(255,61,139,.25),transparent)}
+  .masc{width:74px;height:74px;border-radius:20px;flex:none;display:grid;place-items:center;font-size:40px;
+    background:linear-gradient(135deg,#1b1640,#2a1c5e);border:1px solid var(--line);box-shadow:0 0 24px -6px var(--vio);animation:bob 3s ease-in-out infinite;z-index:1}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .hero .hi{z-index:1}
+  .hero .lvlrow{display:flex;align-items:center;gap:8px;font-weight:900;font-size:18px}
+  .hero .lvlrow .tag{font-size:11px;font-weight:800;color:var(--bg);background:var(--lime);padding:2px 8px;border-radius:999px;letter-spacing:.02em}
+  .hero .say{font-size:13px;color:var(--mut);margin-top:3px}
+  .xpbar{height:9px;border-radius:999px;background:rgba(255,255,255,.1);margin-top:9px;overflow:hidden}
+  .xpbar>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--lime),var(--cyan));width:0;transition:width .8s cubic-bezier(.2,.7,.2,1)}
+
+  /* quest */
+  .quest{margin-top:14px;background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:13px 15px;display:flex;align-items:center;gap:12px}
+  .quest .qp{flex:1}
+  .quest .ttl{font-weight:800;font-size:14px} .quest .sub{font-size:12px;color:var(--mut)}
+  .qbar{height:7px;border-radius:999px;background:rgba(255,255,255,.1);margin-top:7px;overflow:hidden}
+  .qbar>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--mag),var(--amb))}
+  .quest .qn{font-weight:900;font-size:15px;font-variant-numeric:tabular-nums}
+
+  /* power-ups */
+  .pus{display:flex;gap:8px;margin-top:12px}
+  .pu{flex:1;background:var(--surf);border:1px solid var(--line);border-radius:13px;padding:9px;text-align:center;font-size:12px;color:var(--mut)}
+  .pu .e{font-size:18px} .pu b{display:block;color:var(--tx);font-size:15px;margin-top:1px}
+
+  .cta{width:100%;border:0;border-radius:18px;padding:18px;margin-top:16px;cursor:pointer;font-family:inherit;
+    font-weight:900;font-size:18px;color:#0B0A16;letter-spacing:-.01em;
+    background:linear-gradient(95deg,var(--lime),var(--cyan));box-shadow:0 14px 34px -12px rgba(39,224,224,.7);
+    display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .12s}
+  .cta:active{transform:scale(.98)}
+  .cta.alt{background:linear-gradient(95deg,var(--vio),var(--mag));color:#fff;box-shadow:0 14px 34px -12px rgba(255,61,139,.6)}
+  .cta.ghost{background:var(--surf);border:1px solid var(--line);color:var(--tx);box-shadow:none;font-size:15px;padding:14px}
+  .cta .pill{background:rgba(0,0,0,.22);padding:3px 10px;border-radius:999px;font-size:13px}
+
+  .sect{margin-top:22px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .tile{border:1px solid var(--line);border-radius:16px;padding:14px;cursor:pointer;text-align:left;font-family:inherit;color:var(--tx);transition:transform .12s;position:relative;overflow:hidden}
+  .tile:active{transform:scale(.97)}
+  .tile .ic{font-size:24px} .tile .t{font-weight:900;margin-top:7px;font-size:15px;letter-spacing:-.01em}
+  .tile .d{font-size:11.5px;color:var(--mut);margin-top:1px}
+  .tile.locked{opacity:.45}
+
+  /* genre galaxy */
+  .galaxy{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px}
+  .orb{aspect-ratio:1;border-radius:16px;display:grid;place-items:center;position:relative;cursor:pointer;
+    background:var(--surf);border:1px solid var(--line);transition:transform .12s}
+  .orb:active{transform:scale(.93)}
+  .orb .e{font-size:22px;filter:grayscale(.6);opacity:.6;transition:.3s}
+  .orb.lit .e{filter:none;opacity:1}
+  .orb .ring{position:absolute;inset:-1px;border-radius:16px;border:2px solid transparent}
+  .orb .pc{position:absolute;bottom:4px;font-size:9px;font-weight:800;color:var(--mut)}
+
+  /* QUIZ */
+  .qtop{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .x{background:var(--surf);border:1px solid var(--line);color:var(--tx);width:38px;height:38px;border-radius:11px;font-size:18px;cursor:pointer;flex:none}
+  .pbar{flex:1;height:9px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden}
+  .pbar>i{display:block;height:100%;background:linear-gradient(90deg,var(--lime),var(--cyan));width:0;transition:width .35s}
+  .combo{display:flex;align-items:center;gap:6px;font-weight:900;font-size:14px;color:var(--amb);opacity:0;transition:.2s}
+  .combo.on{opacity:1;animation:pop .3s}
+  .hero-strip{border-radius:16px;padding:18px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden}
+  .hero-strip .big{font-size:38px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
+  .hero-strip .gt{font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;opacity:.9}
+  .hero-strip .kk{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-top:3px;opacity:.8}
+  .q{font-size:21px;font-weight:800;letter-spacing:-.02em;margin:2px 0 16px;line-height:1.32}
+  .opts{display:flex;flex-direction:column;gap:9px}
+  .opt{display:flex;align-items:center;gap:11px;background:var(--surf);border:1.5px solid var(--line);border-radius:14px;
+    padding:13px 14px;cursor:pointer;font-family:inherit;color:var(--tx);font-size:15.5px;text-align:left;transition:transform .1s,border-color .2s,background .2s;line-height:1.3}
+  .opt:active{transform:scale(.99)}
+  .opt .k{flex:none;width:25px;height:25px;border-radius:8px;background:rgba(255,255,255,.09);display:grid;place-items:center;font-weight:900;font-size:12px}
+  .opt.correct{border-color:var(--grn);background:rgba(47,209,138,.16)} .opt.correct .k{background:var(--grn);color:#06291b}
+  .opt.wrong{border-color:var(--mag);background:rgba(255,61,139,.14)} .opt.wrong .k{background:var(--mag);color:#3a0a12}
+  .opt.dim{opacity:.4} .opt[disabled]{cursor:default}
+  .opt.gone{opacity:.25;text-decoration:line-through}
+  .shake{animation:shake .4s} @keyframes shake{0%,100%{transform:none}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+  .puq{display:flex;gap:8px;margin-top:12px}
+  .puqb{flex:1;background:var(--surf);border:1px solid var(--line);border-radius:11px;padding:9px;font-family:inherit;color:var(--tx);font-weight:800;font-size:12px;cursor:pointer}
+  .puqb:disabled{opacity:.35;cursor:default}
+
+  .reveal{margin-top:16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.04);padding:15px;animation:flip .35s}
+  .reveal .vtag{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:900}
+  .reveal.good .vtag{color:var(--grn)} .reveal.bad .vtag{color:var(--mag)}
+  .hook{margin-top:11px;background:linear-gradient(120deg,rgba(255,178,58,.18),rgba(255,61,139,.10));
+    border:1px solid rgba(255,178,58,.32);border-radius:13px;padding:12px;font-size:14px;display:flex;gap:10px}
+  .hook .he{font-size:24px;flex:none} .hook b{color:var(--amb)}
+  .ctx{margin-top:9px;font-size:13.5px;color:var(--mut);line-height:1.5}
+  .why{margin-top:7px;font-size:12.5px;color:var(--mut2)}
+  .xppop{position:absolute;right:20px;font-weight:900;color:var(--lime);font-size:18px;animation:up 1.1s ease-out forwards;pointer-events:none;z-index:5}
+  @keyframes up{0%{opacity:0;transform:translateY(10px)}30%{opacity:1}100%{opacity:0;transform:translateY(-30px)}}
+
+  /* hoax */
+  .stmt{font-size:22px;font-weight:800;line-height:1.4;margin:22px 2px 24px;min-height:110px;display:flex;align-items:center}
+  .hbtns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .hbtn{border:0;border-radius:16px;padding:20px;font-family:inherit;font-weight:900;font-size:17px;cursor:pointer;color:#0B0A16;transition:transform .1s}
+  .hbtn:active{transform:scale(.97)}
+  .hbtn.real{background:linear-gradient(135deg,var(--lime),var(--grn))} .hbtn.cap{background:linear-gradient(135deg,var(--mag),#ff7aa0);color:#fff}
+
+  /* match */
+  .mcols{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+  .mcol{display:flex;flex-direction:column;gap:10px}
+  .mitem{background:var(--surf);border:1.5px solid var(--line);border-radius:13px;padding:12px;cursor:pointer;font-family:inherit;color:var(--tx);font-size:14px;text-align:left;transition:.15s;min-height:50px}
+  .mitem.sel{border-color:var(--cyan);background:rgba(39,224,224,.14)}
+  .mitem.done{border-color:var(--grn);background:rgba(47,209,138,.13);color:var(--mut);cursor:default}
+  .mitem.bad{border-color:var(--mag);animation:shake .4s}
+
+  /* result + flex card */
+  .res{text-align:center;padding-top:8px}
+  .res .big{font-size:58px;animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+  .res h2{font-size:25px;margin:6px 0 2px}
+  .flexcard{margin:18px 0;border-radius:22px;padding:22px;color:#0B0A16;position:relative;overflow:hidden;
+    background:linear-gradient(135deg,var(--lime),var(--cyan) 60%,var(--mag));text-align:left}
+  .flexcard .fl-lbl{font-weight:900;letter-spacing:.14em;text-transform:uppercase;font-size:11px;opacity:.8}
+  .flexcard .fl-big{font-size:40px;font-weight:900;letter-spacing:-.03em;margin-top:4px;line-height:1}
+  .flexcard .fl-row{display:flex;gap:16px;margin-top:14px;font-weight:800}
+  .flexcard .fl-row div span{display:block;font-size:11px;font-weight:800;opacity:.7;text-transform:uppercase;letter-spacing:.08em}
+  .flexcard .fl-row div b{font-size:22px}
+  .statrow{display:flex;gap:10px;margin:14px 0}
+  .scard{flex:1;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:13px 6px}
+  .scard .v{font-size:23px;font-weight:900} .scard .l{font-size:10.5px;color:var(--mut);letter-spacing:.05em;text-transform:uppercase}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:26px;background:#1a1438;border:1px solid var(--line);
+    padding:12px 18px;border-radius:14px;font-weight:800;box-shadow:0 14px 40px -12px #000;z-index:80;animation:rise .3s;max-width:90%}
+  .heat{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+  .heat i{width:15px;height:15px;border-radius:4px;background:rgba(255,255,255,.07)}
+  .footnote{font-size:11.5px;color:var(--mut2);margin-top:24px;text-align:center;line-height:1.6}
+  canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:70}
+  /* live scoreboard */
+  .scoreboard{display:flex;gap:8px;margin:0 0 14px}
+  .sb{flex:1;background:linear-gradient(135deg,var(--surf2),var(--surf));border:1px solid var(--line);border-radius:14px;padding:10px 4px;text-align:center;position:relative;overflow:hidden;animation:pop .4s cubic-bezier(.2,1.3,.4,1)}
+  .sb .n{font-size:23px;font-weight:900;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+  .sb .t{font-size:9.5px;color:var(--mut);margin-top:3px;letter-spacing:.01em}
+  .sb:nth-child(1) .n{color:var(--cyan)}
+  .sb:nth-child(2) .n{color:var(--lime)}
+  .sb:nth-child(3) .n{color:var(--mag)}
+  .sb:nth-child(4) .n{color:var(--amb)}
+
+  /* ===== polish: screen flash / shake / flip ===== */
+  #app.flash{animation:flash .42s} @keyframes flash{0%,100%{filter:none}45%{filter:brightness(1.18) saturate(1.1)}}
+  #app.shake{animation:appshake .42s} @keyframes appshake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  @keyframes flip{0%{transform:rotateY(80deg);opacity:0}100%{transform:rotateY(0);opacity:1}}
+
+  /* ===== learned bar (home + genres) ===== */
+  .learnbar{margin:0 0 13px;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:11px 13px}
+  .lbtop{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;margin-bottom:7px} .lbtop b{color:var(--lime)}
+  .lbbar{height:8px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden} .lbbar>i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--vio),var(--cyan))}
+
+  /* ===== genres tab (rows) ===== */
+  .grow{display:flex;align-items:center;gap:11px;margin:9px 0;cursor:pointer;background:var(--surf);border:1px solid var(--line);border-radius:14px;padding:11px 12px;transition:transform .12s}
+  .grow:active{transform:scale(.98)}
+  .grow .ge{font-size:24px;width:34px;text-align:center}
+  .grow .gn{flex:1;min-width:0} .grow .gnm{font-weight:800;font-size:14.5px} 
+  .grow .gd{font-size:11px;color:var(--mut);margin-top:1px;display:flex;gap:8px;flex-wrap:wrap}
+  .kpill{display:inline-flex;align-items:center;gap:3px;font-weight:800;font-size:10.5px;padding:1px 7px;border-radius:999px;border:1px solid var(--line)}
+  .kpill.cur{color:var(--amb);border-color:rgba(255,178,58,.35);background:rgba(255,178,58,.1)}
+  .kpill.sta{color:var(--cyan);border-color:rgba(39,224,224,.32);background:rgba(39,224,224,.09)}
+  .gbar{height:7px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:6px} .gbar>i{display:block;height:100%;border-radius:999px}
+  .grow .gp{font-size:12px;color:var(--mut);width:42px;text-align:right;font-variant-numeric:tabular-nums;flex:none}
+
+  /* ===== modal / bottom sheet ===== */
+  .modal{position:fixed;inset:0;background:rgba(5,4,12,.66);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:90;display:grid;place-items:center;padding:18px;animation:rise .2s}
+  .sheet{background:#16122c;border:1px solid var(--line);border-radius:22px;padding:20px 18px;max-width:420px;width:100%;max-height:86vh;overflow:auto;box-shadow:0 24px 70px -16px #000;animation:milepop .42s cubic-bezier(.2,1.4,.4,1)}
+  .sheet h3{font-size:19px;margin-bottom:4px} .sheet .sub{font-size:12px;color:var(--mut);margin-bottom:10px}
+
+  /* ===== milestone celebration card ===== */
+  .mile{position:fixed;inset:0;z-index:97;display:grid;place-items:center;pointer-events:none}
+  .milecard{background:#1a1438;border:2px solid var(--lime);border-radius:24px;padding:24px 30px;text-align:center;box-shadow:0 24px 70px -16px #000;animation:milepop .5s cubic-bezier(.2,1.5,.4,1)}
+  @keyframes milepop{0%{transform:scale(0) rotate(-8deg)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+  .milecard .me{font-size:52px} .milecard .mt{font-size:20px;font-weight:900;margin-top:6px}
+
+  /* ===== bottom tab-bar ===== */
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;gap:4px;max-width:480px;margin:0 auto;
+    padding:6px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(11,10,22,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+  .tabbtn{flex:1;background:none;border:0;color:var(--mut2);font-family:inherit;font-weight:800;font-size:10px;letter-spacing:.02em;
+    display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 0;cursor:pointer;border-radius:13px;transition:.15s}
+  .tabbtn .ti{font-size:20px;opacity:.55;transition:.15s}
+  .tabbtn.on{color:var(--tx);background:rgba(255,255,255,.07)} .tabbtn.on .ti{opacity:1}
+
+  /* ===== activity calendar (You tab) ===== */
+  .calhead{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+  .calhead button{background:var(--surf);border:1px solid var(--line);color:var(--tx);width:32px;height:32px;border-radius:9px;font-size:17px;cursor:pointer}
+  .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px}
+  .calhd{font-size:9px;color:var(--mut2);text-align:center;font-weight:800;padding-bottom:2px}
+  .cal-d{aspect-ratio:1;border:0;border-radius:9px;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--tx);background:rgba(255,255,255,.05);padding:0}
+  .cal-d .dn{font-size:11px;font-weight:800;line-height:1} .cal-d .dc{font-size:9px;opacity:.85;line-height:1;margin-top:1px}
+  .cal-d.red{background:rgba(255,61,139,.36)} .cal-d.yellow{background:rgba(255,178,58,.5);color:#2a1f06} .cal-d.green{background:rgba(198,255,61,.5);color:#16240a}
+  .cal-d.none{background:rgba(255,255,255,.04);color:var(--mut2);cursor:default}
+  .callegend{font-size:11px;color:var(--mut);text-align:center;margin-top:10px;line-height:1.5}
+</style>
+</head>
+<body>
+<div id="app"><div id="screen"></div></div>
+<canvas id="cf"></canvas>
+<script>
+/* ===== GENRE META (colour + icon) ===== */
+const GM={
+ GEO:{n:"geography",c:"#27E0E0",e:"🌍"}, ECO:{n:"biz & econ",c:"#C6FF3D",e:"💸"},
+ POL:{n:"polity",c:"#FF6B7A",e:"🏛️"}, HIS:{n:"history",c:"#FFB23A",e:"📜"},
+ ART:{n:"culture",c:"#FF3D8B",e:"🎬"}, SCI:{n:"sci & tech",c:"#9B5BFF",e:"🚀"},
+ AWD:{n:"awards",c:"#FFD93D",e:"🏆"}, SPO:{n:"sports",c:"#2FD18A",e:"🏅"},
+ IRL:{n:"world",c:"#5B9BFF",e:"🌐"}, ENV:{n:"environment",c:"#46D39A",e:"🌱"}
+};
+/* feed URL for weekly drops — set this to your published drops.json to auto-update */
+const DROPS_URL="";  // e.g. "https://YOURNAME.github.io/flex/drops.json"
+
+/* Gen-Z reaction pools */
+const WIN=["W. easy 😮‍💨","ate that fr","no notes 💅","she's TOO clued in","certified W ✅","that's giving genius","slayed ✨","big brain energy 🧠","on god, correct","unbothered & correct","periodt 💯","clean. cold. correct.","left no crumbs","main character move","just facts 📠","sheeshhh 🔥","cooked 👨‍🍳","locked in 🔒"];
+const MISS=["nah it's giving 'almost' 😭 but now you KNOW","plot twist — but we learning 📚","it's ok bestie, that one's sneaky","no gatekeeping mistakes, here's the tea ☕","fumbled it 😅 but the hook's yours now","sneaky one. lock it in 🔒","even toppers miss this one","learn it once, never again 💪","close! the hook saves you next time","it happens 🫡 shake it off","not the answer, but def the lesson","mistakes = XP for the brain 🧠","we move. next one's yours","known trap — now you're immune 🛡️","brushing it off, we're so back 🔁","caught a fade but still on track 😤"];
+
+/* ===== BANK — verified Jan–12 Jun 2026 current affairs + evergreen static ===== */
+const BANK=[
+// ===== CURRENT · SPORTS =====
+{id:"sp1",g:"SPO",r:"IN",k:"C",pic:"🏏",q:"India won a record third Men's T20 World Cup (2026) by beating which team in the final?",o:["Australia","South Africa","New Zealand","England","Pakistan"],a:2,why:"India beat New Zealand by 96 runs in the Ahmedabad final.",ctx:"8 Mar 2026 at the Narendra Modi Stadium; India became the first team to win three T20 World Cups and the first host to win it.",hook:"Co-hosts India crushed the Kiwis at home — three-peat."},
+{id:"sp2",g:"SPO",r:"IN",k:"C",pic:"🧢",q:"Who captained India to the 2026 T20 World Cup title?",o:["Rohit Sharma","Suryakumar Yadav","Hardik Pandya","Shubman Gill","Jasprit Bumrah"],a:1,why:"Suryakumar Yadav (SKY) led the side.",ctx:"Bumrah was Player of the Match in the final; India defended the title they won in 2024.",hook:"SKY captained; Bumrah closed it out."},
+{id:"sp3",g:"SPO",r:"IN",k:"C",pic:"🏆",q:"Which is the most successful team in Men's T20 World Cup history (three titles)?",o:["West Indies","Australia","England","India","Pakistan"],a:3,why:"India (2007, 2024, 2026) leads with three titles.",ctx:"West Indies and England have two each.",hook:"2007 + 2024 + 2026 = India, the GOATs."},
+{id:"sp4",g:"SPO",r:"INT",k:"C",pic:"⛷️",q:"The 2026 Winter Olympics were jointly hosted by Milan and which Italian town?",o:["Turin","Bormio","Cortina d'Ampezzo","Livigno","Verona"],a:2,why:"Milano-Cortina 2026, held 6–22 Feb.",ctx:"Host Italy set a national record with 30 medals.",hook:"Milan + Cortina = Milano-Cortina 2026."},
+{id:"sp5",g:"SPO",r:"INT",k:"C",pic:"🥇",q:"Which country topped the medal tally at the 2026 Winter Olympics?",o:["United States","Germany","Norway","Italy","Canada"],a:2,why:"Norway led with 18 golds and 41 medals; the USA was second.",ctx:"Norway remains the most successful nation in Winter Olympic history.",hook:"Cold-weather kings: Norway again."},
+{id:"sp6",g:"SPO",r:"IN",k:"C",pic:"🏏",q:"Which team won IPL 2026, beating Gujarat Titans in the final?",o:["Chennai Super Kings","Mumbai Indians","Royal Challengers Bengaluru","Kolkata Knight Riders","Rajasthan Royals"],a:2,why:"RCB beat GT by 5 wickets at the Narendra Modi Stadium (31 May 2026).",ctx:"RCB's second title; they became only the third franchise to defend the IPL crown.",hook:"RCB went back-to-back — second title, defended."},
+{id:"sp7",g:"SPO",r:"IN",k:"C",pic:"👑",q:"Who captained Royal Challengers Bengaluru to the IPL 2026 title?",o:["Virat Kohli","Faf du Plessis","Rajat Patidar","Glenn Maxwell","Dinesh Karthik"],a:2,why:"Rajat Patidar captained RCB; Virat Kohli was Player of the Match in the final.",ctx:"Patidar led RCB to a second straight crown.",hook:"Patidar captain, Kohli the final-night hero."},
+{id:"sp8",g:"SPO",r:"IN",k:"C",pic:"🏐",q:"Which team won the 2026 Women's Premier League (WPL) title?",o:["Delhi Capitals","Mumbai Indians","UP Warriorz","Royal Challengers Bengaluru","Gujarat Giants"],a:3,why:"RCB beat Delhi Capitals in the WPL 2026 final (5 Feb, Vadodara).",ctx:"Smriti Mandhana was Player of the Match — an RCB double in 2026.",hook:"RCB did the double: WPL + IPL in 2026."},
+
+// ===== CURRENT · ECONOMY & BUSINESS =====
+{id:"ec1",g:"ECO",r:"IN",k:"C",pic:"💸",q:"Who presented the Union Budget 2026-27 — her ninth consecutive Budget?",o:["Nirmala Sitharaman","Piyush Goyal","Amit Shah","Sanjay Malhotra","Anurag Thakur"],a:0,why:"Sitharaman presented her 9th straight Budget on 1 Feb 2026.",ctx:"It was the first Budget prepared in the new 'Kartavya Bhawan'.",hook:"Sitharaman's 9th in a row."},
+{id:"ec2",g:"ECO",r:"IN",k:"C",pic:"🧑‍🎓",q:"What was the headline theme of the Union Budget 2026-27?",o:["Atmanirbhar Bharat","Yuva Shakti","Amrit Kaal","Garib Kalyan","Make in India"],a:1,why:"A 'Yuva Shakti'-driven Budget.",ctx:"Focused on turning India's young demographic into productive capacity.",hook:"Youth power — 'Yuva Shakti'."},
+{id:"ec3",g:"ECO",r:"IN",k:"C",pic:"📉",q:"What was the fiscal-deficit target in the Union Budget 2026-27?",o:["3.0%","4.3%","5.1%","6.4%","2.5%"],a:1,why:"BE 2026-27 set the fiscal deficit at ~4.3% of GDP.",ctx:"Down from 4.4% (RE 2025-26) — continued consolidation.",hook:"4.4 → 4.3: deficit keeps inching down."},
+{id:"ec4",g:"ECO",r:"IN",k:"C",pic:"📜",q:"From which date does India's new Income-tax Act, 2025 come into force?",o:["1 Jan 2026","1 Apr 2026","1 Jul 2026","1 Apr 2025","1 Oct 2026"],a:1,why:"Effective 1 April 2026, replacing the 1961 Act.",ctx:"A long-pending simplification of India's direct-tax law.",hook:"New FY, new tax code: 1 April 2026."},
+{id:"ec5",g:"ECO",r:"IN",k:"C",pic:"🏦",q:"Who is the Governor of the Reserve Bank of India (RBI) in 2026?",o:["Shaktikanta Das","Sanjay Malhotra","Urjit Patel","Raghuram Rajan","T.V. Somanathan"],a:1,why:"Sanjay Malhotra is the 26th RBI Governor.",ctx:"He took charge in December 2024.",hook:"Post-Das, Sanjay Malhotra runs the RBI."},
+{id:"ec6",g:"ECO",r:"IN",k:"C",pic:"📈",q:"India's Economic Survey 2025-26 estimated real GDP growth for FY26 at about:",o:["5.0%","6.0%","7.4%","9.1%","4.2%"],a:2,why:"~7.4% in FY26, projected 6.8–7.2% ahead.",ctx:"A resilient, domestically anchored economy.",hook:"~7.4% — India stays the fastest big economy."},
+
+// ===== CURRENT · POLITY & APPOINTMENTS =====
+{id:"po1",g:"POL",r:"IN",k:"C",pic:"⚖️",q:"Who is the Chief Justice of India (53rd CJI) in 2026?",o:["D.Y. Chandrachud","B.R. Gavai","Surya Kant","Sanjiv Khanna","U.U. Lalit"],a:2,why:"Justice Surya Kant became the 53rd CJI on 24 Nov 2025.",ctx:"His tenure runs until 9 Feb 2027.",hook:"Surya Kant — 53rd CJI, sworn in Nov 2025."},
+{id:"po2",g:"POL",r:"IN",k:"C",pic:"🎖️",q:"Who took over as India's Chief of Defence Staff (CDS) on 31 May 2026?",o:["Anil Chauhan","N.S. Raja Subramani","Upendra Dwivedi","Bipin Rawat","Manoj Pande"],a:1,why:"Gen N.S. Raja Subramani became the 3rd CDS, succeeding Anil Chauhan.",ctx:"The CDS heads the Department of Military Affairs.",hook:"Raja Subramani — India's 3rd CDS."},
+{id:"po3",g:"POL",r:"IN",k:"C",pic:"🛡️",q:"Who is India's National Security Advisor (NSA) in 2026?",o:["Ajit Doval","Vikram Misri","Shivshankar Menon","T.V. Somanathan","Pankaj Singh"],a:0,why:"Ajit Doval continues as NSA.",ctx:"The NSA is the PM's chief adviser on national security.",hook:"Doval — still the NSA."},
+{id:"po4",g:"POL",r:"IN",k:"C",pic:"🌐",q:"Who is India's Foreign Secretary in 2026?",o:["Harsh Shringla","Vinay Kwatra","Vikram Misri","S. Jaishankar","Ruchira Kamboj"],a:2,why:"Vikram Misri is the Foreign Secretary.",ctx:"He heads the Ministry of External Affairs' civil service.",hook:"Misri runs South Block's diplomacy."},
+
+// ===== CURRENT · AWARDS =====
+{id:"aw1",g:"AWD",r:"IN",k:"C",pic:"🎬",q:"Veteran Bollywood actor honoured with the Padma Vibhushan (posthumously) in 2026?",o:["Manoj Kumar","Dharmendra","Dilip Kumar","Mithun Chakraborty","Anupam Kher"],a:1,why:"Dharmendra received the Padma Vibhushan posthumously.",ctx:"The 2026 list had 131 awardees: 5 Padma Vibhushan, 13 Padma Bhushan, 113 Padma Shri.",hook:"The original He-Man — top honour, posthumous."},
+{id:"aw2",g:"AWD",r:"IN",k:"C",pic:"🏛️",q:"Which former Kerala CM received the Padma Vibhushan posthumously in 2026?",o:["Oommen Chandy","V.S. Achuthanandan","E.K. Nayanar","K. Karunakaran","A.K. Antony"],a:1,why:"V.S. Achuthanandan was honoured posthumously.",ctx:"The veteran communist leader passed away in 2025.",hook:"VS — Kerala's Comrade, top honour."},
+{id:"aw3",g:"AWD",r:"IN",k:"C",pic:"🏦",q:"Which banker received the Padma Bhushan in 2026?",o:["Uday Kotak","Mukesh Ambani","N.R. Narayana Murthy","Adi Godrej","KV Kamath"],a:0,why:"Uday Kotak was among the 2026 Padma Bhushan awardees.",ctx:"Tennis legend Vijay Amritraj and singer Alka Yagnik were also honoured.",hook:"Kotak the banker — Padma Bhushan."},
+{id:"aw4",g:"AWD",r:"IN",k:"C",pic:"🎤",q:"Which Malayalam superstar received the Padma Bhushan in 2026?",o:["Mohanlal","Mammootty","Fahadh Faasil","Prithviraj","Dulquer Salmaan"],a:1,why:"Mammootty was a 2026 Padma Bhushan recipient.",ctx:"Padma Bhushan honours 'distinguished service of a high order'.",hook:"Mega-star Mammootty — Padma Bhushan."},
+{id:"aw5",g:"AWD",r:"IN",k:"C",pic:"🏏",q:"Which cricketer was among the Padma Shri awardees in 2026?",o:["Virat Kohli","Rohit Sharma","Shubman Gill","Yashasvi Jaiswal","KL Rahul"],a:1,why:"Rohit Sharma, Harmanpreet Kaur and Savita Punia received the Padma Shri.",ctx:"Sport featured strongly in the 2026 honours.",hook:"Hitman + Harman + Savita = Padma Shri."},
+{id:"aw6",g:"AWD",r:"IN",k:"C",pic:"🕯️",q:"Advertising legend given a posthumous Padma Bhushan in 2026?",o:["Prahlad Kakkar","Piyush Pandey","Alyque Padamsee","R. Balki","Josy Paul"],a:1,why:"Piyush Pandey, the Ogilvy adman, was honoured posthumously.",ctx:"He shaped iconic campaigns like 'Mile Sur Mera Tumhara'.",hook:"India's adman-in-chief, Piyush Pandey."},
+{id:"aw7",g:"AWD",r:"INT",k:"C",pic:"➗",q:"Who won the 2026 Abel Prize (the 'Nobel of mathematics')?",o:["Terence Tao","Gerd Faltings","Andrew Wiles","Manjul Bhargava","Maryna Viazovska"],a:1,why:"Gerd Faltings of Germany won, for arithmetic geometry.",ctx:"He resolved the Mordell and Lang conjectures; first German to win the Abel.",hook:"Faltings — German maths giant, Abel 2026."},
+{id:"aw8",g:"AWD",r:"INT",k:"C",pic:"📖",q:"Which novel won the 2026 International Booker Prize?",o:["Kairos","Taiwan Travelogue","Orbital","The Director","Heart Lamp"],a:1,why:"'Taiwan Travelogue' by Yáng Shuāng-zǐ, translated by Lin King.",ctx:"The first book translated from Taiwanese Mandarin to win; announced 19 May 2026.",hook:"A culinary tour of 1930s Taiwan — 'Taiwan Travelogue'."},
+
+// ===== CURRENT · CULTURE =====
+{id:"cu1",g:"ART",r:"INT",k:"C",pic:"🏆",q:"Which film won Best Picture at the 2026 (98th) Academy Awards?",o:["Sinners","Hamnet","One Battle After Another","Wicked","Anora"],a:2,why:"'One Battle After Another' won Best Picture and Best Director (Paul Thomas Anderson).",ctx:"Held 15 Mar 2026, hosted by Conan O'Brien.",hook:"PTA's 'One Battle After Another' swept the top prizes."},
+{id:"cu2",g:"ART",r:"INT",k:"C",pic:"🎭",q:"Who won Best Actor at the 2026 Oscars (for 'Sinners')?",o:["Timothée Chalamet","Michael B. Jordan","Leonardo DiCaprio","Colman Domingo","Adam Sandler"],a:1,why:"Michael B. Jordan won his first Oscar.",ctx:"Jessie Buckley won Best Actress for 'Hamnet' the same night.",hook:"MBJ's first Oscar — 'Sinners'."},
+{id:"cu3",g:"ART",r:"INT",k:"C",pic:"👑",q:"Who won Best Actress at the 2026 Oscars for 'Hamnet'?",o:["Emma Stone","Jessie Buckley","Margot Robbie","Cynthia Erivo","Saoirse Ronan"],a:1,why:"Jessie Buckley won Best Actress.",ctx:"'Hamnet' is based on Maggie O'Farrell's novel.",hook:"Buckley's 'Hamnet' = Best Actress."},
+
+// ===== CURRENT · WORLD AFFAIRS =====
+{id:"wo1",g:"IRL",r:"INT",k:"C",pic:"🌐",q:"In January 2026, US forces captured which head of state, flown to New York to face charges?",o:["Bashar al-Assad","Nicolás Maduro","Daniel Ortega","Kim Jong-un","Alexander Lukashenko"],a:1,why:"Venezuela's President Nicolás Maduro, charged with narco-terrorism.",ctx:"A dramatic escalation of US pressure on Venezuela.",hook:"Venezuela's Maduro — captured, flown to NYC."},
+{id:"wo2",g:"IRL",r:"INT",k:"C",pic:"🗽",q:"Who was sworn in as Mayor of New York City on 1 January 2026?",o:["Eric Adams","Andrew Cuomo","Zohran Mamdani","Curtis Sliwa","Bill de Blasio"],a:2,why:"Zohran Mamdani, a democratic socialist, became NYC mayor.",ctx:"One of the most watched US city elections of the cycle.",hook:"Mamdani takes Gracie Mansion, New Year's Day."},
+{id:"wo3",g:"IRL",r:"INT",k:"C",pic:"🗳️",q:"Long-serving PM defeated in Hungary's April 2026 election?",o:["Viktor Orbán","Péter Magyar","Robert Fico","Donald Tusk","Andrzej Duda"],a:0,why:"Viktor Orbán was defeated; Péter Magyar's TISZA led the opposition.",ctx:"It ended roughly 15 years of Fidesz dominance.",hook:"After 15 years, Orbán finally loses."},
+{id:"wo4",g:"IRL",r:"INT",k:"C",pic:"⚽",q:"The 2026 FIFA Men's World Cup is co-hosted by which three countries?",o:["Spain, Portugal & Morocco","USA, Canada & Mexico","Brazil, Argentina & Uruguay","Qatar, UAE & Saudi Arabia","Germany, France & Italy"],a:1,why:"USA, Canada and Mexico — the first 48-team edition.",ctx:"The biggest World Cup ever, across three nations.",hook:"North America's trio, 48 teams."},
+{id:"wo5",g:"IRL",r:"INT",k:"C",pic:"🏛️",q:"Which US city hosts the 2026 G20 Leaders' Summit?",o:["New York","Miami","Washington DC","Chicago","Los Angeles"],a:1,why:"The 2026 G20 summit is set for Miami, Florida.",ctx:"The US holds the G20 presidency in 2026.",hook:"G20 heads to Miami."},
+
+// ===== CURRENT · SCIENCE & TECH =====
+{id:"sc1",g:"SCI",r:"IN",k:"C",pic:"🚀",q:"Who is the Chairman of ISRO leading the Gaganyaan programme in 2026?",o:["S. Somanath","K. Sivan","V. Narayanan","A.S. Kiran Kumar","Shailesh Nayak"],a:2,why:"V. Narayanan is the ISRO Chairman.",ctx:"India's first crewed Gaganyaan flight is targeted for 2027.",hook:"Post-Somanath, V. Narayanan steers ISRO."},
+{id:"sc2",g:"SCI",r:"IN",k:"C",pic:"🤖",q:"Which humanoid robot flies on India's first uncrewed Gaganyaan mission?",o:["Vyommitra","Kalpana","Shakti","Manav","Aastra"],a:0,why:"The half-humanoid 'Vyommitra'.",ctx:"It simulates human responses ahead of the crewed mission.",hook:"Vyom (space) + Mitra (friend) = the robot astronaut."},
+{id:"sc3",g:"SCI",r:"IN",k:"C",pic:"🌙",q:"India's planned lunar sample-return mission (around 2028) is named:",o:["Chandrayaan-3","Chandrayaan-4","Gaganyaan-2","Aditya-L2","Shukrayaan"],a:1,why:"Chandrayaan-4 is the planned sample-return mission.",ctx:"A Moon landing by 2040 is also on ISRO's roadmap.",hook:"After C-3's landing, C-4 brings the Moon home."},
+{id:"sc4",g:"SCI",r:"IN",k:"C",pic:"🛰️",q:"India's planned national space station, targeted for ~2035, is called the:",o:["Indian Orbital Lab","Bharatiya Antariksh Station","Gaganyaan Station","Vikram Station","Aryabhata Station"],a:1,why:"The Bharatiya Antariksh Station (BAS).",ctx:"Initial modules are expected from around 2028.",hook:"India's own station: Bharatiya Antariksh Station."},
+
+// ===== STATIC · evergreen =====
+{id:"s1",g:"GEO",r:"IN",k:"S",pic:"🛶",q:"Where is the world's only floating national park?",o:["Tripura","Assam","Manipur","Jharkhand","Chhattisgarh"],a:2,why:"Keibul Lamjao, the only floating national park.",ctx:"Floats on 'phumdis' over Loktak Lake; home to the Sangai deer.",hook:"A park on a giant raft — Loktak Lake, Manipur."},
+{id:"s2",g:"GEO",r:"IN",k:"S",pic:"⛰️",q:"Which is the oldest mountain range in India?",o:["Himalayas","Satpuras","Karakoram","Aravalli","Nilgiris"],a:3,why:"The Aravalli — among Earth's oldest fold mountains.",ctx:"Far older than the Himalayas.",hook:"Aravalli = Ancient."},
+{id:"s3",g:"POL",r:"IN",k:"S",pic:"🎖️",q:"Who is the Supreme Commander of India's Armed Forces?",o:["Prime Minister","Chief of Defence Staff","Defence Minister","President","Home Minister"],a:3,why:"The President is the ceremonial Supreme Commander.",ctx:"Operational command rests with the government and CDS.",hook:"Top of the pyramid: the President."},
+{id:"s4",g:"POL",r:"IN",k:"S",pic:"⚖️",q:"Article 356 of the Constitution provides for?",o:["Special status to a state","President's Rule in a state","Right to Constitutional Remedies","Financial emergency","Anti-defection"],a:1,why:"Article 356 = President's Rule.",ctx:"Among the most debated provisions.",hook:"356 → three strikes, state govt OUT."},
+{id:"s5",g:"HIS",r:"IN",k:"S",pic:"👑",q:"Which Governor-General introduced the 'Doctrine of Lapse'?",o:["Lord Wellesley","Lord Curzon","Lord Dalhousie","Lord Mountbatten","Lord Reading"],a:2,why:"Dalhousie annexed heirless states via it.",ctx:"A major grievance feeding the 1857 revolt.",hook:"Dal-HOUSE-ie took the house."},
+{id:"s6",g:"ECO",r:"INT",k:"S",pic:"🦄",q:"In start-up jargon, a 'unicorn' is?",o:["A $1bn-dividend firm","A private start-up valued at $1bn+","A 1,000-employee firm","A firm raising $1bn in a round","A profitable first-year firm"],a:1,why:"A private start-up valued at $1 billion or more.",ctx:"Coined by Aileen Lee, 2013.",hook:"Rare and magical = billion-dollar unicorn."},
+{id:"s7",g:"ECO",r:"INT",k:"S",pic:"🍫",q:"What does 'shrinkflation' mean?",o:["Smaller pack, same price","Cutting price to boost demand","Economy-wide falling prices","Bigger pack and price","A shrinking workforce"],a:0,why:"Less product for the same money.",ctx:"A stealth FMCG tactic.",hook:"They SHRINK the pack, you pay the same."},
+{id:"s8",g:"IRL",r:"INT",k:"S",pic:"⚖️",q:"Where is the International Court of Justice located?",o:["Geneva","New York","The Hague","Vienna","Washington DC"],a:2,why:"The ICJ sits at The Hague.",ctx:"The UN's principal judicial organ.",hook:"The Hague = the world's High court."},
+{id:"s9",g:"ART",r:"IN",k:"S",pic:"🧘",q:"Who wrote 'Autobiography of a Yogi'?",o:["Sri Aurobindo","Swami Vivekananda","Paramahansa Yogananda","Sathya Sai Baba","Swami Abhedananda"],a:2,why:"Yogananda authored the 1946 classic.",ctx:"It carried Kriya Yoga to the West.",hook:"Yoga-nanda → a YOGI."},
+{id:"s10",g:"AWD",r:"IN",k:"S",pic:"🏏",q:"Which Indian award honours sports coaches?",o:["Arjuna Award","Dronacharya Award","Dhyan Chand Award","Khel Ratna","Vishisht Seva"],a:1,why:"Dronacharya is for coaches; Arjuna for athletes.",ctx:"Named after the Mahabharata's great teacher.",hook:"Dronacharya = the epic's coach."},
+{id:"s11",g:"SCI",r:"INT",k:"S",pic:"⚛️",q:"The Large Hadron Collider is the world's largest…",o:["radio telescope","particle accelerator","nuclear reactor","supercomputer","fusion plant"],a:1,why:"The largest particle accelerator (CERN).",ctx:"It confirmed the Higgs boson in 2012.",hook:"Colliders collide particles — LHC's the biggest."},
+{id:"s12",g:"GEO",r:"INT",k:"S",pic:"🇩🇰",q:"Greenland is an autonomous dependency of which country?",o:["Norway","Iceland","Denmark","Canada","United States"],a:2,why:"Part of the Kingdom of Denmark.",ctx:"World's largest island.",hook:"GREEN-land flies the Danish crown."},
+{id:"s13",g:"HIS",r:"IN",k:"S",pic:"🏺",q:"Which site is NOT part of the Indus Valley Civilization?",o:["Mohenjo-daro","Lothal","Harappa","Bhimbetka","Dholavira"],a:3,why:"Bhimbetka is famous for rock art, not the IVC.",ctx:"Its caves predate the Harappan era.",hook:"Bhimbetka = cave paintings."},
+{id:"s14",g:"POL",r:"IN",k:"S",pic:"🎖️",q:"Who was the first Field Marshal of independent India?",o:["K.M. Cariappa","Sam Manekshaw","A.S. Vaidya","Bipin Rawat","K. Sundarji"],a:1,why:"Sam Manekshaw, in 1973.",ctx:"He led India to the 1971 war victory.",hook:"Sam 'Bahadur' — first five stars."},
+{id:"s15",g:"ENV",r:"IN",k:"S",pic:"🦌",q:"Which deer is the 'dancing deer' of Manipur?",o:["Sangai","Hog deer","Sambar","Chital","Barasingha"],a:0,why:"The endangered Sangai.",ctx:"Lives on Loktak Lake's floating phumdis.",hook:"Sangai sways on the floating lake."},
+{id:"s16",g:"ECO",r:"IN",k:"S",pic:"🛒",q:"Which price index does the RBI target for inflation?",o:["Wholesale Price Index","GDP Deflator","Consumer Price Index","Producer Price Index","PPP Index"],a:2,why:"Retail CPI, not WPI.",ctx:"Target: 4% (±2%) since 2016.",hook:"RBI watches what YOU pay = CPI."},
+{id:"s17",g:"GEO",r:"MIX",k:"S",pic:"🐅",q:"Which is the world's largest river delta?",o:["Nile delta","Mekong delta","Mississippi delta","Sundarbans (Ganges–Brahmaputra)","Amazon delta"],a:3,why:"The Sundarbans.",ctx:"Shared by India & Bangladesh; biggest mangrove too.",hook:"Sundarbans = biggest delta AND mangrove."},
+{id:"s18",g:"ART",r:"IN",k:"S",pic:"🦁",q:"'Satyameva Jayate' is taken from which text?",o:["Rigveda","Bhagavad Gita","Mundaka Upanishad","Manusmriti","Arthashastra"],a:2,why:"From the Mundaka Upanishad.",ctx:"Inscribed below the Lion Capital on the State Emblem.",hook:"MUNDAka → the motto on the eMblem."},
+{id:"s19",g:"SCI",r:"INT",k:"S",pic:"🧪",q:"Which acid mixture can dissolve gold?",o:["Aqua Pura","Aqua Regia","Aqua Fina","Sulphuric acid","Vinegar"],a:1,why:"Aqua Regia (nitric + HCl).",ctx:"Latin for 'royal water'.",hook:"Royal water dissolves the king of metals."},
+{id:"s20",g:"GEO",r:"INT",k:"S",pic:"🇧🇷",q:"Both the Equator AND the Tropic of Capricorn pass through which country?",o:["Argentina","Peru","Chile","Brazil","Venezuela"],a:3,why:"Only Brazil is large enough.",ctx:"Equator in the Amazon north, Capricorn near São Paulo.",hook:"Big Brazil straddles both lines."},
+{id:"s21",g:"IRL",r:"INT",k:"S",pic:"🌏",q:"Which is NOT a member of SAARC?",o:["Bhutan","Nepal","Myanmar","Maldives","Bangladesh"],a:2,why:"Myanmar belongs to ASEAN.",ctx:"SAARC = the eight South Asian states.",hook:"Myanmar leans ASEAN."},
+{id:"s22",g:"HIS",r:"INT",k:"S",pic:"🕊️",q:"'Glasnost' and 'Perestroika' are linked to which leader?",o:["Boris Yeltsin","Leonid Brezhnev","Mikhail Gorbachev","Vladimir Putin","Nikita Khrushchev"],a:2,why:"Gorbachev's 1980s Soviet reforms.",ctx:"Openness + restructuring before the USSR's collapse.",hook:"Gorbachev opened the gates."},
+{id:"s23",g:"ECO",r:"IN",k:"S",pic:"🍵",q:"India's first product to get a GI tag was?",o:["Mysore Silk","Darjeeling Tea","Pashmina","Basmati Rice","Alphonso Mango"],a:1,why:"Darjeeling Tea (2004).",ctx:"A GI ties a product to its place of origin.",hook:"India's GI story began with Darjeeling."},
+{id:"s24",g:"SCI",r:"INT",k:"S",pic:"👂",q:"Vertigo is usually caused by a problem in the…",o:["heart","kidney","inner ear","stomach","lungs"],a:2,why:"The inner ear's balance system.",ctx:"The vestibular system governs balance.",hook:"Balance lives in the EAR."},
+{id:"s25",g:"POL",r:"IN",k:"S",pic:"🏛️",q:"What are the three sessions of Parliament?",o:["Spring, Summer, Winter","Budget, Monsoon, Winter","New Year, Summer, Winter","Budget, Diwali, Winter","Summer, Monsoon, Winter"],a:1,why:"Budget, Monsoon and Winter.",ctx:"Budget (Feb–Apr), Monsoon (Jul–Sep), Winter (Nov–Dec).",hook:"B-M-W."},
+{id:"s26",g:"GEO",r:"IN",k:"S",pic:"🏙️",q:"Which Indian state has separate summer & winter capitals?",o:["Sikkim","Gujarat","Maharashtra","Telangana","Mizoram"],a:2,why:"Maharashtra: Mumbai & Nagpur.",ctx:"The winter session is in Nagpur.",hook:"Mumbai ↔ Nagpur."},
+{id:"s27",g:"POL",r:"IN",k:"S",pic:"📕",q:"Who chaired the drafting committee of the Indian Constitution?",o:["Jawaharlal Nehru","Rajendra Prasad","B.R. Ambedkar","Sardar Patel","C. Rajagopalachari"],a:2,why:"B.R. Ambedkar chaired it.",ctx:"Often called the chief architect of the Constitution.",hook:"Ambedkar = architect of the Constitution."},
+{id:"s28",g:"POL",r:"IN",k:"S",pic:"🗂️",q:"NITI Aayog replaced which body in 2015?",o:["Finance Commission","Planning Commission","UPSC","Election Commission","Law Commission"],a:1,why:"It replaced the Planning Commission.",ctx:"NITI = National Institution for Transforming India.",hook:"Out: Planning Commission. In: NITI Aayog."},
+{id:"s29",g:"HIS",r:"IN",k:"S",pic:"🧂",q:"In which year did Gandhi lead the Dandi (Salt) March?",o:["1919","1930","1942","1947","1922"],a:1,why:"The Salt March was in 1930.",ctx:"Part of the Civil Disobedience Movement.",hook:"1930 — Gandhi walks to make salt."},
+{id:"s30",g:"HIS",r:"IN",k:"S",pic:"📜",q:"Who was the first President of India?",o:["Rajendra Prasad","S. Radhakrishnan","Zakir Husain","Jawaharlal Nehru","V.V. Giri"],a:0,why:"Dr Rajendra Prasad.",ctx:"He served two terms from 1950.",hook:"First Prez = Rajendra Prasad."},
+{id:"s31",g:"SCI",r:"INT",k:"S",pic:"🔬",q:"Which organelle is the 'powerhouse of the cell'?",o:["Nucleus","Ribosome","Mitochondria","Golgi body","Lysosome"],a:2,why:"Mitochondria produce the cell's energy (ATP).",ctx:"A staple biology fact.",hook:"Powerhouse = mitochondria."},
+{id:"s32",g:"SCI",r:"INT",k:"S",pic:"🧫",q:"What is the pH of pure water at room temperature?",o:["0","7","14","1","10"],a:1,why:"Pure water is neutral, pH 7.",ctx:"Below 7 acidic, above 7 basic.",hook:"Neutral water = 7."},
+{id:"s33",g:"ECO",r:"IN",k:"S",pic:"🧾",q:"In which year was GST rolled out in India?",o:["2014","2016","2017","2019","2020"],a:2,why:"GST launched on 1 July 2017.",ctx:"'One Nation, One Tax'.",hook:"GST → midnight 1 July 2017."},
+{id:"s34",g:"AWD",r:"IN",k:"S",pic:"🏅",q:"Which is India's highest civilian award?",o:["Padma Vibhushan","Bharat Ratna","Padma Bhushan","Param Vir Chakra","Ashoka Chakra"],a:1,why:"The Bharat Ratna.",ctx:"Capped at three a year.",hook:"Bharat Ratna = the very top."},
+{id:"s35",g:"AWD",r:"IN",k:"S",pic:"🎗️",q:"Which is India's highest wartime gallantry award?",o:["Ashoka Chakra","Param Vir Chakra","Maha Vir Chakra","Vir Chakra","Kirti Chakra"],a:1,why:"The Param Vir Chakra (PVC).",ctx:"The Ashoka Chakra is the peacetime equivalent.",hook:"PVC = top wartime bravery."},
+{id:"s36",g:"SPO",r:"INT",k:"S",pic:"⭕",q:"How many rings are on the Olympic flag?",o:["4","5","6","7","3"],a:1,why:"Five interlocking rings.",ctx:"They represent the five inhabited continents.",hook:"5 rings, 5 continents."},
+{id:"s37",g:"IRL",r:"INT",k:"S",pic:"🇺🇳",q:"How many permanent members does the UN Security Council have?",o:["3","5","7","10","15"],a:1,why:"Five: US, UK, France, Russia, China.",ctx:"They hold veto power.",hook:"P5 hold the veto."},
+{id:"s38",g:"GEO",r:"INT",k:"S",pic:"🌊",q:"Which is the largest ocean on Earth?",o:["Atlantic","Indian","Arctic","Pacific","Southern"],a:3,why:"The Pacific Ocean.",ctx:"Larger than all land combined.",hook:"Pacific = the biggest blue."},
+{id:"s39",g:"GEO",r:"INT",k:"S",pic:"🏔️",q:"Which is the highest mountain above sea level?",o:["K2","Kangchenjunga","Mount Everest","Makalu","Lhotse"],a:2,why:"Mount Everest (~8,849 m).",ctx:"On the Nepal–China border.",hook:"Everest = roof of the world."},
+{id:"s40",g:"ENV",r:"INT",k:"S",pic:"🌍",q:"When is World Environment Day observed?",o:["22 April","5 June","16 September","2 October","11 July"],a:1,why:"5 June, each year.",ctx:"Led by the UN Environment Programme.",hook:"5 June = World Environment Day."},
+{id:"s41",g:"ECO",r:"IN",k:"S",pic:"📊",q:"What does GDP stand for?",o:["Gross Domestic Product","General Demand Position","Gross Daily Production","Gross Distributed Profit","Global Domestic Price"],a:0,why:"Gross Domestic Product.",ctx:"Total value of goods & services produced in a country.",hook:"GDP = the country's total output."},
+{id:"s42",g:"POL",r:"IN",k:"S",pic:"📘",q:"Fundamental Duties were added by which Constitutional Amendment?",o:["42nd","44th","52nd","73rd","86th"],a:0,why:"The 42nd Amendment (1976).",ctx:"Listed under Article 51A.",hook:"42nd added duties (Article 51A)."},
+{id:"s43",g:"SCI",r:"INT",k:"S",pic:"🥇",q:"What is the chemical symbol for gold?",o:["Go","Gd","Au","Ag","Gl"],a:2,why:"Au, from Latin 'aurum'.",ctx:"Ag is silver.",hook:"Au = aurum = gold."},
+{id:"s44",g:"GEO",r:"IN",k:"S",pic:"🧭",q:"The Tropic of Cancer passes through how many Indian states?",o:["5","6","8","10","3"],a:2,why:"Eight states.",ctx:"From Gujarat in the west to Mizoram in the east.",hook:"Cancer cuts 8 Indian states."},
+{id:"s45",g:"SPO",r:"INT",k:"S",pic:"🏏",q:"How many players are on a cricket team on the field?",o:["9","10","11","12","13"],a:2,why:"Eleven players a side.",ctx:"Plus a 12th man as substitute.",hook:"Cricket XI = 11."},
+{id:"s46",g:"AWD",r:"IN",k:"S",pic:"📚",q:"The Jnanpith Award is given in which field?",o:["Science","Literature","Sports","Cinema","Music"],a:1,why:"India's highest literary honour.",ctx:"For outstanding contribution to literature.",hook:"Jnanpith = literature's top prize."},
+{id:"s47",g:"HIS",r:"IN",k:"S",pic:"🔥",q:"The Revolt of 1857 began at which town?",o:["Delhi","Meerut","Kanpur","Jhansi","Lucknow"],a:1,why:"It began at Meerut.",ctx:"Sparked by the greased-cartridge controversy.",hook:"1857 ignited at Meerut."},
+{id:"s48",g:"SCI",r:"INT",k:"S",pic:"🌱",q:"Which gas do plants release during photosynthesis?",o:["Carbon dioxide","Nitrogen","Oxygen","Hydrogen","Methane"],a:2,why:"Oxygen.",ctx:"They take in CO₂ and release O₂.",hook:"Plants breathe out oxygen."},
+{id:"s49",g:"IRL",r:"INT",k:"S",pic:"🏙️",q:"Where is the headquarters of the United Nations?",o:["Geneva","New York","Paris","Vienna","Nairobi"],a:1,why:"New York City.",ctx:"Other UN hubs include Geneva and Vienna.",hook:"UN HQ = New York."},
+{id:"s50",g:"GEO",r:"INT",k:"S",pic:"🏜️",q:"Which is the largest hot desert in the world?",o:["Gobi","Kalahari","Sahara","Thar","Arabian"],a:2,why:"The Sahara, in North Africa.",ctx:"Antarctica is the largest cold desert.",hook:"Sahara = biggest hot desert."},
+{id:"b1",g:"GEO",r:"IN",k:"S",pic:"🌊",q:"Which river is known as the 'Sorrow of Bihar'?",o:["Ganga","Kosi","Son","Gandak","Damodar"],a:1,why:"The Kosi, for its devastating floods.",ctx:"The Damodar was the 'Sorrow of Bengal' before dams.",hook:"Kosi = Bihar's sorrow."},
+{id:"b2",g:"GEO",r:"IN",k:"S",pic:"🗺️",q:"Which is the largest Indian state by area?",o:["Madhya Pradesh","Maharashtra","Rajasthan","Uttar Pradesh","Gujarat"],a:2,why:"Rajasthan is the biggest by area.",ctx:"UP is the largest by population.",hook:"Rajasthan = biggest on the map."},
+{id:"b3",g:"GEO",r:"IN",k:"S",pic:"📍",q:"What is the southernmost tip of the Indian mainland?",o:["Indira Point","Kanyakumari","Rameswaram","Point Calimere","Dhanushkodi"],a:1,why:"Kanyakumari (Cape Comorin).",ctx:"Indira Point in the Nicobar Islands is India's southernmost point overall.",hook:"Mainland's toe = Kanyakumari."},
+{id:"b4",g:"GEO",r:"MIX",k:"S",pic:"🌉",q:"Which strait separates India and Sri Lanka?",o:["Bering Strait","Palk Strait","Strait of Hormuz","Malacca Strait","Sunda Strait"],a:1,why:"The Palk Strait.",ctx:"Linked by the chain of shoals called Adam's Bridge.",hook:"Palk Strait splits India & Sri Lanka."},
+{id:"b5",g:"GEO",r:"INT",k:"S",pic:"🚢",q:"The Suez Canal connects the Mediterranean Sea to which sea?",o:["Black Sea","Caspian Sea","Red Sea","Arabian Sea","Dead Sea"],a:2,why:"It links the Mediterranean to the Red Sea.",ctx:"A key shortcut between Europe and Asia.",hook:"Suez = Mediterranean ↔ Red Sea."},
+{id:"b6",g:"GEO",r:"INT",k:"S",pic:"⛪",q:"Which is the smallest country in the world by area?",o:["Monaco","Nauru","Vatican City","San Marino","Liechtenstein"],a:2,why:"Vatican City.",ctx:"An enclave within Rome, Italy.",hook:"Vatican = tiniest nation."},
+{id:"b7",g:"POL",r:"IN",k:"S",pic:"📕",q:"Which Schedule of the Constitution deals with anti-defection?",o:["Eighth","Ninth","Tenth","Seventh","Sixth"],a:2,why:"The Tenth Schedule.",ctx:"Added by the 52nd Amendment, 1985.",hook:"10th Schedule = anti-defection."},
+{id:"b8",g:"POL",r:"IN",k:"S",pic:"⚖️",q:"How many Fundamental Rights does the Constitution currently guarantee?",o:["5","6","7","8","11"],a:1,why:"Six (the right to property was removed).",ctx:"Originally there were seven.",hook:"6 Fundamental Rights now."},
+{id:"b9",g:"POL",r:"IN",k:"S",pic:"🖊️",q:"Who appoints the Governor of a state in India?",o:["The Prime Minister","The President","The Chief Justice","The Parliament","The Chief Minister"],a:1,why:"The President appoints Governors.",ctx:"They hold office during the President's pleasure.",hook:"President appoints Governors."},
+{id:"b10",g:"POL",r:"IN",k:"S",pic:"📘",q:"The Right to Education is guaranteed under which Article?",o:["Article 19","Article 21A","Article 14","Article 32","Article 25"],a:1,why:"Article 21A.",ctx:"Added by the 86th Amendment, 2002.",hook:"21A = free education, 6–14 yrs."},
+{id:"b11",g:"POL",r:"IN",k:"S",pic:"🏛️",q:"Who is the ex-officio Chairman of the Rajya Sabha?",o:["The President","The Vice-President","The Speaker","The PM","The CJI"],a:1,why:"The Vice-President of India.",ctx:"The Lok Sabha is chaired by the Speaker.",hook:"VP chairs the Rajya Sabha."},
+{id:"b12",g:"HIS",r:"IN",k:"S",pic:"🏯",q:"Who founded the Maurya Empire?",o:["Ashoka","Bindusara","Chandragupta Maurya","Bimbisara","Samudragupta"],a:2,why:"Chandragupta Maurya, c. 321 BCE.",ctx:"Guided by Chanakya (Kautilya).",hook:"Chandragupta + Chanakya = Mauryas."},
+{id:"b13",g:"HIS",r:"IN",k:"S",pic:"🕯️",q:"In which year did the Jallianwala Bagh massacre take place?",o:["1909","1919","1929","1942","1905"],a:1,why:"1919, in Amritsar.",ctx:"Under General Dyer's orders.",hook:"Jallianwala = 1919."},
+{id:"b14",g:"HIS",r:"IN",k:"S",pic:"👑",q:"Who was the first Mughal Emperor of India?",o:["Akbar","Humayun","Babur","Shah Jahan","Aurangzeb"],a:2,why:"Babur, after the First Battle of Panipat (1526).",ctx:"He defeated Ibrahim Lodi.",hook:"Babur began the Mughals, 1526."},
+{id:"b15",g:"HIS",r:"INT",k:"S",pic:"🇫🇷",q:"In which year did the French Revolution begin?",o:["1776","1789","1799","1804","1815"],a:1,why:"1789, with the storming of the Bastille.",ctx:"Liberty, Equality, Fraternity.",hook:"Bastille fell in 1789."},
+{id:"b16",g:"HIS",r:"IN",k:"S",pic:"🎶",q:"Who wrote India's national anthem 'Jana Gana Mana'?",o:["Bankim Chandra Chatterjee","Rabindranath Tagore","Sarojini Naidu","Subramania Bharati","Mahatma Gandhi"],a:1,why:"Rabindranath Tagore.",ctx:"He also wrote Bangladesh's anthem.",hook:"Tagore penned Jana Gana Mana."},
+{id:"b17",g:"HIS",r:"INT",k:"S",pic:"🌕",q:"Who was the first human to walk on the Moon?",o:["Buzz Aldrin","Yuri Gagarin","Neil Armstrong","Michael Collins","Alan Shepard"],a:2,why:"Neil Armstrong, Apollo 11, 1969.",ctx:"Gagarin was first in space (1961).",hook:"Armstrong's 'giant leap', 1969."},
+{id:"b18",g:"SCI",r:"INT",k:"S",pic:"🍎",q:"What is the SI unit of force?",o:["Joule","Watt","Newton","Pascal","Ampere"],a:2,why:"The newton (N).",ctx:"Named after Isaac Newton.",hook:"Force → newton."},
+{id:"b19",g:"SCI",r:"INT",k:"S",pic:"🔴",q:"Which planet is known as the 'Red Planet'?",o:["Venus","Jupiter","Mars","Mercury","Saturn"],a:2,why:"Mars, due to iron oxide (rust).",ctx:"Home to the largest volcano, Olympus Mons.",hook:"Rusty Mars = red."},
+{id:"b20",g:"SCI",r:"INT",k:"S",pic:"💎",q:"What is the hardest known natural substance?",o:["Quartz","Diamond","Graphite","Topaz","Corundum"],a:1,why:"Diamond.",ctx:"Pure carbon under high pressure.",hook:"Diamond = hardest."},
+{id:"b21",g:"SCI",r:"INT",k:"S",pic:"🦴",q:"How many bones are there in the adult human body?",o:["186","196","206","216","226"],a:2,why:"206 bones.",ctx:"Babies are born with around 270.",hook:"Adults = 206 bones."},
+{id:"b22",g:"SCI",r:"INT",k:"S",pic:"💨",q:"Which gas is most abundant in Earth's atmosphere?",o:["Oxygen","Carbon dioxide","Nitrogen","Hydrogen","Argon"],a:2,why:"Nitrogen (~78%).",ctx:"Oxygen is about 21%.",hook:"Air is mostly nitrogen."},
+{id:"b23",g:"SCI",r:"INT",k:"S",pic:"☀️",q:"Exposure to sunlight helps the body make which vitamin?",o:["Vitamin A","Vitamin C","Vitamin D","Vitamin K","Vitamin B12"],a:2,why:"Vitamin D.",ctx:"Important for bone health.",hook:"Sunshine vitamin = D."},
+{id:"b24",g:"ECO",r:"IN",k:"S",pic:"📈",q:"Which body regulates the stock markets in India?",o:["RBI","SEBI","IRDAI","NABARD","SIDBI"],a:1,why:"SEBI (Securities and Exchange Board of India).",ctx:"RBI regulates banking & monetary policy.",hook:"Stocks → SEBI."},
+{id:"b25",g:"ECO",r:"IN",k:"S",pic:"🏦",q:"The 'repo rate' is the rate at which…",o:["banks lend to customers","the RBI lends to commercial banks","banks lend to each other","the govt borrows abroad","customers save"],a:1,why:"The RBI lends to banks against securities.",ctx:"A key tool of monetary policy.",hook:"Repo = RBI → banks."},
+{id:"b26",g:"ECO",r:"IN",k:"S",pic:"📅",q:"India's financial year runs from…",o:["January to December","April to March","July to June","October to September","March to February"],a:1,why:"1 April to 31 March.",ctx:"The Budget is presented on 1 February.",hook:"FY: April → March."},
+{id:"b27",g:"ECO",r:"INT",k:"S",pic:"🏢",q:"Where is the headquarters of the World Bank?",o:["Geneva","New York","Washington DC","Paris","London"],a:2,why:"Washington DC, USA.",ctx:"So is the IMF.",hook:"World Bank & IMF = Washington DC."},
+{id:"b28",g:"ECO",r:"INT",k:"S",pic:"💴",q:"What is the currency of Japan?",o:["Won","Yuan","Yen","Ringgit","Baht"],a:2,why:"The Japanese Yen.",ctx:"Won = Korea, Yuan = China.",hook:"Japan = Yen."},
+{id:"b29",g:"AWD",r:"IN",k:"S",pic:"🎬",q:"The Dadasaheb Phalke Award is given in which field?",o:["Literature","Cinema","Science","Sports","Music"],a:1,why:"India's highest award in cinema.",ctx:"Named after the 'father of Indian cinema'.",hook:"Phalke = films."},
+{id:"b30",g:"AWD",r:"INT",k:"S",pic:"🏅",q:"In how many categories are the Nobel Prizes awarded?",o:["4","5","6","7","8"],a:2,why:"Six: Physics, Chemistry, Medicine, Literature, Peace, Economics.",ctx:"Economics was added in 1969.",hook:"6 Nobel categories."},
+{id:"b31",g:"AWD",r:"IN",k:"S",pic:"🏆",q:"India's highest sporting honour, the Khel Ratna, is now named after?",o:["Sachin Tendulkar","Major Dhyan Chand","Milkha Singh","Dhanraj Pillay","P.T. Usha"],a:1,why:"Major Dhyan Chand Khel Ratna (renamed 2021).",ctx:"Dhyan Chand was a hockey legend.",hook:"Khel Ratna ← Major Dhyan Chand."},
+{id:"b32",g:"ART",r:"IN",k:"S",pic:"💃",q:"Bharatanatyam is a classical dance form of which state?",o:["Kerala","Tamil Nadu","Odisha","Andhra Pradesh","Manipur"],a:1,why:"Tamil Nadu.",ctx:"One of India's oldest classical dances.",hook:"Bharatanatyam = Tamil Nadu."},
+{id:"b33",g:"ART",r:"IN",k:"S",pic:"🛕",q:"The ruins of Hampi belong to which empire?",o:["Chola","Vijayanagara","Pallava","Chalukya","Maratha"],a:1,why:"The Vijayanagara Empire.",ctx:"A UNESCO World Heritage Site in Karnataka.",hook:"Hampi = Vijayanagara."},
+{id:"b34",g:"ART",r:"IN",k:"S",pic:"📗",q:"Who wrote 'The Discovery of India'?",o:["Mahatma Gandhi","Jawaharlal Nehru","B.R. Ambedkar","Sardar Patel","Rajendra Prasad"],a:1,why:"Jawaharlal Nehru, written in prison.",ctx:"He also wrote 'The Glimpses of World History'.",hook:"Nehru discovered India (in a book)."},
+{id:"b35",g:"ART",r:"IN",k:"S",pic:"🕌",q:"The Taj Mahal was built by which Mughal emperor?",o:["Akbar","Babur","Shah Jahan","Aurangzeb","Humayun"],a:2,why:"Shah Jahan, for Mumtaz Mahal.",ctx:"A UNESCO World Heritage Site in Agra.",hook:"Shah Jahan's monument of love."},
+{id:"b36",g:"ART",r:"IN",k:"S",pic:"🪕",q:"Kuchipudi is a classical dance form of which state?",o:["Karnataka","Andhra Pradesh","Kerala","Tamil Nadu","Telangana"],a:1,why:"Andhra Pradesh.",ctx:"Named after the village Kuchipudi.",hook:"Kuchipudi = Andhra."},
+{id:"b37",g:"SPO",r:"INT",k:"S",pic:"⚽",q:"How many players are on a football (soccer) team on the field?",o:["9","10","11","12","13"],a:2,why:"Eleven per side.",ctx:"Including the goalkeeper.",hook:"Football XI = 11."},
+{id:"b38",g:"SPO",r:"INT",k:"S",pic:"🎾",q:"The term 'Grand Slam' (four majors) is associated with which sport?",o:["Golf","Tennis","Cricket","Badminton","Squash"],a:1,why:"Tennis — the four majors.",ctx:"Australian Open, French Open, Wimbledon, US Open.",hook:"4 majors = tennis Grand Slam."},
+{id:"b39",g:"SPO",r:"IN",k:"S",pic:"🏏",q:"The Ranji Trophy is associated with which sport?",o:["Hockey","Football","Cricket","Badminton","Kabaddi"],a:2,why:"Domestic first-class cricket in India.",ctx:"Named after Ranjitsinhji.",hook:"Ranji = domestic cricket."},
+{id:"b40",g:"SPO",r:"INT",k:"S",pic:"🔥",q:"How often are the Summer Olympic Games held?",o:["Every 2 years","Every 3 years","Every 4 years","Every 5 years","Every year"],a:2,why:"Every four years.",ctx:"Paris hosted in 2024; Los Angeles next in 2028.",hook:"Olympics = once every 4 years."},
+{id:"b41",g:"IRL",r:"INT",k:"S",pic:"🏥",q:"Where is the headquarters of the World Health Organization (WHO)?",o:["New York","Geneva","Paris","Vienna","Rome"],a:1,why:"Geneva, Switzerland.",ctx:"A specialised UN agency.",hook:"WHO = Geneva."},
+{id:"b42",g:"IRL",r:"INT",k:"S",pic:"🇪🇺",q:"How many member states does the European Union have (post-Brexit)?",o:["25","26","27","28","30"],a:2,why:"27, after the UK left.",ctx:"Brexit took effect in 2020.",hook:"EU = 27 after Brexit."},
+{id:"b43",g:"IRL",r:"INT",k:"S",pic:"🤝",q:"BRICS originally stood for Brazil, Russia, India, China and…",o:["Singapore","South Africa","Saudi Arabia","South Korea","Spain"],a:1,why:"South Africa (joined 2010).",ctx:"The bloc has since expanded further.",hook:"The 'S' in BRICS = South Africa."},
+{id:"b44",g:"ENV",r:"INT",k:"S",pic:"🌡️",q:"The Kyoto Protocol primarily aimed to reduce…",o:["plastic waste","greenhouse gas emissions","ozone depletion","deforestation","water pollution"],a:1,why:"Greenhouse gas emissions.",ctx:"Adopted in 1997; succeeded by the Paris Agreement.",hook:"Kyoto = cut greenhouse gases."},
+{id:"b45",g:"ENV",r:"IN",k:"S",pic:"🐯",q:"In which year was Project Tiger launched in India?",o:["1969","1973","1985","1991","2006"],a:1,why:"1973.",ctx:"To protect the Bengal tiger and its habitat.",hook:"Project Tiger = 1973."},
+{id:"b46",g:"ENV",r:"INT",k:"S",pic:"🛡️",q:"The ozone layer protects Earth mainly from which radiation?",o:["Infrared","Ultraviolet","Microwave","Gamma","Radio"],a:1,why:"Ultraviolet (UV) radiation.",ctx:"It lies in the stratosphere.",hook:"Ozone blocks UV."},
+{id:"b47",g:"GEO",r:"IN",k:"S",pic:"💧",q:"Which is the largest freshwater lake in India?",o:["Chilika Lake","Wular Lake","Dal Lake","Vembanad Lake","Loktak Lake"],a:1,why:"Wular Lake, in Jammu & Kashmir.",ctx:"Chilika is the largest brackish-water lagoon.",hook:"Wular = biggest freshwater lake."},
+{id:"b48",g:"GEO",r:"INT",k:"S",pic:"🏔️",q:"Mount Kilimanjaro, Africa's highest peak, is in which country?",o:["Kenya","Tanzania","Ethiopia","Uganda","Rwanda"],a:1,why:"Tanzania.",ctx:"A dormant volcano.",hook:"Kilimanjaro = Tanzania."},
+{id:"b49",g:"GEO",r:"IN",k:"S",pic:"🌅",q:"The Sun Temple at Konark is in which state?",o:["Bihar","Odisha","West Bengal","Jharkhand","Assam"],a:1,why:"Odisha — a UNESCO World Heritage Site.",ctx:"Designed as a giant chariot of the Sun god.",hook:"Konark Sun Temple = Odisha."},
+{id:"b50",g:"POL",r:"IN",k:"S",pic:"🗳️",q:"What is the minimum age to become a member of the Lok Sabha?",o:["21","25","30","35","18"],a:1,why:"25 years.",ctx:"For the Rajya Sabha it is 30.",hook:"Lok Sabha = 25 minimum."},
+{id:"b51",g:"SCI",r:"INT",k:"S",pic:"🧬",q:"What does DNA stand for?",o:["Deoxyribonucleic acid","Dinucleic acid","Diribonucleic acid","Deoxyribose nitrate","Double nuclear acid"],a:0,why:"Deoxyribonucleic acid.",ctx:"It carries genetic information.",hook:"DNA = Deoxyribonucleic acid."},
+{id:"b52",g:"ECO",r:"IN",k:"S",pic:"📜",q:"What does 'IPO' stand for in finance?",o:["Internal Profit Order","Initial Public Offering","Indian Price Order","Investment Payout Option","Initial Private Offer"],a:1,why:"Initial Public Offering.",ctx:"When a company first sells shares to the public.",hook:"IPO = company goes public."},
+{id:"b53",g:"HIS",r:"IN",k:"S",pic:"✊",q:"'Do or Die' is the famous slogan of which movement?",o:["Non-Cooperation","Quit India","Civil Disobedience","Swadeshi","Khilafat"],a:1,why:"The Quit India Movement (1942).",ctx:"Given by Mahatma Gandhi.",hook:"'Do or Die' = Quit India, 1942."},
+{id:"b54",g:"GEO",r:"INT",k:"S",pic:"📐",q:"Which imaginary line divides Earth into the Northern and Southern Hemispheres?",o:["Prime Meridian","Tropic of Cancer","Equator","Arctic Circle","Tropic of Capricorn"],a:2,why:"The Equator (0° latitude).",ctx:"The Prime Meridian divides East and West.",hook:"Equator = N/S divide."},
+{id:"b55",g:"SCI",r:"INT",k:"S",pic:"⚡",q:"The speed of light in a vacuum is approximately…",o:["3,000 km/s","30,000 km/s","3,00,000 km/s","30,00,000 km/s","300 km/s"],a:2,why:"About 3,00,000 km/s (3×10⁸ m/s).",ctx:"The cosmic speed limit.",hook:"Light ≈ 3 lakh km per second."},
+{id:"b56",g:"ART",r:"IN",k:"S",pic:"🎭",q:"Kathakali is a classical dance-drama form of which state?",o:["Kerala","Tamil Nadu","Karnataka","Odisha","Assam"],a:0,why:"Kerala.",ctx:"Known for elaborate costumes and face make-up.",hook:"Kathakali = Kerala."},
+{id:"n1",g:"SPO",r:"INT",k:"C",pic:"🎾",q:"Who won the men's singles title at the 2026 Australian Open?",o:["Jannik Sinner","Carlos Alcaraz","Novak Djokovic","Daniil Medvedev","Alexander Zverev"],a:1,why:"Carlos Alcaraz beat Novak Djokovic in the final.",ctx:"It was his first Australian Open and completed his Career Grand Slam, aged 22.",hook:"Alcaraz completed the career Slam Down Under."},
+{id:"n2",g:"SPO",r:"INT",k:"C",pic:"🎾",q:"Who won the women's singles title at the 2026 Australian Open?",o:["Aryna Sabalenka","Iga Swiatek","Elena Rybakina","Coco Gauff","Madison Keys"],a:2,why:"Elena Rybakina beat Aryna Sabalenka in the final.",ctx:"Her second Grand Slam singles title.",hook:"Rybakina downed world No.1 Sabalenka."},
+{id:"n3",g:"SPO",r:"INT",k:"C",pic:"🏆",q:"Carlos Alcaraz completed his Career Grand Slam by winning which 2026 major?",o:["Wimbledon","US Open","Australian Open","French Open","ATP Finals"],a:2,why:"The 2026 Australian Open completed his set of all four majors.",ctx:"He was just 22 — one of the youngest to do it.",hook:"AO 2026 sealed Alcaraz's full set."},
+{id:"n4",g:"SPO",r:"INT",k:"C",pic:"🎾",q:"Who won the men's singles title at the 2026 French Open — his first Grand Slam?",o:["Carlos Alcaraz","Jannik Sinner","Alexander Zverev","Flavio Cobolli","Novak Djokovic"],a:2,why:"Alexander Zverev beat Flavio Cobolli for his first major.",ctx:"At Roland Garros, on clay.",hook:"Zverev finally got his Slam in Paris."},
+{id:"n5",g:"SPO",r:"INT",k:"C",pic:"🎾",q:"Who won the women's singles title at the 2026 French Open?",o:["Coco Gauff","Mirra Andreeva","Aryna Sabalenka","Iga Swiatek","Elena Rybakina"],a:1,why:"Mirra Andreeva won her maiden Grand Slam.",ctx:"On the Paris clay at Roland Garros.",hook:"Teen star Andreeva conquered Paris."},
+{id:"n6",g:"AWD",r:"INT",k:"C",pic:"🎵",q:"Which artist won Album of the Year at the 2026 Grammys?",o:["Taylor Swift","Bad Bunny","Billie Eilish","Kendrick Lamar","Sabrina Carpenter"],a:1,why:"Bad Bunny won for 'Debí Tirar Más Fotos'.",ctx:"At the 68th Grammy Awards in Los Angeles.",hook:"Bad Bunny took Album of the Year."},
+{id:"n7",g:"AWD",r:"INT",k:"C",pic:"🎤",q:"Who won Record of the Year ('Luther') at the 2026 Grammys?",o:["Lady Gaga","Doechii","Kendrick Lamar & SZA","Bruno Mars","Chappell Roan"],a:2,why:"Kendrick Lamar with SZA won for 'Luther'.",ctx:"Record of the Year honours a single recording.",hook:"'Luther' — Kendrick & SZA."},
+{id:"n8",g:"AWD",r:"INT",k:"C",pic:"🎶",q:"Who won Song of the Year ('Wildflower') at the 2026 Grammys?",o:["Lady Gaga","Billie Eilish & Finneas","Sabrina Carpenter","Rosé & Bruno Mars","Tyler, the Creator"],a:1,why:"Billie Eilish and Finneas won for 'Wildflower'.",ctx:"Song of the Year is a songwriters' award.",hook:"'Wildflower' — the Eilish siblings."},
+{id:"n9",g:"AWD",r:"IN",k:"C",pic:"📚",q:"The 2025 Jnanpith Award, India's highest literary honour, was conferred on which Tamil poet?",o:["Vairamuthu","Perumal Murugan","Imayam","Sirpi Balasubramaniam","Salma"],a:0,why:"Vairamuthu, the celebrated Tamil poet-lyricist.",ctx:"The Jnanpith is given for outstanding contribution to literature.",hook:"Tamil verse legend Vairamuthu — Jnanpith."},
+{id:"n10",g:"ECO",r:"IN",k:"C",pic:"🏦",q:"At what level did the RBI hold its repo rate through 2026?",o:["4.00%","5.25%","6.50%","5.50%","6.00%"],a:1,why:"The RBI kept the repo rate at 5.25%.",ctx:"Held steady for several meetings under Governor Sanjay Malhotra.",hook:"Repo rate parked at 5.25%."},
+{id:"n11",g:"ECO",r:"IN",k:"C",pic:"⚖️",q:"What monetary-policy stance did the RBI maintain in 2026?",o:["Accommodative","Neutral","Hawkish","Calibrated tightening","Withdrawal of accommodation"],a:1,why:"A neutral stance, giving flexibility on future moves.",ctx:"It signals readiness to move either way as data evolves.",hook:"RBI played it neutral in 2026."},
+{id:"n12",g:"ECO",r:"IN",k:"C",pic:"📉",q:"In December 2025 the RBI cut the repo rate to 5.25% — its lowest level since which year?",o:["2019","2020","2022","2023","2024"],a:2,why:"The cut to 5.25% was the lowest repo rate since July 2022.",ctx:"It capped 125 bps of cuts during 2025; the RBI then held at 5.25% through mid-2026 with a neutral stance.",hook:"Dec 2025 → 5.25%, lowest since 2022."},
+{id:"n13",g:"POL",r:"IN",k:"C",pic:"🧾",q:"Who is the Comptroller and Auditor General (CAG) of India in 2026?",o:["G.C. Murmu","K. Sanjay Murthy","Rajiv Mehrishi","Shashi Kant Sharma","Vinod Rai"],a:1,why:"K. Sanjay Murthy is the CAG.",ctx:"The CAG audits government accounts.",hook:"Sanjay Murthy audits the government's books."},
+{id:"n14",g:"POL",r:"IN",k:"C",pic:"📈",q:"Who is India's Chief Economic Adviser (CEA) in 2026?",o:["Krishnamurthy Subramanian","V. Anantha Nageswaran","Arvind Subramanian","Raghuram Rajan","Kaushik Basu"],a:1,why:"V. Anantha Nageswaran is the CEA.",ctx:"He authors the annual Economic Survey.",hook:"Nageswaran pens the Economic Survey."},
+{id:"n15",g:"POL",r:"IN",k:"C",pic:"🗂️",q:"Who is the Cabinet Secretary of India in 2026?",o:["Rajiv Gauba","T.V. Somanathan","P.K. Sinha","Pradeep Kumar Sinha","Ajay Bhushan Pandey"],a:1,why:"Dr T.V. Somanathan is the Cabinet Secretary.",ctx:"The senior-most civil servant in India.",hook:"Somanathan tops the bureaucracy."},
+{id:"n16",g:"POL",r:"IN",k:"C",pic:"⚖️",q:"Who is the Attorney General of India in 2026?",o:["K.K. Venugopal","R. Venkataramani","Mukul Rohatgi","Tushar Mehta","Goolam Vahanvati"],a:1,why:"R. Venkataramani is the Attorney General.",ctx:"The government's chief legal adviser.",hook:"Venkataramani = India's top law officer."},
+{id:"n17",g:"IRL",r:"INT",k:"C",pic:"🗳️",q:"Whose TISZA party defeated Viktor Orbán's Fidesz in Hungary's 2026 election?",o:["Péter Magyar","Klára Dobrev","Gergely Karácsony","Ferenc Gyurcsány","András Fekete-Győr"],a:0,why:"Péter Magyar, a former Fidesz insider, led TISZA to victory.",ctx:"It ended Orbán's long grip on power.",hook:"Magyar's TISZA toppled Orbán."},
+{id:"n18",g:"IRL",r:"INT",k:"C",pic:"🏔️",q:"In which town was the 2026 World Economic Forum (WEF) annual meeting held?",o:["Geneva","Davos","Zurich","Bern","Lucerne"],a:1,why:"Davos, Switzerland — as every January.",ctx:"It sets the tone for the year's global economic agenda.",hook:"Davos = the WEF's home."},
+{id:"n19",g:"IRL",r:"INT",k:"C",pic:"🎆",q:"Under what banner did the USA mark 250 years of independence in 2026?",o:["USA250","Liberty250","America250","Freedom250","Spirit of 76"],a:2,why:"America250 — the semiquincentennial.",ctx:"Year-long festivals and events across the US.",hook:"250 years → America250."},
+{id:"n20",g:"AWD",r:"IN",k:"C",pic:"🎻",q:"Which legendary classical violinist received the Padma Vibhushan in 2026?",o:["L. Subramaniam","N. Rajam","T.N. Krishnan","Kala Ramnath","Sangeeta Shankar"],a:1,why:"N. Rajam, the Hindustani violin maestro.",ctx:"One of the 2026 Padma Vibhushan awardees.",hook:"Violin doyenne N. Rajam — top honour."},
+{id:"n21",g:"AWD",r:"IN",k:"C",pic:"🎾",q:"Which tennis legend was awarded the Padma Bhushan in 2026?",o:["Leander Paes","Vijay Amritraj","Mahesh Bhupathi","Ramanathan Krishnan","Ramesh Krishnan"],a:1,why:"Vijay Amritraj.",ctx:"A pioneer of Indian tennis on the global stage.",hook:"Vijay Amritraj — Padma Bhushan."},
+{id:"n22",g:"SPO",r:"IN",k:"C",pic:"🏟️",q:"Which stadium hosted both the 2026 T20 World Cup final and the IPL 2026 final?",o:["Wankhede, Mumbai","Eden Gardens, Kolkata","M.A. Chidambaram, Chennai","Narendra Modi Stadium, Ahmedabad","Arun Jaitley, Delhi"],a:3,why:"The Narendra Modi Stadium in Ahmedabad — the world's largest cricket stadium.",ctx:"India won the T20 WC there; RCB won the IPL there.",hook:"Ahmedabad's Modi Stadium hosted both finals."},
+{id:"n23",g:"POL",r:"IN",k:"C",pic:"📜",q:"Who is the Solicitor General of India in 2026?",o:["Harish Salve","Tushar Mehta","Gopal Subramanium","Ranjit Kumar","Mohan Parasaran"],a:1,why:"Tushar Mehta is the Solicitor General.",ctx:"The second-highest law officer after the Attorney General.",hook:"Tushar Mehta = India's SG."},
+{id:"n24",g:"AWD",r:"INT",k:"C",pic:"🎙️",q:"Who hosted the 2026 Grammy Awards?",o:["Jimmy Fallon","Trevor Noah","James Corden","John Mulaney","Stephen Colbert"],a:1,why:"Trevor Noah hosted, for the sixth (and final) time.",ctx:"The 68th Grammys were held in Los Angeles.",hook:"Trevor Noah's farewell Grammy hosting."},
+{id:"n25",g:"AWD",r:"INT",k:"C",pic:"🌟",q:"Who won Best New Artist at the 2026 Grammys?",o:["Chappell Roan","Doechii","Olivia Dean","Gracie Abrams","Benson Boone"],a:2,why:"Olivia Dean won Best New Artist.",ctx:"One of the night's four major (general field) awards.",hook:"Olivia Dean — Best New Artist 2026."},
+{id:"n26",g:"SPO",r:"INT",k:"C",pic:"🏆",q:"Whom did Carlos Alcaraz beat in the 2026 Australian Open final?",o:["Jannik Sinner","Novak Djokovic","Daniil Medvedev","Alexander Zverev","Taylor Fritz"],a:1,why:"He defeated Novak Djokovic.",ctx:"Djokovic has the most AO men's titles (10) in the Open era.",hook:"Alcaraz beat the GOAT Djokovic."},
+{id:"n27",g:"IRL",r:"INT",k:"C",pic:"🤝",q:"The 2026 NATO leaders' summit is hosted by which country?",o:["United States","Germany","Turkey","Netherlands","Spain"],a:2,why:"Turkey (in Ankara) hosts the 2026 NATO summit.",ctx:"Turkey also hosts COP31 in 2026.",hook:"NATO heads to Ankara, Turkey."},
+{id:"n28",g:"ECO",r:"IN",k:"C",pic:"🎯",q:"What is the RBI's flexible inflation-targeting band?",o:["2%–4%","2%–6%","3%–5%","4%–8%","1%–5%"],a:1,why:"4% target, within a 2%–6% band.",ctx:"Late-2025 inflation briefly dipped below the lower bound.",hook:"4% target, 2–6% band."},
+{id:"n29",g:"ECO",r:"IN",k:"C",pic:"💹",q:"India's GDP grew at roughly what rate in the July–September 2025 quarter?",o:["4.1%","6.0%","8.2%","9.5%","5.4%"],a:2,why:"About 8.2% — a strong print.",ctx:"It underscored India as the fastest-growing major economy.",hook:"Q2 FY26 GDP ≈ 8.2%."},
+{id:"n30",g:"IRL",r:"INT",k:"C",pic:"🇺🇸",q:"Which US President was a headline attendee at the Davos 2026 WEF meeting?",o:["Joe Biden","Donald Trump","Barack Obama","Kamala Harris","Bill Clinton"],a:1,why:"Donald Trump, in his second term.",ctx:"He helped set the tone of the global economic agenda.",hook:"Trump headlined Davos 2026."},
+{id:"n31",g:"AWD",r:"IN",k:"C",pic:"🏅",q:"How many awardees featured on the 2026 Padma awards list?",o:["106","119","131","142","154"],a:2,why:"131 awardees: 5 Padma Vibhushan, 13 Padma Bhushan, 113 Padma Shri.",ctx:"Announced on the eve of Republic Day.",hook:"131 Padmas in 2026."},
+{id:"n32",g:"IRL",r:"INT",k:"C",pic:"🇫🇷",q:"Which country hosts the 2026 G7 leaders' summit?",o:["Italy","Canada","France","Japan","Germany"],a:2,why:"France (Évian-les-Bains) hosts the 52nd G7 summit.",ctx:"The G7 groups major advanced economies.",hook:"G7 2026 → France."},
+{id:"n33",g:"SPO",r:"IN",k:"C",pic:"🏏",q:"Who was named Player of the Match in the IPL 2026 final won by RCB?",o:["Rajat Patidar","Virat Kohli","Faf du Plessis","Josh Hazlewood","Glenn Maxwell"],a:1,why:"Virat Kohli, with a match-winning 75.",ctx:"RCB beat Gujarat Titans to defend their title.",hook:"Kohli's final-night masterclass."},
+{id:"n34",g:"SPO",r:"INT",k:"C",pic:"🥇",q:"Which German player won his first Grand Slam title at the 2026 French Open?",o:["Alexander Zverev","Jan-Lennard Struff","Dominik Koepfer","Daniel Altmaier","Yannick Hanfmann"],a:0,why:"Alexander Zverev, finally a Slam champion.",ctx:"He beat Flavio Cobolli in the final.",hook:"Zverev's long wait ended in Paris."},
+{id:"t1",g:"GEO",r:"IN",k:"S",pic:"🌊",q:"Which is the longest river flowing within India?",o:["Brahmaputra","Godavari","Ganga","Yamuna","Narmada"],a:2,why:"The Ganga, ~2,525 km within India.",ctx:"It rises at Gangotri and drains into the Bay of Bengal.",hook:"Ganga = India's longest river."},
+{id:"t2",g:"GEO",r:"IN",k:"S",pic:"🏖️",q:"Which Indian state has the longest coastline?",o:["Tamil Nadu","Gujarat","Andhra Pradesh","Maharashtra","Kerala"],a:1,why:"Gujarat has the longest coastline.",ctx:"Andhra Pradesh is second.",hook:"Gujarat = longest coast."},
+{id:"t3",g:"GEO",r:"IN",k:"S",pic:"🌏",q:"The Brahmaputra river is known as the 'Tsangpo' in which region?",o:["Nepal","Bhutan","Tibet","Bangladesh","Myanmar"],a:2,why:"It is called the Yarlung Tsangpo in Tibet.",ctx:"It becomes the Jamuna in Bangladesh.",hook:"In Tibet, Brahmaputra = Tsangpo."},
+{id:"t4",g:"GEO",r:"IN",k:"S",pic:"⛰️",q:"The Nathu La pass connects India with which country?",o:["Nepal","China","Bhutan","Myanmar","Pakistan"],a:1,why:"Nathu La links Sikkim (India) and Tibet (China).",ctx:"A historic Silk Route trading pass.",hook:"Nathu La = India ↔ China (Sikkim)."},
+{id:"t5",g:"GEO",r:"INT",k:"S",pic:"🏞️",q:"Which is the longest river in the world?",o:["Amazon","Nile","Yangtze","Mississippi","Congo"],a:1,why:"The Nile (traditionally regarded as longest).",ctx:"The Amazon carries the most water by volume.",hook:"Nile = world's longest river."},
+{id:"t6",g:"GEO",r:"INT",k:"S",pic:"🌋",q:"Mount Fuji is located in which country?",o:["China","South Korea","Japan","Indonesia","Philippines"],a:2,why:"Japan's highest peak and an active volcano.",ctx:"A sacred symbol of Japan.",hook:"Fuji = Japan."},
+{id:"t7",g:"GEO",r:"INT",k:"S",pic:"🪸",q:"The Great Barrier Reef lies off the coast of which country?",o:["Indonesia","Australia","Philippines","Mexico","Brazil"],a:1,why:"Off the coast of Queensland, Australia.",ctx:"The world's largest coral reef system.",hook:"Great Barrier Reef = Australia."},
+{id:"t8",g:"POL",r:"IN",k:"S",pic:"📕",q:"How many Schedules does the Indian Constitution currently have?",o:["8","10","12","14","9"],a:2,why:"Twelve Schedules.",ctx:"The latest, the Twelfth, was added by the 74th Amendment.",hook:"12 Schedules now."},
+{id:"t9",g:"POL",r:"IN",k:"S",pic:"⚖️",q:"Who administers the oath of office to the President of India?",o:["The Prime Minister","The Vice-President","The Chief Justice of India","The Speaker","The Cabinet Secretary"],a:2,why:"The Chief Justice of India.",ctx:"In the CJI's absence, the senior-most SC judge.",hook:"CJI swears in the President."},
+{id:"t10",g:"POL",r:"IN",k:"S",pic:"🏛️",q:"Which house of Parliament is called the 'Upper House'?",o:["Lok Sabha","Rajya Sabha","Vidhan Sabha","Vidhan Parishad","Gram Sabha"],a:1,why:"The Rajya Sabha (Council of States).",ctx:"The Lok Sabha is the 'Lower House'.",hook:"Rajya Sabha = Upper House."},
+{id:"t11",g:"POL",r:"IN",k:"S",pic:"🇺🇸",q:"India's Fundamental Rights are inspired by the constitution of which country?",o:["United Kingdom","United States","Ireland","France","Canada"],a:1,why:"Borrowed from the US Bill of Rights.",ctx:"Directive Principles came from Ireland.",hook:"Rights ← USA, Directives ← Ireland."},
+{id:"t12",g:"POL",r:"IN",k:"S",pic:"💰",q:"A Money Bill can be introduced only in which house?",o:["Rajya Sabha","Lok Sabha","Either house","State Assembly","A joint session"],a:1,why:"Only in the Lok Sabha.",ctx:"The Rajya Sabha can only recommend changes.",hook:"Money Bills start in the Lok Sabha."},
+{id:"t13",g:"HIS",r:"IN",k:"S",pic:"🦾",q:"Who is known as the 'Iron Man of India'?",o:["Bhagat Singh","Subhas Chandra Bose","Sardar Vallabhbhai Patel","Lal Bahadur Shastri","B.R. Ambedkar"],a:2,why:"Sardar Patel, who unified the princely states.",ctx:"The Statue of Unity honours him.",hook:"Iron Man = Sardar Patel."},
+{id:"t14",g:"HIS",r:"IN",k:"S",pic:"⚔️",q:"The Battle of Plassey (1757) was won by which side?",o:["Marathas","The British (Robert Clive)","The Mughals","The French","Tipu Sultan"],a:1,why:"The British East India Company under Robert Clive.",ctx:"It laid the foundation of British rule in India.",hook:"Plassey 1757 = Clive's British win."},
+{id:"t15",g:"HIS",r:"IN",k:"S",pic:"🏛️",q:"Who founded the Indian National Congress in 1885?",o:["Dadabhai Naoroji","A.O. Hume","W.C. Bonnerjee","Bal Gangadhar Tilak","Gopal Krishna Gokhale"],a:1,why:"Allan Octavian Hume, a retired British civil servant.",ctx:"W.C. Bonnerjee was its first president.",hook:"A.O. Hume founded the INC."},
+{id:"t16",g:"HIS",r:"IN",k:"S",pic:"✊",q:"'Swaraj is my birthright and I shall have it' was the slogan of?",o:["Mahatma Gandhi","Bal Gangadhar Tilak","Lala Lajpat Rai","Bhagat Singh","Subhas Chandra Bose"],a:1,why:"Bal Gangadhar Tilak.",ctx:"He was called 'Lokmanya'.",hook:"Tilak: Swaraj is my birthright."},
+{id:"t17",g:"HIS",r:"IN",k:"S",pic:"👑",q:"Who was the last Mughal Emperor of India?",o:["Aurangzeb","Shah Alam II","Bahadur Shah Zafar","Akbar II","Muhammad Shah"],a:2,why:"Bahadur Shah Zafar, exiled after the 1857 revolt.",ctx:"He was sent to Rangoon by the British.",hook:"Last Mughal = Bahadur Shah Zafar."},
+{id:"t18",g:"HIS",r:"INT",k:"S",pic:"🎖️",q:"In which year did the First World War begin?",o:["1905","1914","1918","1939","1920"],a:1,why:"1914 (ended 1918).",ctx:"Triggered by the assassination of Archduke Franz Ferdinand.",hook:"WWI began in 1914."},
+{id:"t19",g:"SCI",r:"INT",k:"S",pic:"🧂",q:"What is the chemical formula of common salt?",o:["KCl","NaCl","CaCO₃","NaHCO₃","H₂O"],a:1,why:"Sodium chloride, NaCl.",ctx:"NaHCO₃ is baking soda.",hook:"Table salt = NaCl."},
+{id:"t20",g:"SCI",r:"INT",k:"S",pic:"🪐",q:"Which is the largest planet in the solar system?",o:["Saturn","Jupiter","Neptune","Earth","Uranus"],a:1,why:"Jupiter, a gas giant.",ctx:"Saturn is the second largest.",hook:"Jupiter = biggest planet."},
+{id:"t21",g:"SCI",r:"INT",k:"S",pic:"🔌",q:"What is the SI unit of electric current?",o:["Volt","Watt","Ampere","Ohm","Coulomb"],a:2,why:"The ampere (A).",ctx:"Named after André-Marie Ampère.",hook:"Current → ampere."},
+{id:"t22",g:"SCI",r:"INT",k:"S",pic:"🩸",q:"Which blood group is known as the 'universal donor'?",o:["AB positive","A positive","O negative","B negative","AB negative"],a:2,why:"O negative.",ctx:"AB positive is the universal recipient.",hook:"O- gives to all."},
+{id:"t23",g:"SCI",r:"INT",k:"S",pic:"🍊",q:"Deficiency of which vitamin causes scurvy?",o:["Vitamin A","Vitamin B12","Vitamin C","Vitamin D","Vitamin K"],a:2,why:"Vitamin C deficiency.",ctx:"Found in citrus fruits.",hook:"No Vitamin C → scurvy."},
+{id:"t24",g:"SCI",r:"INT",k:"S",pic:"🔇",q:"Sound cannot travel through which of the following?",o:["Water","Air","Steel","Vacuum","Wood"],a:3,why:"A vacuum has no medium to carry sound.",ctx:"Sound needs a material medium.",hook:"No medium, no sound — vacuum."},
+{id:"t25",g:"SCI",r:"INT",k:"S",pic:"☀️",q:"Which is the nearest planet to the Sun?",o:["Venus","Mercury","Earth","Mars","Jupiter"],a:1,why:"Mercury.",ctx:"Venus is the hottest, though.",hook:"Closest to the Sun = Mercury."},
+{id:"t26",g:"ECO",r:"IN",k:"S",pic:"📱",q:"What does 'UPI' stand for?",o:["Universal Payment Index","Unified Payments Interface","United Payment India","Universal Personal ID","Unique Payment Identifier"],a:1,why:"Unified Payments Interface.",ctx:"Run by NPCI; revolutionised digital payments in India.",hook:"UPI = Unified Payments Interface."},
+{id:"t27",g:"ECO",r:"INT",k:"S",pic:"📊",q:"The Human Development Index (HDI) is published by?",o:["World Bank","IMF","UNDP","WEF","WTO"],a:2,why:"The UN Development Programme.",ctx:"It combines income, education and life expectancy.",hook:"HDI = UNDP."},
+{id:"t28",g:"ECO",r:"INT",k:"S",pic:"🐂",q:"In stock markets, a 'bull market' is one that is?",o:["Falling","Rising","Flat","Closing","Frozen"],a:1,why:"A rising market.",ctx:"A 'bear market' is a falling one.",hook:"Bull charges up; bear swipes down."},
+{id:"t29",g:"ECO",r:"INT",k:"S",pic:"💵",q:"What does 'FDI' stand for?",o:["Foreign Domestic Income","Foreign Direct Investment","Federal Debt Instrument","Fixed Deposit Interest","Fund Distribution Index"],a:1,why:"Foreign Direct Investment.",ctx:"Investment by a foreign entity into a country's business.",hook:"FDI = Foreign Direct Investment."},
+{id:"t30",g:"AWD",r:"INT",k:"S",pic:"📖",q:"The (main) Booker Prize is awarded for fiction written in which language?",o:["Any language","French","English","Spanish","German"],a:2,why:"English-language fiction.",ctx:"The International Booker covers translated fiction.",hook:"Booker = English fiction."},
+{id:"t31",g:"ART",r:"IN",k:"S",pic:"💃",q:"Mohiniyattam is a classical dance form of which state?",o:["Tamil Nadu","Kerala","Karnataka","Odisha","Manipur"],a:1,why:"Kerala.",ctx:"A graceful solo dance, the 'dance of the enchantress'.",hook:"Mohiniyattam = Kerala."},
+{id:"t32",g:"ART",r:"IN",k:"S",pic:"🎵",q:"Who composed the national song 'Vande Mataram'?",o:["Rabindranath Tagore","Bankim Chandra Chattopadhyay","Subramania Bharati","Sarojini Naidu","Muhammad Iqbal"],a:1,why:"Bankim Chandra Chattopadhyay, in his novel 'Anandamath'.",ctx:"Tagore wrote 'Jana Gana Mana'.",hook:"Bankim Chandra = Vande Mataram."},
+{id:"t33",g:"ART",r:"IN",k:"S",pic:"🛕",q:"The Ajanta and Ellora caves are located in which state?",o:["Madhya Pradesh","Maharashtra","Karnataka","Odisha","Gujarat"],a:1,why:"Maharashtra (near Aurangabad).",ctx:"UNESCO World Heritage Sites of rock-cut art.",hook:"Ajanta-Ellora = Maharashtra."},
+{id:"t34",g:"ART",r:"IN",k:"S",pic:"🪘",q:"Kathak is a classical dance form mainly associated with which region?",o:["South India","North India","North-East India","Western India","Central India"],a:1,why:"North India.",ctx:"Known for fast spins (chakkars) and storytelling.",hook:"Kathak = North India."},
+{id:"t35",g:"SPO",r:"IN",k:"S",pic:"🤼",q:"How many players are there on court in a kabaddi team?",o:["5","6","7","9","11"],a:2,why:"Seven players per side.",ctx:"A contact team sport native to South Asia.",hook:"Kabaddi = 7 a side."},
+{id:"t36",g:"SPO",r:"INT",k:"S",pic:"🏸",q:"The Thomas Cup is associated with which sport?",o:["Table Tennis","Badminton","Tennis","Squash","Hockey"],a:1,why:"Men's international badminton.",ctx:"The women's equivalent is the Uber Cup.",hook:"Thomas Cup = men's badminton."},
+{id:"t37",g:"SPO",r:"IN",k:"S",pic:"⚽",q:"The Santosh Trophy is contested in which sport?",o:["Hockey","Football","Cricket","Kabaddi","Volleyball"],a:1,why:"Indian domestic football (between states).",ctx:"One of India's oldest football tournaments.",hook:"Santosh Trophy = football."},
+{id:"t38",g:"SPO",r:"INT",k:"S",pic:"🎾",q:"The Davis Cup is associated with which sport?",o:["Golf","Tennis","Cricket","Polo","Rowing"],a:1,why:"International men's team tennis.",ctx:"The women's equivalent is the Billie Jean King Cup.",hook:"Davis Cup = team tennis."},
+{id:"t39",g:"IRL",r:"INT",k:"S",pic:"👥",q:"Which country has the world's largest population?",o:["China","India","United States","Indonesia","Pakistan"],a:1,why:"India, having overtaken China in 2023.",ctx:"The two together hold over a third of humanity.",hook:"India = most populous now."},
+{id:"t40",g:"IRL",r:"INT",k:"S",pic:"🗼",q:"Where is the headquarters of UNESCO?",o:["Geneva","New York","Paris","Vienna","Rome"],a:2,why:"Paris, France.",ctx:"UNESCO promotes education, science and culture.",hook:"UNESCO = Paris."},
+{id:"t41",g:"IRL",r:"INT",k:"S",pic:"🗽",q:"The Statue of Liberty was gifted to the USA by which country?",o:["United Kingdom","France","Italy","Spain","Germany"],a:1,why:"France, in 1886.",ctx:"A symbol of friendship and freedom.",hook:"France gifted Lady Liberty."},
+{id:"t42",g:"ENV",r:"IN",k:"S",pic:"🌳",q:"The Chipko Movement was associated with the protection of?",o:["Rivers","Trees and forests","Tigers","Wetlands","Mountains"],a:1,why:"Hugging trees to prevent felling.",ctx:"Began in Uttarakhand in the 1970s.",hook:"Chipko = hug the trees."},
+{id:"t43",g:"ENV",r:"INT",k:"S",pic:"🛡️",q:"Which protocol aimed to phase out ozone-depleting substances?",o:["Kyoto Protocol","Montreal Protocol","Paris Agreement","Basel Convention","Ramsar Convention"],a:1,why:"The Montreal Protocol (1987).",ctx:"Widely seen as the most successful environmental treaty.",hook:"Montreal saved the ozone layer."},
+{id:"t44",g:"GEO",r:"INT",k:"S",pic:"🧭",q:"Which imaginary line is at 0° longitude?",o:["The Equator","The Prime Meridian","The Tropic of Cancer","The International Date Line","The Arctic Circle"],a:1,why:"The Prime Meridian, through Greenwich.",ctx:"It defines Greenwich Mean Time.",hook:"0° longitude = Prime Meridian."},
+{id:"t45",g:"GEO",r:"IN",k:"S",pic:"🏜️",q:"The Thar Desert lies mainly in which Indian state?",o:["Gujarat","Rajasthan","Haryana","Punjab","Madhya Pradesh"],a:1,why:"Rajasthan (the Great Indian Desert).",ctx:"It extends into Pakistan too.",hook:"Thar = Rajasthan."},
+{id:"t46",g:"POL",r:"IN",k:"S",pic:"📜",q:"India's Directive Principles of State Policy are borrowed from which country?",o:["USA","Ireland","UK","Canada","Australia"],a:1,why:"Ireland.",ctx:"They guide the state in policy-making (non-justiciable).",hook:"DPSP ← Ireland."},
+{id:"t47",g:"HIS",r:"IN",k:"S",pic:"🛣️",q:"Who is credited with building the Grand Trunk Road in its early form?",o:["Akbar","Sher Shah Suri","Ashoka","Shah Jahan","Chandragupta Maurya"],a:1,why:"Sher Shah Suri revived and extended it.",ctx:"One of Asia's oldest and longest roads.",hook:"Sher Shah built the GT Road."},
+{id:"t48",g:"SCI",r:"INT",k:"S",pic:"😮‍💨",q:"Which gas do humans mainly exhale?",o:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen","Helium"],a:2,why:"Carbon dioxide.",ctx:"We breathe in oxygen and breathe out CO₂.",hook:"We exhale CO₂."},
+{id:"t49",g:"ECO",r:"IN",k:"S",pic:"🏛️",q:"What does 'GST' stand for?",o:["General Sales Tax","Goods and Services Tax","Gross State Tax","Government Service Tax","Global Standard Tax"],a:1,why:"Goods and Services Tax.",ctx:"A unified indirect tax launched in 2017.",hook:"GST = Goods & Services Tax."},
+{id:"t50",g:"GEO",r:"IN",k:"S",pic:"👥",q:"Which is the most populous state in India?",o:["Maharashtra","Bihar","Uttar Pradesh","West Bengal","Madhya Pradesh"],a:2,why:"Uttar Pradesh.",ctx:"Rajasthan is the largest by area.",hook:"UP = most people."},
+{id:"t51",g:"IRL",r:"INT",k:"S",pic:"💶",q:"The single currency 'Euro' is used by countries in the?",o:["Commonwealth","Eurozone","ASEAN","BRICS","G7"],a:1,why:"The Eurozone, a group of EU countries.",ctx:"Not every EU country uses the euro.",hook:"Euro = Eurozone."},
+{id:"t52",g:"HIS",r:"IN",k:"S",pic:"🏺",q:"The Indus Valley Civilization belongs to which 'age'?",o:["Stone Age","Bronze Age","Iron Age","Copper-Stone (start)","Steel Age"],a:1,why:"The Bronze Age.",ctx:"Known for planned cities and drainage.",hook:"Harappans = Bronze Age."},
+{id:"t53",g:"SCI",r:"INT",k:"S",pic:"🔬",q:"The study of living organisms is called?",o:["Geology","Biology","Chemistry","Ecology","Zoology"],a:1,why:"Biology.",ctx:"Zoology (animals) and Botany (plants) are branches.",hook:"Life study = Biology."},
+{id:"t54",g:"GEO",r:"INT",k:"S",pic:"🧂",q:"Which is the lowest point on Earth's land surface?",o:["Death Valley","Dead Sea shore","Mariana Trench","Lake Assal","Caspian Sea"],a:1,why:"The shore of the Dead Sea (lowest land elevation).",ctx:"The Mariana Trench is the lowest point overall, but underwater.",hook:"Dead Sea = lowest dry land."}
+];
+
+const MATCH=[
+ {g:"AWD",title:"2026 winner → the event",hook:"this year's headline results.",
+  pairs:[["India","2026 T20 World Cup"],["RCB","IPL 2026"],["One Battle After Another","2026 Best Picture"],["Norway","2026 Winter Olympics (top)"]]},
+ {g:"POL",title:"2026 office → who holds it",hook:"current office-holders.",
+  pairs:[["CJI","Surya Kant"],["RBI Governor","Sanjay Malhotra"],["CDS","N.S. Raja Subramani"],["NSA","Ajit Doval"]]},
+ {g:"GEO",title:"country → its (quiet) capital",hook:"not the famous city.",
+  pairs:[["Australia","Canberra"],["Turkey","Ankara"],["Canada","Ottawa"],["Switzerland","Bern"]]},
+ {g:"IRL",title:"global body → HQ",hook:"Geneva, New York, Washington, Vienna.",
+  pairs:[["WHO","Geneva"],["UN","New York"],["IMF","Washington DC"],["OPEC","Vienna"]]},
+ {g:"ECO",title:"new name → old name",hook:"same company, rebranded.",
+  pairs:[["Meta","Facebook"],["X","Twitter"],["Accenture","Andersen Consulting"],["AOL","Quantum Computer Services"]]},
+ {g:"SCI",title:"mission → agency",hook:"whose rocket flew it?",
+  pairs:[["Aditya-L1","ISRO"],["Parker Solar Probe","NASA"],["Hayabusa2","JAXA"],["Chang'e","CNSA"]]}
+];
+
+const HOAX=[
+ {s:"India won the 2026 T20 World Cup, beating New Zealand in the final.",t:true,why:"True — by 96 runs in Ahmedabad."},
+ {s:"RCB won IPL 2026, beating Gujarat Titans.",t:true,why:"True — RCB's second title, defended."},
+ {s:"Norway topped the 2026 Winter Olympics medal table.",t:true,why:"True — 18 golds, 41 medals."},
+ {s:"'Oppenheimer' won Best Picture at the 2026 Oscars.",t:false,why:"False — that was 'One Battle After Another'."},
+ {s:"In January 2026, US forces captured Venezuela's President Maduro.",t:true,why:"True — flown to New York to face charges."},
+ {s:"Nirmala Sitharaman presented her ninth consecutive Budget in 2026.",t:true,why:"True — the 2026-27 Budget."},
+ {s:"The 2026 FIFA World Cup is hosted only by the United States.",t:false,why:"False — co-hosted by the USA, Canada and Mexico."},
+ {s:"Surya Kant is the 53rd Chief Justice of India.",t:true,why:"True — since November 2025."},
+ {s:"The new Income-tax Act took effect from 1 January 2027.",t:false,why:"False — it came into force on 1 April 2026."},
+ {s:"Gerd Faltings won the 2026 Abel Prize in mathematics.",t:true,why:"True — for arithmetic geometry."},
+ {s:"Viktor Orbán won Hungary's April 2026 election comfortably.",t:false,why:"False — Orbán was defeated."},
+ {s:"'Taiwan Travelogue' won the 2026 International Booker Prize.",t:true,why:"True — translated by Lin King."}
+];
+</script>
+<script>
+/* ===================== FLEX ENGINE ===================== */
+const $=document.getElementById('screen');
+const GOAL=15, DAYMS=86400000, INTERVAL=[0,1,2,4,8,16];
+const BADGES={
+ liftoff:{e:"🚀",t:"locked in",d:"finished your first session"},
+ sharp:{e:"🎯",t:"sharpshooter",d:"7 correct in a row"},
+ fire7:{e:"🔥",t:"week on fire",d:"7-day streak"},
+ globe:{e:"🌍",t:"globetrotter",d:"a question from every genre"},
+ cent:{e:"💯",t:"centurion",d:"100 questions answered"},
+ curator:{e:"🛡️",t:"certified flex",d:"20 facts mastered"}
+};
+let MEM={};
+const DB={get(k){try{return localStorage.getItem(k)}catch(e){return MEM[k]??null}},
+         set(k,v){try{localStorage.setItem(k,v)}catch(e){MEM[k]=v}}};
+function today(){return new Date().toISOString().slice(0,10)}
+function todayN(){const d=new Date();return Math.floor((d-new Date(d.getFullYear(),0,0))/DAYMS)+d.getFullYear()*366}
+function freshState(){return{cards:{},streak:0,best:0,last:null,xp:0,goalDate:null,goalCount:0,
+  badges:[],genres:[],hist:{},totAns:0,totOk:0,maxRun:0,sound:true,pu:{fifty:2,dbl:2,freeze:1},lvlSeen:1}}
+let S=load();
+function load(){try{const r=DB.get('flex');if(r)return Object.assign(freshState(),JSON.parse(r))}catch(e){}return freshState()}
+function save(){DB.set('flex',JSON.stringify(S))}
+function cs(id){return S.cards[id]||(S.cards[id]={box:0,due:0,seen:false,ok:0,no:0})}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
+function card(id){return BANK.find(c=>c.id===id)}
+function dueIds(){return BANK.filter(c=>{const t=S.cards[c.id];return t&&t.seen&&t.due<=todayN()}).map(c=>c.id)}
+function newIds(){return BANK.filter(c=>!(S.cards[c.id]&&S.cards[c.id].seen)).map(c=>c.id)}
+function wrongIds(){return BANK.filter(c=>{const t=S.cards[c.id];return t&&t.seen&&t.box<=1&&t.no>0}).map(c=>c.id)}
+function buildBurst(){let due=shuffle(dueIds()),nw=shuffle(newIds()),q=due.slice(0,9);
+  for(const id of nw){if(q.length>=GOAL)break;q.push(id)}
+  for(const id of due.slice(9)){if(q.length>=GOAL)break;q.push(id)}
+  if(!q.length)q=shuffle(BANK.map(c=>c.id)).slice(0,10);return shuffle(q)}
+function levelOf(xp){return 1+Math.floor(xp/140)}
+function rollGoal(){const t=today();if(S.goalDate!==t){S.goalDate=t;S.goalCount=0}}
+function addXP(n){const before=levelOf(S.xp);S.xp+=n;const after=levelOf(S.xp);
+  if(after>before){const keys=['fifty','dbl','freeze'];const k=keys[after%keys.length];S.pu[k]=(S.pu[k]||0)+1;
+    setTimeout(()=>milestone("⬆️","LEVEL "+after+"!","+1 "+(k==='fifty'?'50:50':k==='dbl'?'2× XP':'streak freeze')),300)}}
+function award(b){if(!S.badges.includes(b)){S.badges.push(b);milestone(BADGES[b].e,BADGES[b].t+"!",BADGES[b].d)}}
+function checkBadges(){if(S.totAns>=1)award('liftoff');if(S.maxRun>=7)award('sharp');if(S.streak>=7)award('fire7');
+  if(S.genres.length>=Object.keys(GM).length)award('globe');if(S.totAns>=100)award('cent');
+  if(Object.values(S.cards).filter(c=>c.box>=5).length>=20)award('curator')}
+function noteGenre(g){if(!S.genres.includes(g))S.genres.push(g)}
+function checkStreakLoad(){const t=today();if(S.last&&S.last!==t){
+  const y=new Date(Date.now()-DAYMS).toISOString().slice(0,10);
+  if(S.last!==y){ // missed at least a day
+    if((S.pu.freeze||0)>0 && S.last===new Date(Date.now()-2*DAYMS).toISOString().slice(0,10)){
+      S.pu.freeze--;S.last=y;setTimeout(()=>toast("🥶 streak freeze used — streak saved!"),600)}
+    else S.streak=0; save()}}}
+
+/* audio + confetti */
+let AC;function beep(f,d,t){if(!S.sound)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();
+ const o=AC.createOscillator(),g=AC.createGain();o.type=t||'sine';o.frequency.value=f;o.connect(g);g.connect(AC.destination);
+ g.gain.setValueAtTime(.0001,AC.currentTime);g.gain.exponentialRampToValueAtTime(.18,AC.currentTime+.01);
+ g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d);o.start();o.stop(AC.currentTime+d)}catch(e){}}
+const sGood=()=>{beep(680,.1);setTimeout(()=>beep(1020,.14),80)};
+const sBad=()=>beep(150,.22,'square');const sTap=()=>beep(440,.05);
+const sLvl=()=>{[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.16),i*90))};
+const cf=document.getElementById('cf'),cx=cf.getContext('2d');let parts=[];
+function burst(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;sLvl();
+ cf.width=innerWidth;cf.height=innerHeight;const cols=['#C6FF3D','#27E0E0','#FF3D8B','#9B5BFF','#FFB23A'];
+ const was=parts.length;for(let i=0;i<100;i++)parts.push({x:innerWidth/2,y:innerHeight*.32,vx:(Math.random()-.5)*10,vy:Math.random()*-12-3,g:.36,c:cols[i%5],s:5+Math.random()*6,r:Math.random()*6});
+ if(was===0)anim()}
+function anim(){cx.clearRect(0,0,cf.width,cf.height);parts=parts.filter(p=>p.y<cf.height+30);
+ parts.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.r+=.2;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s);cx.restore()});
+ if(parts.length)requestAnimationFrame(anim);else cx.clearRect(0,0,cf.width,cf.height)}
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
+
+/* ===== polish: flash / shake / combo chime / milestone ===== */
+const APP=document.getElementById('app');
+function flashScreen(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;APP.classList.add('flash');setTimeout(()=>APP.classList.remove('flash'),440)}
+function shakeScreen(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;APP.classList.add('shake');setTimeout(()=>APP.classList.remove('shake'),440)}
+function comboChime(run){const base=560+Math.min(run,8)*70;beep(base,.1);setTimeout(()=>beep(base*1.5,.13),70)}
+function milestone(e,t,sub){const m=document.createElement('div');m.className='mile';
+ m.innerHTML=`<div class="milecard"><div class="me">${e}</div><div class="mt">${t}</div>${sub?`<div class="muted" style="font-size:13px;margin-top:4px">${sub}</div>`:''}</div>`;
+ document.body.appendChild(m);burst();flashScreen();setTimeout(()=>m.remove(),1700)}
+/* a fact is "learned" once it's been answered correctly at least once, in ANY mode */
+function learnedCount(){return Object.values(S.cards).filter(c=>c.ok>0).length}
+function genreCounts(g){const ids=BANK.filter(c=>c.g===g);const stat=ids.filter(c=>c.k!=='C').length,cur=ids.filter(c=>c.k==='C').length;
+ const learned=ids.filter(c=>S.cards[c.id]&&S.cards[c.id].ok>0).length;return{ids,stat,cur,total:ids.length,learned}}
+
+/* ===================== HOME ===================== */
+function mascot(){const s=S.streak;
+ if(s>=7)return{e:"😎",l:"certified clued-in. they can't keep up."};
+ if(s>=3)return{e:"🔥",l:"you're on fire — keep it lit."};
+ if(s>=1)return{e:"😏",l:"streak's going. don't fumble it today."};
+ return{e:"👀",l:"lock in. let's start that streak."}}
+function topbar(){return `<div class="top"><div class="logo">flex</div><div class="chips">
+ <span class="chip fl">🔥 ${S.streak}</span><span class="chip co">⚡ ${S.xp}</span>
+ <button class="iconbtn" onclick="checkUpdate()" title="check for updates">🔄</button>
+ <button class="iconbtn" onclick="S.sound=!S.sound;save();sTap();home()">${S.sound?'🔊':'🔇'}</button></div></div>`}
+let TAB='home';
+function draw(){checkStreakLoad();rollGoal();save();
+ if(TAB==='play')tabPlay();else if(TAB==='genres')tabGenres();else if(TAB==='you')tabYou();else tabHome()}
+function go(t){TAB=t;sTap();draw();window.scrollTo(0,0)}
+function home(){TAB='home';draw()}
+function tabbar(a){const T=[['home','🏠','Home'],['play','🎮','Play'],['genres','🧭','Genres'],['you','👤','You']];
+ return `<div class="tabbar">`+T.map(([k,e,l])=>`<button class="tabbtn ${a===k?'on':''}" onclick="go('${k}')"><span class="ti">${e}</span>${l}</button>`).join('')+`</div>`}
+
+function tabHome(){
+ const m=mascot(),lvl=levelOf(S.xp),into=S.xp%140,due=dueIds().length+newIds().length;
+ const acc=S.totAns?Math.round(100*S.totOk/S.totAns):0,frac=Math.min(1,S.goalCount/GOAL);
+ const learned=learnedCount();
+ $.innerHTML=topbar()+`<div class="screen">
+  <div class="scoreboard">
+    <div class="sb"><div class="n">${S.totAns}</div><div class="t">🎮 answered</div></div>
+    <div class="sb"><div class="n">${S.totOk}</div><div class="t">🎯 right</div></div>
+    <div class="sb"><div class="n">${S.totAns-S.totOk}</div><div class="t">💥 wrong</div></div>
+    <div class="sb"><div class="n">${acc}%</div><div class="t">🏅 accuracy</div></div></div>
+
+  <div class="learnbar"><div class="lbtop"><span>🧠 facts learned</span><span><b>${learned}</b> / ${BANK.length}</span></div>
+    <div class="lbbar"><i style="width:${BANK.length?100*learned/BANK.length:0}%"></i></div></div>
+
+  <div class="hero"><div class="masc">${m.e}</div><div class="hi" style="flex:1">
+    <div class="lvlrow">flex lvl ${lvl} <span class="tag">⚡ ${into}/140</span></div>
+    <div class="say">${m.l}</div><div class="xpbar"><i id="xpb"></i></div></div></div>
+
+  <div class="quest"><div class="qp"><div class="ttl">today's lock-in 🔒</div><div class="sub">${S.goalCount>=GOAL?'🎉 goal of '+GOAL+' smashed — keep going!':'15 a day finishes the bank by exam day'}</div>
+    <div class="qbar"><i style="width:${frac*100}%"></i></div></div><div class="qn">${S.goalCount>=GOAL?S.goalCount+' ✓':S.goalCount+'/'+GOAL}</div></div>
+
+  <div class="pus">
+   <div class="pu"><div class="e">✂️</div><b>${S.pu.fifty||0}</b>50:50</div>
+   <div class="pu"><div class="e">⚡</div><b>${S.pu.dbl||0}</b>2× XP</div>
+   <div class="pu"><div class="e">🥶</div><b>${S.pu.freeze||0}</b>freeze</div></div>
+
+  <button class="cta" onclick="startBurst()">start the daily lock-in ${due?`<span class="pill">${Math.min(GOAL,Math.max(due,1))}</span>`:''}</button>
+  <div class="footnote">${BANK.length} facts (verified 2026 + evergreen) · tap the tabs below to explore 👇</div>
+  <div style="height:92px"></div></div>`+tabbar('home');
+ requestAnimationFrame(()=>{const b=document.getElementById('xpb');if(b)b.style.width=(into/140*100)+'%'})}
+
+function tabPlay(){
+ $.innerHTML=topbar()+`<div class="screen"><div class="ey" style="margin-top:2px">pick your chaos 🎮</div>
+  <div class="grid2" style="margin-top:10px">
+    <button class="tile" style="background:linear-gradient(135deg,rgba(255,61,139,.18),var(--surf));border-color:rgba(255,61,139,.3)" onclick="startHoax()"><div class="ic">📰</div><div class="t">headline or cap</div><div class="d">real or made-up?</div></button>
+    <button class="tile" style="background:linear-gradient(135deg,rgba(39,224,224,.18),var(--surf));border-color:rgba(39,224,224,.3)" onclick="startMatch()"><div class="ic">🔗</div><div class="t">match-up</div><div class="d">pair 'em fast</div></button>
+    <button class="tile ${wrongIds().length?'':'locked'}" style="background:linear-gradient(135deg,rgba(255,178,58,.16),var(--surf));border-color:rgba(255,178,58,.3)" onclick="startRedeem()"><div class="ic">🩹</div><div class="t">redemption</div><div class="d">${wrongIds().length} to clear</div></button>
+    <button class="tile" style="background:linear-gradient(135deg,rgba(155,91,255,.2),var(--surf));border-color:rgba(155,91,255,.35)" onclick="startBoss()"><div class="ic">⚔️</div><div class="t">boss battle</div><div class="d">beat the clock</div></button>
+    <button class="tile" style="background:linear-gradient(135deg,rgba(47,209,138,.18),var(--surf));border-color:rgba(47,209,138,.3)" onclick="startSurvival()"><div class="ic">💀</div><div class="t">survival</div><div class="d">one wrong = over</div></button>
+  </div>
+  <div class="footnote">every right answer here — any mode — counts toward your facts learned 🧠</div>
+  <div style="height:92px"></div></div>`+tabbar('play')}
+
+function tabGenres(){
+ const learned=learnedCount();
+ const rows=Object.keys(GM).map(g=>{const gc=genreCounts(g);const pct=gc.total?Math.round(100*gc.learned/gc.total):0;const col=GM[g].c;
+   return `<div class="grow" onclick="startGenre('${g}')">
+     <div class="ge">${GM[g].e}</div>
+     <div class="gn"><div class="gnm" style="color:${col}">${GM[g].n}</div>
+       <div class="gd"><span class="kpill cur">🗞️ ${gc.cur} current</span><span class="kpill sta">📚 ${gc.stat} static</span></div>
+       <div class="gbar"><i style="width:${pct}%;background:${col}"></i></div></div>
+     <div class="gp">${gc.learned}/${gc.total}</div></div>`}).join('');
+ $.innerHTML=topbar()+`<div class="screen"><div class="ey" style="margin-top:2px">your genres 🧭 · tap one to drill it</div>
+  <div style="margin-top:10px">${rows}</div>
+  <div class="learnbar" style="margin-top:16px"><div class="lbtop"><span>🧠 facts learned</span><span><b>${learned}</b> / ${BANK.length}</span></div>
+    <div class="lbbar"><i style="width:${BANK.length?100*learned/BANK.length:0}%"></i></div></div>
+  <div class="callegend" style="margin-top:8px">🗞️ current = 2026 affairs · 📚 static = evergreen · shown on every question</div>
+  <div style="height:92px"></div></div>`+tabbar('genres')}
+
+function tabYou(){
+ calMonth=new Date();calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth(),1);
+ const acc=S.totAns?Math.round(100*S.totOk/S.totAns):0;
+ const learned=learnedCount(),mastered=Object.values(S.cards).filter(c=>c.box>=5).length;
+ const badges=Object.keys(BADGES).map(b=>{const g=S.badges.includes(b);
+   return `<div class="tile ${g?'':'locked'}" style="cursor:default"><div class="ic">${BADGES[b].e}</div><div class="t">${BADGES[b].t}</div><div class="d">${BADGES[b].d}</div></div>`}).join('');
+ $.innerHTML=topbar()+`<div class="screen"><div class="ey" style="margin-top:2px">your progress 👤</div>
+  ${flexCardHTML(acc)}
+  <div class="statrow"><div class="scard"><div class="v">${learned}</div><div class="l">learned</div></div>
+    <div class="scard"><div class="v">${mastered}</div><div class="l">mastered</div></div>
+    <div class="scard"><div class="v">${S.best}</div><div class="l">best streak</div></div></div>
+  <div class="statrow"><div class="scard"><div class="v">${S.totOk}</div><div class="l">right</div></div>
+    <div class="scard"><div class="v">${S.totAns-S.totOk}</div><div class="l">wrong</div></div>
+    <div class="scard"><div class="v">${acc}%</div><div class="l">accuracy</div></div></div>
+  <div class="sect"><div class="ey">activity calendar 📅</div><div id="cal">${calHTML()}</div></div>
+  <div class="sect"><div class="ey">badges</div><div class="grid2" style="margin-top:10px">${badges}</div></div>
+  <div class="sect"><button class="cta" onclick="saveApp()">⬇ save / install this app</button>
+   <button class="cta ghost" style="margin-top:10px" onclick="if(confirm('reset everything on this device?')){S=freshState();save();home()}">reset progress</button></div>
+  <div style="height:92px"></div></div>`+tabbar('you')}
+function startGenre(g){const ids=BANK.filter(c=>c.g===g).map(c=>c.id);Q={queue:shuffle(ids),i:0,ok:0,run:0,mode:'genre',dbl:false};quiz()}
+/* ===================== QUIZ FLOW ===================== */
+let Q=null;
+function startBurst(){Q={queue:buildBurst(),i:0,ok:0,run:0,mode:'burst',dbl:false};quiz()}
+function startRedeem(){const w=wrongIds();if(!w.length){toast("nothing to redeem — you ate that 😌");return}
+  Q={queue:shuffle(w).slice(0,GOAL),i:0,ok:0,run:0,mode:'redeem',dbl:false};quiz()}
+function quiz(){
+ if(Q.i>=Q.queue.length)return endQuiz();
+ const c=card(Q.queue[Q.i]),col=GM[c.g].c;
+ const opts=c.o.map((t,i)=>`<button class="opt" id="o${i}" onclick="pick(${i})"><span class="k">${'ABCDE'[i]}</span><span>${t}</span></button>`).join('');
+ const comboOn=Q.run>=2;
+ $.innerHTML=topbar()+`<div class="screen">
+   <div class="qtop"><button class="x" onclick="quitSession()">✕</button>
+     <div class="pbar"><i style="width:${Q.i/Q.queue.length*100}%"></i></div>
+     <div class="combo ${comboOn?'on':''}">🔥 x${Q.run}</div></div>
+   <div class="hero-strip" style="background:linear-gradient(120deg,${col}33,${col}11);border:1px solid ${col}44">
+     <div class="big">${c.pic||GM[c.g].e}</div>
+     <div><div class="gt" style="color:${col}">${GM[c.g].n}</div>
+       <div class="kk">${c.k==='C'?'🗞️ current · 2026':'📚 static'} · ${c.r==='IN'?'india':c.r==='INT'?'world':'india + world'}</div></div></div>
+   <div class="q">${c.q}</div><div class="opts" id="opts">${opts}</div>
+   <div class="puq">
+     <button class="puqb" id="puFifty" onclick="useFifty()" ${(S.pu.fifty||0)>0?'':'disabled'}>✂️ 50:50 (${S.pu.fifty||0})</button>
+     <button class="puqb" id="puDbl" onclick="useDbl()" ${(S.pu.dbl||0)>0&&!Q.dbl?'':'disabled'}>${Q.dbl?'⚡ 2× armed':'⚡ 2× XP ('+(S.pu.dbl||0)+')'}</button>
+   </div><div id="rev"></div></div>`;
+}
+function useFifty(){if((S.pu.fifty||0)<=0)return;const c=card(Q.queue[Q.i]);S.pu.fifty--;save();sTap();
+ let wrong=[0,1,2,3,4].filter(i=>i!==c.a);wrong=shuffle(wrong).slice(0,2);
+ wrong.forEach(i=>{const el=document.getElementById('o'+i);el.classList.add('gone');el.setAttribute('disabled','')});
+ document.getElementById('puFifty').setAttribute('disabled','')}
+function useDbl(){if((S.pu.dbl||0)<=0||Q.dbl)return;S.pu.dbl--;Q.dbl=true;save();sTap();
+ const b=document.getElementById('puDbl');b.textContent='⚡ 2× armed';b.setAttribute('disabled','')}
+function pick(i){
+ const c=card(Q.queue[Q.i]),st=cs(c.id),correct=i===c.a;
+ document.querySelectorAll('.opt').forEach((el,idx)=>{el.setAttribute('disabled','');
+   if(idx===c.a)el.classList.add('correct');else if(idx===i){el.classList.add('wrong');el.classList.add('shake')}else el.classList.add('dim')});
+ document.querySelectorAll('.puqb').forEach(b=>b.setAttribute('disabled',''));
+ st.seen=true;noteGenre(c.g);S.totAns++;let gained;
+ if(correct){st.ok++;st.box=Math.min(5,st.box+1);st.due=todayN()+INTERVAL[st.box];S.totOk++;Q.ok++;Q.run++;
+   if(Q.run>S.maxRun)S.maxRun=Q.run;
+   const mult=1+Math.min(Math.floor(Q.run/3),2);gained=(10+(Math.random()*6|0))*mult*(Q.dbl?2:1);sGood();flashScreen();if(Q.run>=3)comboChime(Q.run)}
+ else{st.no++;st.box=1;st.due=todayN();Q.run=0;gained=2;sBad();shakeScreen()}
+ Q.dbl=false;addXP(gained);rollGoal();S.goalCount++;
+ const h=S.hist[today()]||(S.hist[today()]={a:0,o:0});h.a++;if(correct)h.o++;
+ save();checkBadges();
+ const line=correct?WIN[Math.random()*WIN.length|0]:MISS[Math.random()*MISS.length|0];
+ const rev=document.getElementById('rev');
+ rev.innerHTML=`<div class="xppop">+${gained}${Q.run>=3&&correct?' 🔥':''}</div>
+  <div class="reveal ${correct?'good':'bad'}"><div class="vtag">${correct?'😎':'😵'} ${line}</div>
+   <div class="hook"><span class="he">🧠</span><div><b>memory hook:</b> ${c.hook}</div></div>
+   <div class="ctx">${c.ctx}</div><div class="why">${c.why}</div>
+   <button class="cta" style="margin-top:14px" onclick="nextQ()">${Q.i+1>=Q.queue.length?'see results':'next'}</button></div>`;
+ rev.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function nextQ(){Q.i++;quiz()}
+function quitSession(){if(Q&&Q.i>0&&Q.i<Q.queue.length){if(!confirm('bounce now? progress is saved.'))return}home()}
+function endQuiz(){
+ const acc=Q.queue.length?Math.round(100*Q.ok/Q.queue.length):0,met=S.goalCount>=GOAL,t=today();
+ if(met&&S.last!==t){const y=new Date(Date.now()-DAYMS).toISOString().slice(0,10);
+   S.streak=(S.last===y)?S.streak+1:(S.last===t?S.streak:1);if(S.streak>S.best)S.best=S.streak;S.last=t}
+ save();if(met||acc>=80)burst();checkBadges();
+ const verdict=acc>=80?'absolutely ate 😤':acc>=50?'solid W':'we move 💪';
+ $.innerHTML=topbar()+`<div class="screen res">
+   <div class="big">${acc>=80?'🤩':acc>=50?'😎':'💪'}</div><h2>${verdict}</h2>
+   <div class="muted">${Q.ok}/${Q.queue.length} correct${met?' · daily lock-in done 🔒':''}</div>
+   ${flexCardHTML(acc)}
+   ${wrongIds().length?`<button class="cta alt" onclick="startRedeem()">clear my ${wrongIds().length} weak ones 🩹</button>`:''}
+   <button class="cta ghost" onclick="home()">home</button></div>`;
+}
+function flexCardHTML(acc){const lvl=levelOf(S.xp);
+ return `<div class="flexcard"><div class="fl-lbl">flex card</div>
+   <div class="fl-big">${S.streak}-day streak 🔥</div>
+   <div class="fl-row">
+     <div><span>flex lvl</span><b>${lvl}</b></div>
+     <div><span>total xp</span><b>${S.xp}</b></div>
+     <div><span>this run</span><b>${acc}%</b></div></div>
+   <div style="margin-top:14px;font-weight:900">gk you can flex 💅</div></div>
+   <button class="cta ghost" onclick="shareFlex(${acc})">📲 share my flex</button>`}
+function shareFlex(acc){const lvl=levelOf(S.xp);
+ const txt=`flexing on the XAT GK 💅\\n🔥 ${S.streak}-day streak\\n⚡ flex lvl ${lvl} · ${S.xp} XP\\n🎯 ${acc}% this run\\n— built different on flex`;
+ try{if(navigator.share){navigator.share({text:txt.replace(/\\n/g,'\n')});return}}catch(e){}
+ try{navigator.clipboard.writeText(txt.replace(/\\n/g,'\n'));toast("flex copied — go paste it 📋")}catch(e){toast("screenshot it and flex 📸")}}
+
+/* ===================== HEADLINE OR CAP ===================== */
+let H=null;
+function startHoax(){H={queue:shuffle(HOAX.map((_,i)=>i)).slice(0,8),i:0,ok:0};hoax()}
+function hoax(){if(H.i>=H.queue.length)return endMini('headline or cap',H.ok,H.queue.length);
+ const s=HOAX[H.queue[H.i]];
+ $.innerHTML=topbar()+`<div class="screen">
+  <div class="qtop"><button class="x" onclick="home()">✕</button><div class="pbar"><i style="width:${H.i/H.queue.length*100}%"></i></div></div>
+  <div class="hero-strip" style="background:linear-gradient(120deg,#FF3D8B33,#FF3D8B11);border:1px solid #FF3D8B44"><div class="big">📰</div><div><div class="gt" style="color:#FF3D8B">headline or cap</div><div class="kk">real news or made-up?</div></div></div>
+  <div class="stmt">“${s.s}”</div>
+  <div class="hbtns"><button class="hbtn real" onclick="hpick(true)">✓ real</button><button class="hbtn cap" onclick="hpick(false)">🧢 cap</button></div>
+  <div id="rev"></div></div>`}
+function hpick(v){const s=HOAX[H.queue[H.i]],ok=v===s.t;if(ok){H.ok++;addXP(8);sGood()}else{addXP(2);sBad()}
+ S.goalCount++;rollGoal();save();
+ document.querySelectorAll('.hbtn').forEach(b=>b.setAttribute('disabled',''));
+ document.getElementById('rev').innerHTML=`<div class="reveal ${ok?'good':'bad'}"><div class="vtag">${ok?'😎 called it':'🧢 caught you'}</div>
+   <div class="ctx" style="margin-top:6px">${s.why}</div>
+   <button class="cta" style="margin-top:12px" onclick="H.i++;hoax()">${H.i+1>=H.queue.length?'finish':'next'}</button></div>`}
+
+/* ===================== MATCH-UP ===================== */
+let M=null;
+function startMatch(){const set=MATCH[Math.random()*MATCH.length|0];
+ M={set,left:set.pairs.map(p=>p[0]),right:shuffle(set.pairs.map(p=>p[1])),sel:null,done:0};match()}
+function match(){const m=M.set,col=GM[m.g].c;
+ const L=M.left.map((t,i)=>`<button class="mitem" id="L${i}" onclick="msel(${i})">${t}</button>`).join('');
+ const R=M.right.map((t,i)=>`<button class="mitem" id="R${i}" onclick="mhit(${i})">${t}</button>`).join('');
+ $.innerHTML=topbar()+`<div class="screen">
+  <div class="qtop"><button class="x" onclick="home()">✕</button><div class="pbar"><i style="width:${M.done/m.pairs.length*100}%"></i></div></div>
+  <div class="hero-strip" style="background:linear-gradient(120deg,${col}33,${col}11);border:1px solid ${col}44"><div class="big">🔗</div><div><div class="gt" style="color:${col}">${GM[m.g].n}</div><div class="kk">${m.title}</div></div></div>
+  <div class="mcols"><div class="mcol">${L}</div><div class="mcol">${R}</div></div>
+  <div class="hook" style="margin-top:14px"><span class="he">🧠</span><div><b>hint:</b> ${m.hook}</div></div></div>`}
+function msel(i){if(document.getElementById('L'+i).classList.contains('done'))return;sTap();
+ document.querySelectorAll('.mcol .mitem').forEach(e=>e.classList.remove('sel'));M.sel=i;document.getElementById('L'+i).classList.add('sel')}
+function mhit(j){if(M.sel===null||document.getElementById('R'+j).classList.contains('done'))return;
+ const correct=M.left[M.sel]===M.set.pairs.find(p=>p[1]===M.right[j])[0];
+ if(correct){document.getElementById('L'+M.sel).classList.add('done');document.getElementById('R'+j).classList.add('done');
+   M.done++;M.sel=null;addXP(6);S.goalCount++;rollGoal();save();sGood();
+   if(M.done>=M.set.pairs.length){burst();setTimeout(()=>endMini('match-up',M.done,M.set.pairs.length),500)}}
+ else{const r=document.getElementById('R'+j);r.classList.add('bad');sBad();setTimeout(()=>r.classList.remove('bad'),400)}}
+
+/* ===================== BOSS BATTLE ===================== */
+let B=null,BT=null;
+function startBoss(){B={queue:shuffle(BANK.map(c=>c.id)).slice(0,10),i:0,ok:0,score:0};boss()}
+function boss(){clearInterval(BT);if(B.i>=B.queue.length)return endMini('boss battle',B.ok,B.queue.length,B.score+' pts');
+ const c=card(B.queue[B.i]),col=GM[c.g].c;
+ const opts=c.o.map((t,i)=>`<button class="opt" id="o${i}" onclick="bpick(${i})"><span class="k">${'ABCDE'[i]}</span><span>${t}</span></button>`).join('');
+ $.innerHTML=topbar()+`<div class="screen">
+  <div class="qtop"><button class="x" onclick="clearInterval(BT);home()">✕</button>
+    <div class="pbar"><i id="timer" style="width:100%;background:linear-gradient(90deg,var(--amb),var(--mag))"></i></div>
+    <div class="combo on" style="color:var(--mag)">⚔️ ${B.i+1}/${B.queue.length}</div></div>
+  <div class="hero-strip" style="background:linear-gradient(120deg,${col}33,${col}11);border:1px solid ${col}44"><div class="big">${c.pic||GM[c.g].e}</div><div><div class="gt" style="color:${col}">${GM[c.g].n}</div><div class="kk">beat the clock ⏱️</div></div></div>
+  <div class="q">${c.q}</div><div class="opts">${opts}</div></div>`;
+ const tleft=10000,start=Date.now();B.qstart=start;
+ BT=setInterval(()=>{const el=Date.now()-start,p=Math.max(0,1-el/tleft),t=document.getElementById('timer');
+   if(t)t.style.width=(p*100)+'%';if(el>=tleft){clearInterval(BT);bpick(-1)}},60)}
+function bpick(i){clearInterval(BT);const c=card(B.queue[B.i]),st=cs(c.id),ok=i===c.a;
+ document.querySelectorAll('.opt').forEach((el,idx)=>{el.setAttribute('disabled','');if(idx===c.a)el.classList.add('correct');else if(idx===i)el.classList.add('wrong')});
+ st.seen=true;noteGenre(c.g);S.totAns++;
+ if(ok){const fast=Math.max(0,10-(Date.now()-B.qstart)/1000),pts=12+Math.round(fast);B.ok++;B.score+=pts;
+   st.ok++;st.box=Math.min(5,st.box+1);st.due=todayN()+INTERVAL[st.box];S.totOk++;addXP(pts);sGood()}
+ else{st.no++;st.box=1;st.due=todayN();addXP(1);sBad()}
+ S.goalCount++;rollGoal();save();checkBadges();setTimeout(()=>{B.i++;boss()},700)}
+
+function endMini(name,ok,tot,extra){const acc=tot?Math.round(100*ok/tot):0;if(acc>=70)burst();
+ $.innerHTML=topbar()+`<div class="screen res"><div class="big">${acc>=80?'🤩':acc>=50?'😎':'💪'}</div>
+  <h2>${name} done</h2><div class="muted">${ok}/${tot}${extra?' · '+extra:''}</div>
+  <div class="statrow"><div class="scard"><div class="v">${acc}%</div><div class="l">accuracy</div></div>
+   <div class="scard"><div class="v">${S.streak}</div><div class="l">streak</div></div>
+   <div class="scard"><div class="v">${S.xp}</div><div class="l">xp</div></div></div>
+  <button class="cta ghost" onclick="home()">home</button></div>`}
+
+/* ===================== STATS → You tab ===================== */
+function stats(){go('you')}
+
+/* ===================== ACTIVITY CALENDAR (You tab) ===================== */
+let calMonth=new Date();
+function calHTML(){const y=calMonth.getFullYear(),mo=calMonth.getMonth();
+ const start=new Date(y,mo,1).getDay(),days=new Date(y,mo+1,0).getDate();
+ const MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+ const todayStr=today();const keys=Object.keys(S.hist).sort();const firstActive=keys.length?keys[0]:todayStr;
+ let cells='';["S","M","T","W","T","F","S"].forEach(d=>cells+=`<div class="calhd">${d}</div>`);
+ for(let i=0;i<start;i++)cells+=`<div></div>`;
+ for(let d=1;d<=days;d++){const ds=`${y}-${String(mo+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  const h=S.hist[ds];const cnt=h?h.a:0;let cls='none',label='';
+  if(ds>todayStr||ds<firstActive){cls='none'}
+  else{cls=cnt===0?'red':(cnt<GOAL?'yellow':'green');label=cnt||''}
+  const click=cls==='none'?'':`onclick="dayDetail('${ds}')"`;
+  cells+=`<button class="cal-d ${cls}" ${click}><span class="dn">${d}</span><span class="dc">${label}</span></button>`}
+ const n=new Date();const canNext=(y<n.getFullYear())||(y===n.getFullYear()&&mo<n.getMonth());
+ return `<div class="calhead"><button onclick="calPrev()">‹</button><div style="font-weight:800;font-size:14px">${MON[mo]} ${y}</div><button onclick="calNext()" ${canNext?'':'disabled style="opacity:.3"'}>›</button></div><div class="calgrid">${cells}</div><div class="callegend">🔴 none · 🟡 under ${GOAL} · 🟢 ${GOAL}+ · tap a day for details</div>`}
+function calPrev(){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()-1,1);const c=document.getElementById('cal');if(c)c.innerHTML=calHTML()}
+function calNext(){const n=new Date();if(calMonth.getFullYear()===n.getFullYear()&&calMonth.getMonth()===n.getMonth())return;calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+1,1);const c=document.getElementById('cal');if(c)c.innerHTML=calHTML()}
+function dayDetail(ds){const h=S.hist[ds]||{a:0,o:0};const acc=h.a?Math.round(100*h.o/h.a):0;const nice=new Date(ds+'T00:00:00').toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
+ const m=document.createElement('div');m.className='modal';m.onclick=e=>{if(e.target===m)m.remove()};
+ m.innerHTML=`<div class="sheet" style="max-width:330px;text-align:center"><h3>${nice}</h3><div class="statrow" style="margin-top:14px"><div class="scard"><div class="v">${h.a}</div><div class="l">answered</div></div><div class="scard"><div class="v">${h.o}</div><div class="l">right</div></div><div class="scard"><div class="v">${h.a-h.o}</div><div class="l">wrong</div></div></div><div class="muted" style="margin-top:10px">${h.a?acc+'% accuracy that day':'no practice this day'}</div><button class="cta" style="margin-top:14px" onclick="this.closest('.modal').remove()">close</button></div>`;
+ document.body.appendChild(m)}
+
+/* ===================== WELCOME POP-UP ===================== */
+function welcome(){const learned=learnedCount();const pct=BANK.length?Math.round(100*learned/BANK.length):0;
+ const m=document.createElement('div');m.className='modal';m.onclick=e=>{if(e.target===m)m.remove()};
+ m.innerHTML=`<div class="sheet" style="text-align:center;max-width:340px"><div style="font-size:60px;line-height:1">${mascot().e}</div>
+  <h3 style="margin-top:6px">welcome back! 👋</h3><div class="muted" style="margin:6px 0 14px">here's how far you've come</div>
+  <div style="font-size:38px;font-weight:900;color:var(--lime);line-height:1">${learned} <span style="font-size:18px;color:var(--mut);font-weight:800">/ ${BANK.length}</span></div>
+  <div class="muted" style="font-size:13px;margin-top:3px">facts learned · ${pct}%</div>
+  <div class="lbbar" style="margin-top:14px;height:9px"><i style="width:${pct}%"></i></div>
+  <div class="muted" style="font-size:12px;margin-top:12px">🔥 ${S.streak}-day streak · ⚡ lvl ${levelOf(S.xp)}</div>
+  <button class="cta" style="margin-top:16px" onclick="this.closest('.modal').remove()">let's flex some GK ✨</button></div>`;
+ document.body.appendChild(m)}
+
+
+/* ===================== SURVIVAL ===================== */
+let SV=null;
+function startSurvival(){SV={pool:shuffle(BANK.map(c=>c.id)),i:0,score:0};surv()}
+function surv(){if(SV.i>=SV.pool.length)return endMini('survival',SV.score,SV.score);
+ const c=card(SV.pool[SV.i]),col=GM[c.g].c;
+ const opts=c.o.map((t,i)=>`<button class="opt" id="o${i}" onclick="svpick(${i})"><span class="k">${'ABCDE'[i]}</span><span>${t}</span></button>`).join('');
+ $.innerHTML=topbar()+`<div class="screen"><div class="qtop"><button class="x" onclick="home()">✕</button>
+   <div class="pbar"><i style="width:100%;background:linear-gradient(90deg,var(--grn),var(--cyan))"></i></div>
+   <div class="combo on" style="color:var(--grn)">💀 ${SV.score}</div></div>
+  <div class="hero-strip" style="background:linear-gradient(120deg,${col}33,${col}11);border:1px solid ${col}44"><div class="big">${c.pic||GM[c.g].e}</div><div><div class="gt" style="color:${col}">${GM[c.g].n}</div><div class="kk">survival · one wrong = game over 💀</div></div></div>
+  <div class="q">${c.q}</div><div class="opts">${opts}</div></div>`}
+function svpick(i){const c=card(SV.pool[SV.i]),st=cs(c.id),ok=i===c.a;
+ document.querySelectorAll('.opt').forEach((el,idx)=>{el.setAttribute('disabled','');if(idx===c.a)el.classList.add('correct');else if(idx===i)el.classList.add('wrong')});
+ st.seen=true;noteGenre(c.g);S.totAns++;S.goalCount++;rollGoal();
+ if(ok){st.ok++;st.box=Math.min(5,st.box+1);st.due=todayN()+INTERVAL[st.box];S.totOk++;SV.score++;addXP(8);save();sGood();setTimeout(()=>{SV.i++;surv()},600)}
+ else{st.no++;st.box=1;st.due=todayN();save();sBad();
+  setTimeout(()=>{if(SV.score>=5)burst();
+   $.innerHTML=topbar()+`<div class="screen res"><div class="big">${SV.score>=10?'🐐':SV.score>=5?'🔥':'💀'}</div>
+   <h2>survived ${SV.score}</h2><div class="muted">${SV.score>=10?'absolute goat behaviour':SV.score>=5?'respectable run':'we go again'} 🔁</div>
+   <div class="reveal bad" style="text-align:left"><div class="vtag">😵 the one that got you</div>
+     <div class="hook"><span class="he">🧠</span><div><b>hook:</b> ${c.hook}</div></div><div class="ctx">${c.ctx}</div></div>
+   <button class="cta" onclick="startSurvival()">run it back 🔁</button>
+   <button class="cta ghost" onclick="home()">home</button></div>`},850)}}
+
+/* ===================== WEEKLY DROPS (auto-fetch) ===================== */
+async function loadDrops(){if(!DROPS_URL)return;
+ try{const r=await fetch(DROPS_URL,{cache:'no-store'});if(!r.ok)return;const d=await r.json();let added=0;
+  if(Array.isArray(d.cards))d.cards.forEach(c=>{if(c&&c.id&&!BANK.find(x=>x.id===c.id)){BANK.push(c);added++}});
+  if(Array.isArray(d.hoax))d.hoax.forEach(h=>HOAX.push(h));
+  if(added){toast('📡 '+added+' fresh questions just dropped');home()}}catch(e){}}
+
+/* ===================== SAVE / INSTALL ===================== */
+function saveApp(){
+ try{
+  const html='<!DOCTYPE html>\n'+document.documentElement.outerHTML;
+  const blob=new Blob([html],{type:'text/html'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download='flex.html';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  toast('⬇ saved flex.html — now tap menu → Add to Home Screen');
+ }catch(e){toast('open browser menu → Add to Home Screen 📲')}
+}
+
+/* force-fetch the newest version (beats iPhone caching) */
+function checkUpdate(){toast('🔄 fetching the latest…');
+ setTimeout(()=>{try{location.replace(location.pathname+'?v='+Date.now())}catch(e){location.reload(true)}},400)}
+
+/* boot */
+home();welcome();loadDrops();
+</script>
+</body></html>
